@@ -29,7 +29,16 @@ We will use the following workflow:
 ## How to store images and medias
 
 For the use of media (images, videos etc) in the README, we created an empty `media` orphan
-branch where the resources are uploaded to. This allows the master branch to be focused
-on code.
+branch where the media resources are uploaded to. This allows the master branch to be focused on code.
+
+```
+git checkout media
+git add XXX.png
+git commit -m "adding XXX.png to media branch"
+git push origin media:media
+git checkout main
+```
+
+In the README on branch `main`, the picture can then be referred as `![alt text](../media/XXXX.png?raw=true)`
 
 > :bulb: This usage is documented [here](https://medium.com/@minamimunakata/how-to-store-images-for-use-in-readme-md-on-github-9fb54256e951).
