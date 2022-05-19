@@ -9,7 +9,7 @@ Spacecraft Orbital Characterization Kit
 - `tests/` unit test framework
 - `doc/` doxygen documentation)
 
-> :bulb: for stucture explanation, see [this discussion on SO](https://stackoverflow.com/questions/2360734/whats-a-good-directory-structure-for-larger-c-projects-using-makefile)
+> :bulb: for structure explanation, see [this discussion on SO](https://stackoverflow.com/questions/2360734/whats-a-good-directory-structure-for-larger-c-projects-using-makefile)
 
 ## Git branching model
 
@@ -25,6 +25,29 @@ We will use the following workflow:
 > :bulb: The rational of this workflow is described in [this article](https://nvie.com/posts/a-successful-git-branching-model/).
 
 ![alt text](../media/git-branching-model.png?raw=true)
+
+## Contributing
+
+If you want to contribute to this project, the simplest way is to:
+- Fork it.
+- Clone it to your local system with `git clone XXX.git`
+- Make a new branch with `git checkout -b feature`
+- Make your changes with `git commit -am "updated code for new feature"`
+- Push it back to your repo `git push`
+- Click the Compare & pull request button.
+- Click Create pull request to open a new pull request.
+
+> :bulb: We use [Release Drafter](https://github.com/marketplace/actions/release-drafter) to automate the version labeling, feature trakcking and documentation. Please use informative labels during your PR drafting!
+
+## Automated testing
+
+We use a Github Action described in `.github/worflows/cmake.yml` to automatically:
+- Install SpOCK dependencies
+- Configure CMake
+- Build the SpOCK executables
+- Test the project using ctest
+- Generate the Doxygen documentation
+- Deploy the documentation to the Project Github Page
 
 ## How to store images and medias
 
