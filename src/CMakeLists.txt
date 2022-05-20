@@ -1,7 +1,7 @@
 include_directories(headeronly_src)
 include_directories(spock/include)
 
-add_executable(spock spock.cpp)
+add_executable(spock main.cpp)
 target_link_libraries(spock LINK_PUBLIC ${Boost_LIBRARIES} stdc++fs)
 
 install(
