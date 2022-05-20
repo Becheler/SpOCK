@@ -45,10 +45,10 @@ auto handle_options(int argc, char* argv[])
   ;
 
   bpo::options_description command_line_options;
-  command_line_options.add(generic_options).add(general_options).add(model_options);
+  command_line_options.add(generic_options).add(model_options);
 
   bpo::options_description file_options{"General options (command line values will overwrite congif file values)"};
-  file_options.add(general_options).add(model_options);
+  file_options.add(model_options);
 
   bpo::variables_map vm;
 

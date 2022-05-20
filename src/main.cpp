@@ -8,9 +8,11 @@
 
 namespace bpo = boost::program_options;
 
-template<T>
 class Propagator
 {
+  // Program options
+  bpo::variables_map _vm;
+
   //! Verbosity level
   bool _verbose;
 
