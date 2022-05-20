@@ -27,7 +27,7 @@ if(DOXYGEN_FOUND)
   set(DOXYGEN_USE_MATHJAX YES)
   # this target will only be built if specifically asked to.
   # run "make doc" to create the doxygen documentation
-  doxygen_add_doc(
+  doxygen_add_docs(
     doc
     ${PROJECT_SOURCE_DIR}
     COMMENT "Generate API-documents for NoteSearch."
