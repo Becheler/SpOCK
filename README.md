@@ -37,7 +37,41 @@ If you want to contribute to this project, the simplest way is to:
 - Click the Compare & pull request button.
 - Click Create pull request to open a new pull request.
 
-> :bulb: We use [Release Drafter](https://github.com/marketplace/actions/release-drafter) to automate the version labeling, feature trakcking and documentation. Please use informative labels during your PR drafting!
+### Pull Request format
+
+We use [Release Drafter](https://github.com/marketplace/actions/release-drafter) to automate the version labeling, feature tracking and project documentation. Please use informative labels during your PR drafting:
+
+- PRs with that belong to the *Features* category should be labeled with:
+  - **feature**
+  - **enhancement**
+- PRs that belong the *Bug Fixes* category should be labeled with:
+  - **fix**
+  - **bugfix**
+  - **bug**
+- PRs that belong to the *Maintenance* category should be labeled
+  - **chore**
+
+### Conventional Commits Specification
+
+The [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) is a lightweight convention on top of commit messages. It provides an easy set of rules for creating an explicit commit history; which makes it easier to write automated tools on top of.
+
+The commit message should be structured as follows:
+--------------------
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+----------------------
+Defining commit `<type>`
+- `fix:` for a commit that patches a bug (this correlates with **PATCH** in Semantic Versioning).
+- `feat:` for a commit that introduces a new feature (this correlates with **MINOR** in Semantic Versioning).
+- `chore:` for a maintenance commit
+- `docs:` for a documentation update
+- `test:` for adding/removing/updating unit tests
+- `refactor:` for commits that do not add or remove any feature, but modifies the code design.
 
 ## Automated testing
 
