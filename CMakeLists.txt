@@ -22,7 +22,7 @@ find_package(Boost 1.61 REQUIRED COMPONENTS program_options)
 
 add_subdirectory(src)
 
-add_subdirectory(docs)
+add_subdirectory(doc)
 
 enable_testing()
 
