@@ -8,7 +8,8 @@
 
 namespace bpo = boost::program_options;
 
-class Propagator
+// This class will later go in its own header ...
+struct Propagator
 {
   // Program options
   bpo::variables_map _vm;
@@ -22,6 +23,13 @@ class Propagator
   _verbose(verbose)
   {}
 
+  void run()
+  {
+    if(_verbose)
+    {
+      std::cout << " ... orbit propagating ... "
+    }
+  }
 }; // end class Propagator
 
 namespace
