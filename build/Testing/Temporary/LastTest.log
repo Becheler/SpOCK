@@ -1,0 +1,56 @@
+Start testing: May 20 16:11 UTC
+----------------------------------------------------------
+1/2 Testing: test_help
+1/2 Test: test_help
+Command: "/home/runner/work/SpOCK/SpOCK/build/src/spock" "--help"
+Directory: /home/runner/work/SpOCK/SpOCK/build/tests
+"test_help" start time: May 20 16:11 UTC
+Output:
+----------------------------------------------------------
+--------------------------------------------------------------------------------------
+| This is SpOCK propagator.                                                           |
+|   - Purpose: propagates satellites orbits.                                          |
+|   - Author: Aaron Ridley, Aidan Kingwell, Arnaud Becheler 2022.                     |
+|   - Usage: /home/runner/work/SpOCK/SpOCK/build/src/spock [options] <config> ...                                 |
+--------------------------------------------------------------------------------------|
+
+Command-line-only options:
+  -h [ --help ]         help screen
+  -v [ --verbose ]      verbose mode
+  --version             software version
+  --config arg          configuration file
+
+
+General options (command line values will overwrite congif file values):
+
+Propagation model parameters:
+  --lon_0 arg            Origin point longitude
+  --lat_0 arg            Origin point latitude
+  --alt_0 arg            Number of gene copies at introduction point
+  --duration arg         Number of generations to simulate
+
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"test_help" end time: May 20 16:11 UTC
+"test_help" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: test_version
+2/2 Test: test_version
+Command: "/home/runner/work/SpOCK/SpOCK/build/src/spock" "--version"
+Directory: /home/runner/work/SpOCK/SpOCK/build/tests
+"test_version" start time: May 20 16:11 UTC
+Output:
+----------------------------------------------------------
+SpOCK version 0.1
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test_version" end time: May 20 16:11 UTC
+"test_version" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 20 16:11 UTC
