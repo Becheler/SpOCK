@@ -45,11 +45,11 @@ jobs:
 
     - name: Generate documentation
       working-directory: ${{github.workspace}}/build
-      run: make docs
+      run: make doc
 
     - name: Moving Files
       run: |
-        mv ${{github.workspace}}/build/docs/html ./docs/api
+        mv ${{github.workspace}}/build/doc/html ./doc/api
 
       # Deploy to GitHub Pages
     - name: Deploy
