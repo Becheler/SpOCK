@@ -1,10 +1,10 @@
-Start testing: May 20 16:11 UTC
+Start testing: May 20 16:15 UTC
 ----------------------------------------------------------
 1/2 Testing: test_help
 1/2 Test: test_help
 Command: "/home/runner/work/SpOCK/SpOCK/build/src/spock" "--help"
 Directory: /home/runner/work/SpOCK/SpOCK/build/tests
-"test_help" start time: May 20 16:11 UTC
+"test_help" start time: May 20 16:15 UTC
 Output:
 ----------------------------------------------------------
 --------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ Propagation model parameters:
 Test time =   0.02 sec
 ----------------------------------------------------------
 Test Passed.
-"test_help" end time: May 20 16:11 UTC
+"test_help" end time: May 20 16:15 UTC
 "test_help" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -41,7 +41,7 @@ Test Passed.
 2/2 Test: test_version
 Command: "/home/runner/work/SpOCK/SpOCK/build/src/spock" "--version"
 Directory: /home/runner/work/SpOCK/SpOCK/build/tests
-"test_version" start time: May 20 16:11 UTC
+"test_version" start time: May 20 16:15 UTC
 Output:
 ----------------------------------------------------------
 SpOCK version 0.1
@@ -49,8 +49,8 @@ SpOCK version 0.1
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test_version" end time: May 20 16:11 UTC
+"test_version" end time: May 20 16:15 UTC
 "test_version" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: May 20 16:11 UTC
+End testing: May 20 16:15 UTC
