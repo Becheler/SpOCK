@@ -27,7 +27,7 @@ struct Propagator
   {
     if(_verbose)
     {
-      std::cout << " ... orbit propagating ... "
+      std::cout << " ... orbit propagating ... " << std::endl;
     }
   }
 }; // end class Propagator
