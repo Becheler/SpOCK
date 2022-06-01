@@ -72,8 +72,7 @@ int main(int argc, char* argv[])
   if (vm.count("verbose"))
   {
     verbose = true;
-    // to reactivate once the utils header is ready
-    // spock::utils::PrintVariableMap(vm);
+    spock::utils::PrintVariableMap(vm);
   }
 
   if(verbose){ std::cout << "Initialization" << std::endl; }

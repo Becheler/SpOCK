@@ -1,3 +1,0 @@
-test_help 1 0.0204745
-test_version 1 0.00216781
----
