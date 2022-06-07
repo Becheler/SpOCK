@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hours_5fin_5fone_5fday_2',['HOURS_IN_ONE_DAY',['../namespacespock_1_1physic__constant.html#a4a70bdb5b01a4f9b4fae832d5ef8932d',1,'spock::physic_constant']]]
+  ['force_5fcalculator_2',['force_calculator',['../classspock_1_1force__calculator.html',1,'spock']]]
 ];

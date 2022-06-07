@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['metres_5fin_5fone_5fkilometre_3',['METRES_IN_ONE_KILOMETRE',['../namespacespock_1_1physic__constant.html#a55000200c3c14959cca91a7455211ce6',1,'spock::physic_constant']]]
+  ['hours_5fin_5fone_5fday_3',['HOURS_IN_ONE_DAY',['../namespacespock_1_1physic__constant.html#a4a70bdb5b01a4f9b4fae832d5ef8932d',1,'spock::physic_constant']]]
 ];

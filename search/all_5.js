@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['physic_5fconstant_5',['physic_constant',['../namespacespock_1_1physic__constant.html',1,'spock']]],
-  ['seconds_5fin_5fone_5fday_6',['SECONDS_IN_ONE_DAY',['../namespacespock_1_1physic__constant.html#a102e15e8c7051eeb4fe96b4b733e5298',1,'spock::physic_constant']]],
-  ['seconds_5fin_5fone_5fhour_7',['SECONDS_IN_ONE_HOUR',['../namespacespock_1_1physic__constant.html#a2427f1b0643c20522b67f26710433609',1,'spock::physic_constant']]],
-  ['spock_8',['spock',['../namespacespock.html',1,'']]]
+  ['propagator_5',['Propagator',['../structPropagator.html',1,'Propagator'],['../structPropagator.html#ad0f185e5b3b63a07c00ea0a22523beb7',1,'Propagator::Propagator()']]]
 ];
