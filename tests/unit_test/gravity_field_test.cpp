@@ -12,22 +12,27 @@ namespace utf = boost::unit_test;
 
 BOOST_AUTO_TEST_SUITE( gravity_field )
 
+class CoordinateType {};
+class SatelliteType {};
 
-BOOST_AUTO_TEST_CASE( simple_sphere )
+BOOST_AUTO_TEST_CASE( perfect_sphere )
 {
-  using gravity_type = spock::gravity::model::simple_sphere;
-  auto computer = spock::force_calculator<gravity_type>();
-  auto position = "here";
-  auto gravity_vector = computer.compute_at(position);
+  // declares a policy type
+  using gravity_type = spock::gravity::model::perfect_sphere;
+  double surface_altitude = 6371000; // km
+  auto computed_value = gravity_type::get_field(surface_altitude);
+  double expected_value = 9.8;
+  double epsilon = 0.02;
+  BOOST_CHECK_SMALL(computed_value - expected_value, epsilon);
 }
 
-
-BOOST_AUTO_TEST_CASE( j1_term_only )
-{
-  using gravity_type = spock::gravity::model::j1_term_only;
-  auto computer = spock::force_calculator<gravity_type>();
-  auto position = "here";
-  auto gravity_vector = computer.compute_at(position);
-}
+//
+// BOOST_AUTO_TEST_CASE( j1_term_only )
+// {
+//   using gravity_type = spock::gravity::model::j1_term_only;
+//   auto computer = spock::force_calculator<gravity_type>();
+//   auto position = "here";
+//   auto gravity_vector = computer.compute_at(position);
+// }
 
 BOOST_AUTO_TEST_SUITE_END()
