@@ -12,17 +12,14 @@ namespace utf = boost::unit_test;
 
 BOOST_AUTO_TEST_SUITE( gravity_field )
 
-class CoordinateType {};
-class SatelliteType {};
-
 BOOST_AUTO_TEST_CASE( perfect_sphere )
 {
   // declares a policy type
   using gravity_type = spock::gravity::model::perfect_sphere;
   double surface_altitude = 6371000; // km
-  auto computed_value = gravity_type::get_field(surface_altitude);
-  double expected_value = 9.8;
-  double epsilon = 0.02;
+  auto computed_value = gravity_type::get_field(surface_altitude); // Newtons kg-2 m2
+  double expected_value = 9.8; // Newtons kg-2 m2
+  double epsilon = 0.02; // percent
   BOOST_CHECK_SMALL(computed_value - expected_value, epsilon);
 }
 

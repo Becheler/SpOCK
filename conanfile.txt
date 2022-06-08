@@ -1,0 +1,6 @@
+[requires]
+mp-units/0.7.0
+
+[generators]
+CMakeToolchain
+CMakeDeps

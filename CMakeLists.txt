@@ -20,6 +20,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Boost 1.61 REQUIRED COMPONENTS program_options unit_test_framework)
 
+find_package(mp-units CONFIG REQUIRED)
+
 add_subdirectory(src)
 
 add_subdirectory(doc)
