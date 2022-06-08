@@ -39,7 +39,10 @@ jobs:
       run: conan profile new default --detect
 
     - name: Update Conan profile
-      run:  conan profile update settings.compiler.cppstd=20  default
+      run:  |
+            conan profile update settings.compiler=gcc default
+            conan profile update settings.compiler.version=10 default
+            conan profile update settings.compiler.cppstd=20  default
 
     - name: Install dependencies
       run:  |
