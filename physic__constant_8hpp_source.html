@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SpOCK: /home/runner/work/SpOCK/SpOCK/src/physic_constant.hpp Source File</title>
+<title>SpOCK: /home/runner/work/SpOCK/SpOCK/include/spock_lib/physic_constant.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,7 +71,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_44005672dc7c3e9f088d14edf6481614.html">spock_lib</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -82,26 +82,21 @@ $(function() {
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef PHYSIC_CONSTANTS_HPP</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define PHYSIC_CONSTANTS_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespock.html">spock</a></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="namespacespock_1_1physic__constant.html">   12</a></span>&#160;  <span class="keyword">namespace </span>physic_constant</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  {</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="namespacespock_1_1physic__constant.html#ac400f90e72f66574214f5a804b964c69">   17</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">int</span> <a class="code" href="namespacespock_1_1physic__constant.html#ac400f90e72f66574214f5a804b964c69">DAYS_IN_ONE_YEAR</a> = 365.;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="namespacespock_1_1physic__constant.html#a102e15e8c7051eeb4fe96b4b733e5298">   21</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">int</span> <a class="code" href="namespacespock_1_1physic__constant.html#a102e15e8c7051eeb4fe96b4b733e5298">SECONDS_IN_ONE_DAY</a> = 86400.;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="namespacespock_1_1physic__constant.html#a4a70bdb5b01a4f9b4fae832d5ef8932d">   25</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">int</span> <a class="code" href="namespacespock_1_1physic__constant.html#a4a70bdb5b01a4f9b4fae832d5ef8932d">HOURS_IN_ONE_DAY</a> = 24.;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacespock_1_1physic__constant.html#a55000200c3c14959cca91a7455211ce6">   29</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">int</span> <a class="code" href="namespacespock_1_1physic__constant.html#a55000200c3c14959cca91a7455211ce6">METRES_IN_ONE_KILOMETRE</a> = 1000.;</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacespock_1_1physic__constant.html#a2427f1b0643c20522b67f26710433609">   33</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">int</span> <a class="code" href="namespacespock_1_1physic__constant.html#a2427f1b0643c20522b67f26710433609">SECONDS_IN_ONE_HOUR</a> = 3600.;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  }</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span> <span class="comment">// std::pow</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"></span><span class="keyword">namespace </span><a class="code" href="namespacespock.html">spock</a></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="namespacespock_1_1physic__constant.html">   13</a></span>&#160;  <span class="keyword">namespace </span>physic_constant</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  {</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="namespacespock_1_1physic__constant.html#a9d4c0dd3d0157e2f0b41d44420f38c02">   18</a></span>&#160;    <span class="keyword">inline</span> constexpr <span class="keywordtype">float</span> <a class="code" href="namespacespock_1_1physic__constant.html#a9d4c0dd3d0157e2f0b41d44420f38c02">G</a> = 6.674*std::pow(10,-11); <span class="comment">// m3 / kg.s2</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="namespacespock_1_1physic__constant.html#a66de67950c483936dcff21e8cd9dd17a">   22</a></span>&#160;<span class="comment"></span>    <span class="keyword">inline</span> constexpr <span class="keywordtype">float</span> <a class="code" href="namespacespock_1_1physic__constant.html#a66de67950c483936dcff21e8cd9dd17a">MASS_OF_EARTH</a> = 5.972 * std::pow(10,24); <span class="comment">// kg</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacespock_1_1physic__constant_html_a4a70bdb5b01a4f9b4fae832d5ef8932d"><div class="ttname"><a href="namespacespock_1_1physic__constant.html#a4a70bdb5b01a4f9b4fae832d5ef8932d">spock::physic_constant::HOURS_IN_ONE_DAY</a></div><div class="ttdeci">constexpr int HOURS_IN_ONE_DAY</div><div class="ttdoc">Number of hours in one day.</div><div class="ttdef"><b>Definition:</b> physic_constant.hpp:25</div></div>
-<div class="ttc" id="anamespacespock_1_1physic__constant_html_a102e15e8c7051eeb4fe96b4b733e5298"><div class="ttname"><a href="namespacespock_1_1physic__constant.html#a102e15e8c7051eeb4fe96b4b733e5298">spock::physic_constant::SECONDS_IN_ONE_DAY</a></div><div class="ttdeci">constexpr int SECONDS_IN_ONE_DAY</div><div class="ttdoc">Number of seconds in a day.</div><div class="ttdef"><b>Definition:</b> physic_constant.hpp:21</div></div>
-<div class="ttc" id="anamespacespock_1_1physic__constant_html_ac400f90e72f66574214f5a804b964c69"><div class="ttname"><a href="namespacespock_1_1physic__constant.html#ac400f90e72f66574214f5a804b964c69">spock::physic_constant::DAYS_IN_ONE_YEAR</a></div><div class="ttdeci">constexpr int DAYS_IN_ONE_YEAR</div><div class="ttdoc">Number of days in a year.</div><div class="ttdef"><b>Definition:</b> physic_constant.hpp:17</div></div>
-<div class="ttc" id="anamespacespock_html"><div class="ttname"><a href="namespacespock.html">spock</a></div><div class="ttdoc">Generic components for orbit propagation.</div><div class="ttdef"><b>Definition:</b> force_calculator.h:10</div></div>
-<div class="ttc" id="anamespacespock_1_1physic__constant_html_a2427f1b0643c20522b67f26710433609"><div class="ttname"><a href="namespacespock_1_1physic__constant.html#a2427f1b0643c20522b67f26710433609">spock::physic_constant::SECONDS_IN_ONE_HOUR</a></div><div class="ttdeci">constexpr int SECONDS_IN_ONE_HOUR</div><div class="ttdoc">Number of seconds in one hour.</div><div class="ttdef"><b>Definition:</b> physic_constant.hpp:33</div></div>
-<div class="ttc" id="anamespacespock_1_1physic__constant_html_a55000200c3c14959cca91a7455211ce6"><div class="ttname"><a href="namespacespock_1_1physic__constant.html#a55000200c3c14959cca91a7455211ce6">spock::physic_constant::METRES_IN_ONE_KILOMETRE</a></div><div class="ttdeci">constexpr int METRES_IN_ONE_KILOMETRE</div><div class="ttdoc">Number of metres in a kilometer.</div><div class="ttdef"><b>Definition:</b> physic_constant.hpp:29</div></div>
+<div class="ttc" id="anamespacespock_1_1physic__constant_html_a9d4c0dd3d0157e2f0b41d44420f38c02"><div class="ttname"><a href="namespacespock_1_1physic__constant.html#a9d4c0dd3d0157e2f0b41d44420f38c02">spock::physic_constant::G</a></div><div class="ttdeci">constexpr float G</div><div class="ttdoc">Universal Gravitational Constant.</div><div class="ttdef"><b>Definition:</b> physic_constant.hpp:18</div></div>
+<div class="ttc" id="anamespacespock_1_1physic__constant_html_a66de67950c483936dcff21e8cd9dd17a"><div class="ttname"><a href="namespacespock_1_1physic__constant.html#a66de67950c483936dcff21e8cd9dd17a">spock::physic_constant::MASS_OF_EARTH</a></div><div class="ttdeci">constexpr float MASS_OF_EARTH</div><div class="ttdoc">Earth Mass.</div><div class="ttdef"><b>Definition:</b> physic_constant.hpp:22</div></div>
+<div class="ttc" id="anamespacespock_html"><div class="ttname"><a href="namespacespock.html">spock</a></div><div class="ttdoc">Components for orbital propagation.</div><div class="ttdef"><b>Definition:</b> force_calculator.h:10</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
