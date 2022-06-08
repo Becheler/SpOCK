@@ -1,7 +1,7 @@
 # SpOCK
 Spacecraft Orbital Characterization Kit
 
-![Website](https://img.shields.io/website?url=https%3A%2F%2Fbecheler.github.io%2FSpOCK%2F)
+![Website](https://img.shields.io/website?down_message=documentation%20offline&up_message=documentation%20online%21&url=https%3A%2F%2Fbecheler.github.io%2FSpOCK%2F)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/SpOCK)
 
