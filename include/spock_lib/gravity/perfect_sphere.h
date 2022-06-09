@@ -19,6 +19,10 @@ namespace spock::gravity::model
   ///
   class perfect_sphere
   {
+    // kinds
+    struct vertical_kind : units::kind<vertical_kind, units::isq::si::dim_length> {};
+    struct vertical_point_kind : units::point_kind<vertical_point_kind, vertical_kind> {};
+
   public:
     ///
     /// @brief quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)

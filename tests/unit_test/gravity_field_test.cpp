@@ -7,7 +7,8 @@
 #include <boost/test/unit_test.hpp>
 
 #include <units/isq/si/force.h>  // 'N' (Newton) shadows a template parameter traditionally used as a size of the array
-#include <units/isq/si/mass.h>   // kg
+#include <units/isq/si/mass.h>   // units::isq::si::kilogram
+#include <units/isq/si/length.h> // units::isq::si::metre
 
 # include <iostream>
 
@@ -20,9 +21,10 @@ BOOST_AUTO_TEST_SUITE( gravity_field )
 BOOST_AUTO_TEST_CASE( perfect_sphere )
 {
   using namespace units::isq;
-  using namespace si::mass_references;
-  using namespace units::isq::si::references;
-  using namespace units::references;
+
+  using namespace si::mass_references; // enables the use of kg
+  using namespace si::force_references; // enables the use of N
+  using namespace si::length_references; // enables the use of m
 
   // declares a policy type
   using gravity_type = spock::gravity::model::perfect_sphere;
