@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
   using gravity_type = spock::gravity::model::perfect_sphere;
 
   // absolute altitude value measured from the mean sea level
-  const perfect_sphere::altitude sea_level = 6371000;
+  const perfect_sphere::altitude sea_level = 6371000 * m;
 
   constexpr auto computed = gravity_type::field_at(sea_level);
 

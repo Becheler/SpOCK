@@ -21,12 +21,13 @@ namespace spock
     {
       using units::isq::Acceleration;
       using units::isq::si::mass_references::kg;
+      using units::isq::si::si2019::standard_gravity;
     }
 
     ///
     /// @brief Universal Gravitational Constant
     ///
-    inline constexpr  Acceleration auto g = si::si2019::standard_gravity<>;
+    inline constexpr  Acceleration auto g = standard_gravity<>;
     ///
     /// @brief Earth Mass
     ///
