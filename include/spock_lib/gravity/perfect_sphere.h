@@ -33,7 +33,7 @@ namespace spock::gravity::model
     ///
     static constexpr auto field_at(altitude alt)
     {
-      return upc::g * (upc::earth_mass ) / (altitude * altitude) ;
+      return upc::g * (upc::earth_mass ) / (alt * alt) ;
     }
 
   };
