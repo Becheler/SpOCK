@@ -18,7 +18,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Boost 1.61 REQUIRED COMPONENTS program_options unit_test_framework)
+find_package(Boost 1.72 REQUIRED COMPONENTS program_options unit_test_framework)
 
 find_package(mp-units CONFIG REQUIRED)
 
