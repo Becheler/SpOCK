@@ -47,7 +47,7 @@ jobs:
             conan profile update env.CXX=[/usr/bin/g++-10] default
             conan profile update conf.tools.cmake.cmaketoolchain:generator=Ninja default
             conan profile show default
-            
+
     - name: Install dependencies
       run:  |
             conan install . \
@@ -62,9 +62,7 @@ jobs:
       run:  |
             cmake -B ${{github.workspace}}/build \
             -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
-            -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-            -DCMAKE_CC_COMPILER=$CC \
-            -DCMAKE_CXX_COMPILER=$CXX
+            -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
