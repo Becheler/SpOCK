@@ -33,11 +33,12 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y --no-install-recommends doxygen graphviz
 
     - name: Conan installation
+      id: conan
       uses: turtlebrowser/get-conan@v1.0
 
     - name: Conan version
       run: echo "${{ steps.conan.outputs.version }}"
-      
+
     - name: Create default Conan profile
       run: conan profile new default --detect
 
