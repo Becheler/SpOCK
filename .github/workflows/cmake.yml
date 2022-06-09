@@ -35,6 +35,9 @@ jobs:
     - name: Conan installation
       uses: turtlebrowser/get-conan@v1.0
 
+    - name: Conan version
+      run: echo "${{ steps.conan.outputs.version }}"
+      
     - name: Create default Conan profile
       run: conan profile new default --detect
 
