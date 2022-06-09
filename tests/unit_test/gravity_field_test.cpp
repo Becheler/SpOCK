@@ -32,9 +32,9 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
   // absolute altitude value measured from the mean sea level
   const perfect_sphere::altitude sea_level(6371000 * m);
 
-  constexpr auto computed = gravity_type::field_at(sea_level);
+  constexpr auto computed = gravity_type::acceleration_at(sea_level);
 
-  const auto expected = 9.8 * (N * m * m / (kg*kg));
+  const auto expected = 9.81 * (N * m * m / (kg*kg));
 
   const auto error = computed -expected;
 

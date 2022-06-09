@@ -33,7 +33,7 @@ namespace spock::gravity::model
     ///
     /// @brief Return the acceleration due to gravity
     ///
-    static constexpr auto field_at(altitude alt)
+    static constexpr Acceleration auto acceleration_at(const altitude& alt)
     {
       return upc::g * (upc::earth_mass ) / (alt.relative() * alt.relative()) ;
     }
