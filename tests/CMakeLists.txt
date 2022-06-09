@@ -37,9 +37,6 @@ foreach(testSrc ${TEST_SRCS})
         # Link to Boost libraries AND your targets and dependencies
         target_link_libraries(${testName}
                                 ${Boost_LIBRARIES}
-                                ${Boost_FILESYSTEM_LIBRARY}
-                                ${Boost_SYSTEM_LIBRARY}
-                                ${Boost_SERIALIZATION_LIBRARY}
                                 Boost::headers
                                 mp-units::mp-units)
 
