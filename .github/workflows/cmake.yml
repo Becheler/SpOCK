@@ -30,7 +30,7 @@ jobs:
       shell: bash
 
     - name: Install Boost and Doxygen dependencies
-      run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libboost-all-dev doxygen graphviz
+      run: sudo apt-get update && sudo apt-get install -y --no-install-recommends doxygen graphviz
 
     - name: Get Conan
       uses: turtlebrowser/get-conan@v1.0
