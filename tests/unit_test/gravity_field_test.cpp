@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
 
   double tolerance = 0.02; // percent
   BOOST_CHECK_SMALL(computed - expected, tolerance);
-  std::cout << error << std:cout;
+  std::cout << error << std:endl;
 }
 
 //
