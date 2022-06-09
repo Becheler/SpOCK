@@ -33,14 +33,18 @@ foreach(testSrc ${TEST_SRCS})
 
         # Add compile target
         add_executable(${testName} ${testSrc} ${version_file})
-        target_compile_options(${testName} PRIVATE "-fconcepts")
+
         # Link to Boost libraries AND your targets and dependencies
         target_link_libraries(${testName}
-                                ${Boost_LIBRARIES}
-                                ${Boost_FILESYSTEM_LIBRARY}
-                                ${Boost_SYSTEM_LIBRARY}
-                                ${Boost_SERIALIZATION_LIBRARY}
-                                Boost::headers)
+                              ${Boost_LIBRARIES}
+                              Boost::headers
+                              Boost::unit_test_framework
+                              mp-units::mp-units
+                              )
+
+        # We need C++ 20 activated with the concepts library
+        target_compile_features(${testName} PUBLIC cxx_std_20)
+        target_compile_options(${testName} PRIVATE "-fconcepts")
 
         # I like to move testing binaries into a testBin directory
         set_target_properties(${testName} PROPERTIES
@@ -54,5 +58,5 @@ foreach(testSrc ${TEST_SRCS})
         add_test(NAME ${testName}
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/build/testBin/${testName} )
-                 
+
 endforeach(testSrc)

@@ -4,7 +4,7 @@
 
 // Header file including the gravity field calculators module
 
-#include "gravity/simple_sphere.h"
+#include "gravity/perfect_sphere.h"
 #include "gravity/j1_term_only.h"
 
 
@@ -16,7 +16,7 @@ namespace spock
   namespace gravity
   {
     ///
-    /// @brief How to simulate a gravity field (model assumptions)
+    /// @brief How to simulate a gravity field (model assumptions). We want to calcuate the force applied to the satellite due to gravitational acceleration.
     ///
     namespace model
     {}

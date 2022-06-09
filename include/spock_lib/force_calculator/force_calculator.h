@@ -21,6 +21,7 @@ namespace spock
     {
       std::cout << "compute gravity "<< std::endl;
       return "gravity_field is not yet implemented";
+      return GravityType::get_field(x);
     }
   };
 }

@@ -12,8 +12,6 @@
 #ifndef __SPOCK_OPTIONS_H_INCLUDED__
 #define __SPOCK_OPTIONS_H_INCLUDED__
 
-#include "physic_constant.hpp"
-
 #include <boost/program_options.hpp>
 
 #include <string>
