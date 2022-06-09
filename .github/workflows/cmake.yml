@@ -47,6 +47,8 @@ jobs:
             conan profile update env.CXX=[/usr/bin/g++-10] default
             conan profile update conf.tools.cmake.cmaketoolchain:generator=Ninja default
             conan profile show default
+            conan remote update bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
+            conan config set general.revisions_enabled=1
 
     - name: Install dependencies
       run:  |
