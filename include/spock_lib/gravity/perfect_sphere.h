@@ -6,13 +6,11 @@
 #define __PERFECT_SPHERE_GRAVITY_CLASS_H_INCLUDED__
 
 #include "../physic_constant.hpp"
+
+#include <units/isq/si/length.h>       // units::isq::si::metre
 #include <units/quantity_point_kind.h> // defining altitude
 
 namespace upc = spock::physic_constant;
-
-using namespace units::isq;
-using namespace si::mass_references;
-using namespace si::volume_references;
 
 namespace spock::gravity::model
 {
