@@ -42,7 +42,9 @@ jobs:
       run:  |
             conan profile update settings.compiler=gcc default
             conan profile update settings.compiler.version=10 default
-            conan profile update settings.compiler.cppstd=20  default
+            conan profile update settings.compiler.cppstd=20 default
+            conan profile update env.CC=[/usr/bin/gcc-10] default
+            conan profile update env.CXX=[/usr/bin/g++-10] default
 
     - name: Install dependencies
       run:  |
@@ -50,7 +52,6 @@ jobs:
             -s build_type=${{env.BUILD_TYPE}} \
             --install-folder=${{github.workspace}}/build \
             -pr default \
-            -s compiler.cppstd=20 \
             -b=missing
 
     - name: Configure CMake
@@ -62,10 +63,6 @@ jobs:
             -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
             -DCMAKE_CC_COMPILER=$CC \
             -DCMAKE_CXX_COMPILER=$CXX
-      shell: bash
-      env:
-        CC:   gcc-10
-        CXX:  g++-10
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
