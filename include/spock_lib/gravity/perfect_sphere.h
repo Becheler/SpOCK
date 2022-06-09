@@ -10,6 +10,7 @@
 #include <units/isq/si/length.h>       // units::isq::si::metre
 #include <units/quantity_point_kind.h> // defining altitude
 
+#include <ostream>
 namespace upc = spock::physic_constant;
 
 namespace spock::gravity::model
@@ -34,10 +35,19 @@ namespace spock::gravity::model
     ///
     static constexpr auto field_at(altitude alt)
     {
-      return upc::g * (upc::earth_mass ) / (alt * alt) ;
+      return upc::g * (upc::earth_mass ) / (alt.relative() * alt.relative()) ;
     }
 
   };
+
+  ///
+  /// @Brief text output
+  ///
+  template<class CharT, class Traits>
+  std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const altitude& a)
+  {
+    return os << a.relative().common() << " AMSL";
+  }
 
 }
 
