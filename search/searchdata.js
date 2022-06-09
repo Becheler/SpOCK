@@ -1,7 +1,7 @@
 var indexSectionsWithContent =
 {
-  0: "_cfgmpsw",
-  1: "cfps",
+  0: "_fgmpsw",
+  1: "fp",
   2: "s",
   3: "gp",
   4: "_gm",

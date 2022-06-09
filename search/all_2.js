@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['force_5fcalculator_2',['force_calculator',['../classspock_1_1force__calculator.html',1,'spock']]]
+  ['g_2',['G',['../namespacespock_1_1physic__constant.html#a9d4c0dd3d0157e2f0b41d44420f38c02',1,'spock::physic_constant']]],
+  ['get_5ffield_3',['get_field',['../classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a7c95915a0007f48c866e4ade228c4cf5',1,'spock::gravity::model::perfect_sphere']]]
 ];
