@@ -44,7 +44,7 @@ foreach(testSrc ${TEST_SRCS})
 
         # We need C++ 20 activated with the concepts library
         target_compile_features(${testName} PUBLIC cxx_std_20)
-        target_compile_options(${testName} PRIVATE "-fconcepts")
+        # target_compile_options(${testName} PRIVATE "-fconcepts")
 
         # I like to move testing binaries into a testBin directory
         set_target_properties(${testName} PROPERTIES
