@@ -17,7 +17,7 @@ namespace spock
     ///
     /// @brief Universal Gravitational Constant
     ///
-    inline constexpr  units::isq::Acceleration auto g = si::si2019::standard_gravity<>;
+    inline constexpr  units::isq::Acceleration auto g = units::isq::si::si2019::standard_gravity<>;
     ///
     /// @brief Earth Mass
     ///
