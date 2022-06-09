@@ -19,8 +19,8 @@ namespace spock
     // unnamed namespace to prevent alias from being visible from other files
     namespace
     {
-      using namespace units::isq::Acceleration;
-      using namespace units::isq::si::mass_references::kg;
+      using units::isq::Acceleration;
+      using units::isq::si::mass_references::kg;
     }
 
     ///
