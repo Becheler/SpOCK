@@ -2,6 +2,7 @@
 #define PHYSIC_CONSTANTS_HPP
 
 #include <units/isq/si/constants.h> // standard_gravity
+#include <units/isq/si/mass.h>      // kg
 
 #include <cmath> // std::pow
 ///
@@ -14,10 +15,18 @@ namespace spock
   ///
   namespace physic_constant
   {
+
+    // unnamed namespace to prevent alias from being visible from other files
+    namespace
+    {
+      using namespace units::isq::Acceleration;
+      using namespace units::isq::si::mass_references::kg;
+    }
+
     ///
     /// @brief Universal Gravitational Constant
     ///
-    inline constexpr  units::isq::Acceleration auto g = units::isq::si::si2019::standard_gravity<>;
+    inline constexpr  Acceleration auto g = si::si2019::standard_gravity<>;
     ///
     /// @brief Earth Mass
     ///
