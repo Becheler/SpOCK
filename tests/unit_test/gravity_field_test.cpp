@@ -6,6 +6,7 @@
 #define BOOST_TEST_MODULE gravity_field
 
 #include <boost/test/unit_test.hpp>
+
 namespace utf = boost::unit_test;
 
 #include <spock_lib/spock.h>
