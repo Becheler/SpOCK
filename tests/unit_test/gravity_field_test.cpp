@@ -6,11 +6,11 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <units/isq/si/force.h>  // 'N' (Newton) shadows a template parameter traditionally used as a size of the array
-#include <units/isq/si/mass.h>   // units::isq::si::kilogram
-#include <units/isq/si/length.h> // units::isq::si::metre
+#include <units/isq/si/force.h>  // enables the use of units::isq::si::newton
+#include <units/isq/si/mass.h>   // enables the use of units::isq::si::kilogram
+#include <units/isq/si/length.h> // enables the use of units::isq::si::metre
 
-# include <iostream>
+#include <iostream>
 
 namespace utf = boost::unit_test;
 
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
   using gravity_type = spock::gravity::model::perfect_sphere;
 
   // absolute altitude value measured from the mean sea level
-  const perfect_sphere::altitude sea_level = 6371000 * m;
+  const perfect_sphere::altitude sea_level(6371000 * m);
 
   constexpr auto computed = gravity_type::field_at(sea_level);
 
