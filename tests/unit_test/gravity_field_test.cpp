@@ -5,7 +5,8 @@
 #define BOOST_TEST_MODULE gravity_field
 
 #include <boost/test/unit_test.hpp>
-
+#include <units/isq/si/force.h>  // 'N' (Newton) shadows a template parameter traditionally used as a size of the array
+# include <iostream>
 namespace utf = boost::unit_test;
 
 #include <spock_lib/spock.h>
@@ -14,13 +15,27 @@ BOOST_AUTO_TEST_SUITE( gravity_field )
 
 BOOST_AUTO_TEST_CASE( perfect_sphere )
 {
+  using namespace units::isq;
+  using namespace si::mass_references;
+  using namespace si::volume_references;
+  using namespace units::isq::si::references;
+  using namespace units::references;
+
   // declares a policy type
   using gravity_type = spock::gravity::model::perfect_sphere;
-  double surface_altitude = 6371000; // km
-  auto computed_value = gravity_type::get_field(surface_altitude); // Newtons kg-2 m2
-  double expected_value = 9.8; // Newtons kg-2 m2
-  double epsilon = 0.02; // percent
-  BOOST_CHECK_SMALL(computed_value - expected_value, epsilon);
+
+  // absolute altitude value measured from the mean sea level
+  const perfect_sphere::altitude sea_level = 6371000;
+
+  constexpr auto computed = gravity_type::field_at(sea_level);
+
+  const auto expected = 9.8 * (N * m * m / (kg*kg));
+
+  const auto error = computed -expected;
+
+  double tolerance = 0.02; // percent
+  BOOST_CHECK_SMALL(computed - expected, tolerance);
+  std::cout << error << std:cout;
 }
 
 //

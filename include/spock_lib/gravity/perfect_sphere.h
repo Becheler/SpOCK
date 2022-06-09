@@ -6,8 +6,13 @@
 #define __PERFECT_SPHERE_GRAVITY_CLASS_H_INCLUDED__
 
 #include "../physic_constant.hpp"
+#include <units/quantity_point_kind.h> // defining altitude
 
 namespace upc = spock::physic_constant;
+
+using namespace units::isq;
+using namespace si::mass_references;
+using namespace si::volume_references;
 
 namespace spock::gravity::model
 {
@@ -18,11 +23,15 @@ namespace spock::gravity::model
   {
   public:
     ///
+    /// @brief quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)
+    ///
+    using altitude = units::quantity_point_kind<vertical_point_kind, units::isq::si::metre>;
+    ///
     /// @brief Return the acceleration due to gravity
     ///
-    static auto get_field(double altitude)
+    static constexpr auto field_at(altitude alt)
     {
-      return upc::G * (upc::MASS_OF_EARTH ) / (altitude * altitude) ;
+      return upc::g * (upc::earth_mass ) / (altitude * altitude) ;
     }
 
   };

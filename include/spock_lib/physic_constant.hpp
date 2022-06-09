@@ -1,6 +1,8 @@
 #ifndef PHYSIC_CONSTANTS_HPP
 #define PHYSIC_CONSTANTS_HPP
 
+#include <units/isq/si/constants.h> // standard_gravity
+
 #include <cmath> // std::pow
 ///
 /// @brief Components for orbital propagation
@@ -15,11 +17,11 @@ namespace spock
     ///
     /// @brief Universal Gravitational Constant
     ///
-    inline constexpr float G = 6.674*std::pow(10,-11); // m3 / kg.s2
+    inline constexpr Acceleration auto g = si::si2019::standard_gravity<>;
     ///
     /// @brief Earth Mass
     ///
-    inline constexpr float MASS_OF_EARTH = 5.972 * std::pow(10,24); // kg
+    inline constexpr auto earth_mass = 5.972 * std::pow(10,24) * kg;
   }
 }
 
