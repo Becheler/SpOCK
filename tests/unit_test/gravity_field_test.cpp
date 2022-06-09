@@ -5,8 +5,12 @@
 #define BOOST_TEST_MODULE gravity_field
 
 #include <boost/test/unit_test.hpp>
+
 #include <units/isq/si/force.h>  // 'N' (Newton) shadows a template parameter traditionally used as a size of the array
+#include <units/isq/si/mass.h>   // kg
+
 # include <iostream>
+
 namespace utf = boost::unit_test;
 
 #include <spock_lib/spock.h>
@@ -17,7 +21,6 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
 {
   using namespace units::isq;
   using namespace si::mass_references;
-  using namespace si::volume_references;
   using namespace units::isq::si::references;
   using namespace units::references;
 
