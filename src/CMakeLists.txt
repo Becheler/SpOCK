@@ -3,8 +3,7 @@ include_directories(spock/include)
 
 add_executable(spock main.cpp)
 
-target_link_libraries(spock PRIVATE ${Boost_LIBRARIES}
-                                    Boost::headers
+target_link_libraries(spock PRIVATE boost::boost
                                     mp-units::mp-units
                                     stdc++fs
                       )

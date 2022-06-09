@@ -36,8 +36,7 @@ foreach(testSrc ${TEST_SRCS})
 
         # Link to Boost libraries AND your targets and dependencies
         target_link_libraries(${testName}
-                                ${Boost_LIBRARIES}
-                                Boost::headers
+                                boost::boost
                                 mp-units::mp-units)
 
         # We need C++ 20 activated with the concepts library
