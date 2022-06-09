@@ -44,7 +44,7 @@ namespace spock::gravity::model
   /// @Brief text output
   ///
   template<class CharT, class Traits>
-  std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const altitude& a)
+  std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& os, const spock::gravity::model::perfect_sphere::altitude& a)
   {
     return os << a.relative().common() << " AMSL";
   }
