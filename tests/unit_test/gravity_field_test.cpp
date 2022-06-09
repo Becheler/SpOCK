@@ -2,7 +2,6 @@
 //  Copyright © 2022 Aaron Ridley, Arnaud Becheler, Aidan Kingwell. All rights reserved.
 //
 
-#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE gravity_field
 
 #include <boost/test/unit_test.hpp>
