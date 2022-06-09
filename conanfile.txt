@@ -1,6 +1,6 @@
 [requires]
 mp-units/0.7.0
-boost/1.72.0
+boost/1.69.0@conan/stable
 
 [generators]
 CMakeToolchain
