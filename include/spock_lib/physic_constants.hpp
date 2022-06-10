@@ -25,10 +25,10 @@ namespace spock
       using units::isq::si::mass_references::kg;
       using units::isq::si::length_references::km;
       ///
-      /// @brief quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)
+      /// @brief We need a kind to represent the more specific usage of a length quantity
       ///
-      using radius = units::quantity_kind<radius, units::isq::si::metre, double>;
-      // Quantities of kind radius are now clearly distinct from more generic usages of length quantities.
+      /// @note Quantities of kind radius are now clearly distinct from more generic usages of length quantities.
+      ///
       struct radius : units::kind<radius, units::isq::si::dim_length> {};
     }
 
@@ -43,7 +43,7 @@ namespace spock
       ///          gravitational acceleration of an object in a vacuum near the
       ///          surface of the Earth. It is defined by standard as 9.80665 m/s2.
       ///
-      inline constexpr  physic_constants::Acceleration auto g_0 = units::isq::si::si2019::standard_gravity<>;
+      inline constexpr physic_constants::Acceleration auto g_0 = units::isq::si::si2019::standard_gravity<>;
       ///
       /// @brief Earth Mass
       ///
@@ -51,7 +51,7 @@ namespace spock
       ///
       /// @brief Earth Radius
       ///
-      inline constexpr auto radius = 6371 * km;
+      inline constexpr quantity_kind<radius, units::isq::si::kilometre, double> radius(6371 * km);
     }
   }
 }
