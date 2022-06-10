@@ -15,7 +15,7 @@ namespace spock::gravity::model
   ///
   /// @brief Gravity field computed under the assumtion of a single sphere planetoid.
   ///
-  template<class Planet>
+  template<class P>
   class perfect_sphere
   {
     // We need a new kind to represent the more specific usage of a length quantity
@@ -25,6 +25,13 @@ namespace spock::gravity::model
 
   public:
     ///
+    /// \typedef Planet type being modeled, eg spock::physic_constants::earth
+    ///
+    using planet_type = P;
+
+    constexpr auto g_0 = &planet_type::g_0;
+
+    constexpr auto r = &planet_type::r;
     /// @brief quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)
     ///
     using altitude = units::quantity_point_kind<vertical_point_kind, units::isq::si::metre>;
@@ -33,8 +40,6 @@ namespace spock::gravity::model
     ///
     static constexpr units::isq::Acceleration auto acceleration_at(const altitude& h)
     {
-      using Planet::g_O;
-      using Planet::r;
       return g_0 * (r/(r + h)) * (r/(r + h));
     }
 
