@@ -52,7 +52,7 @@ namespace spock
       /// @brief Earth Radius
       ///
       static inline constexpr auto r = units::quantity_kind<radius, units::isq::si::kilometre, double>(6371 * km);
-    }
+    };
   }
 }
 
