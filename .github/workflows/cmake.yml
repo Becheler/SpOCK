@@ -23,16 +23,15 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Get Date for caching dependencies
-      id: get-date
+    - name: Set environment variables
       run: |
-           echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+           echo "CONAN_USER_HOME=/tmp/conan" >> $GITHUB_ENV
 
     - uses: actions/cache@v3
       id: cache
       with:
-        path: ${{github.workspace}}/build
-        key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('**/lockfiles') }}
+        path: ${{ github.workspace }}/${{ env.CONAN_USER_HOME }}/.conan
+        key: ${{ runner.os }}-conan-cache-${{ hashFiles('**/conanfile.txt') }}
 
     - name: Get GCC-10
       run:   |
