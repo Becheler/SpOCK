@@ -8,7 +8,7 @@
 #include "../physic_constant.hpp"
 
 #include <units/isq/si/length.h>       // units::isq::si::metre
-#include <units/quantity_point_kind.h> // defining altitude
+#include <units/quantity_point_kind.h> // to define altitude
 
 #include <ostream>
 namespace upc = spock::physic_constant;
@@ -20,9 +20,9 @@ namespace spock::gravity::model
   ///
   class perfect_sphere
   {
-    // We need a kind to represent the more specific usage of a length quantity
+    // We need a new kind to express a more specific usage of a length quantity
     struct vertical_kind : units::kind<vertical_kind, units::isq::si::dim_length> {};
-    // A quantity point is an absolute quantity with respect to an origin
+    // We need a quantity point to express an absolute quantity with respect to a point origin
     struct vertical_point_kind : units::point_kind<vertical_point_kind, vertical_kind> {};
 
   public:
@@ -35,7 +35,7 @@ namespace spock::gravity::model
     ///
     static constexpr units::isq::Acceleration auto acceleration_at(const altitude& alt)
     {
-      return upc::g * (upc::earth_mass ) / (alt.relative() * alt.relative()) ;
+      return upc::g * (upc::earth_mass ) / (alt.relative().common() * alt.relative().common()) ;
     }
 
   };
