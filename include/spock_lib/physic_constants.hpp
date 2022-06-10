@@ -43,15 +43,15 @@ namespace spock
       ///          gravitational acceleration of an object in a vacuum near the
       ///          surface of the Earth. It is defined by standard as 9.80665 m/s2.
       ///
-      inline constexpr physic_constants::Acceleration auto g_0 = units::isq::si::si2019::standard_gravity<>;
+      static inline constexpr physic_constants::Acceleration auto g_0 = units::isq::si::si2019::standard_gravity<>;
       ///
       /// @brief Earth Mass
       ///
-      inline constexpr auto mass = 5.9722 * std::pow(10,24) * kg;
+      static inline constexpr auto mass = 5.9722 * std::pow(10,24) * kg;
       ///
       /// @brief Earth Radius
       ///
-      inline constexpr quantity_kind<radius, units::isq::si::kilometre, double> radius(6371 * km);
+      static inline constexpr quantity_kind<radius, units::isq::si::kilometre, double> radius(6371 * km);
     }
   }
 }
