@@ -18,7 +18,7 @@ namespace spock::gravity::model
   template<class P>
   class perfect_sphere
   {
-    // We need a new kind to represent the more specific usage of a length quantity
+    // We need a new kind of unit to represent the more specific usage of a length quantity
     struct vertical_kind : units::kind<vertical_kind, units::isq::si::dim_length> {};
     // A quantity point is an absolute quantity with respect to an origin, with limited arithmetic
     struct vertical_point_kind : units::point_kind<vertical_point_kind, vertical_kind> {};

@@ -23,6 +23,17 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Get Date for caching dependencies
+      id: get-date
+      run: |
+           echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+
+    - uses: actions/cache@v3
+      id: cache
+      with:
+        path: ${{github.workspace}}/build
+        key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('**/lockfiles') }}
+
     - name: Get GCC-10
       run:   |
              sudo apt update
@@ -58,6 +69,7 @@ jobs:
             conan profile show default
 
     - name: Conan install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       run:  |
             conan install . \
             -s build_type=${{env.BUILD_TYPE}} \
