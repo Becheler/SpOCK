@@ -33,8 +33,8 @@ namespace spock::gravity::model
     ///
     static constexpr units::isq::Acceleration auto acceleration_at(const altitude& h)
     {
-      using planet::g_O;
-      using planet::r;
+      using Planet::g_O;
+      using Planet::r;
       return g_0 * (r/(r + h)) * (r/(r + h));
     }
 
