@@ -29,9 +29,6 @@ namespace spock::gravity::model
     ///
     using planet_type = P;
 
-    constexpr auto g_0 = &planet_type::g_0;
-
-    constexpr auto r = &planet_type::r;
     /// @brief quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)
     ///
     using altitude = units::quantity_point_kind<vertical_point_kind, units::isq::si::metre>;
@@ -40,6 +37,8 @@ namespace spock::gravity::model
     ///
     static constexpr units::isq::Acceleration auto acceleration_at(const altitude& h)
     {
+      constexpr auto g_0 = &planet_type::g_0;
+      constexpr auto r = &planet_type::r;
       return g_0 * (r/(r + h)) * (r/(r + h));
     }
 
