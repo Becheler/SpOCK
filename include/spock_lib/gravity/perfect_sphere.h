@@ -20,22 +20,17 @@ namespace spock::gravity::model
   ///
   class perfect_sphere
   {
-    // We need a new kind to express a more specific usage of a length quantity
-    struct vertical_kind : units::kind<vertical_kind, units::isq::si::dim_length> {};
-    // We need a quantity point to express an absolute quantity with respect to a point origin
-    struct vertical_point_kind : units::point_kind<vertical_point_kind, vertical_kind> {};
-
   public:
     ///
     /// @brief quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)
     ///
-    using altitude = units::quantity_point_kind<vertical_point_kind, units::isq::si::metre>;
+    using altitude = units::isq::si::metre;
     ///
     /// @brief Return the acceleration due to gravity
     ///
     static constexpr units::isq::Acceleration auto acceleration_at(const altitude& alt)
     {
-      return upc::g * (upc::earth_mass ) / (alt.relative().common() * alt.relative().common()) ;
+      return upc::g * (upc::earth_mass ) / (alt * alt) ;
     }
 
   };
