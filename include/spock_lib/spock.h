@@ -6,7 +6,7 @@
 
 #include "gravity.h"
 
-#include "physic_constants.h"
+#include "physic_constants.hpp"
 
 #include "force_calculator/force_calculator.h"
 
