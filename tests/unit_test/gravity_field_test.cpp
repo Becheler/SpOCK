@@ -26,9 +26,9 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
   using namespace si::force_references; // enables the use of N
   using namespace si::length_references; // enables the use of m
 
-  // declares a policy type
-  using gravity_type = spock::gravity::model::perfect_sphere;
-
+  using earth = spock::physic_constant::earth;
+  using gravity_type = spock::gravity::model::perfect_sphere<earth>;
+  
   // absolute altitude value measured from the mean sea level
   const perfect_sphere::altitude sea_level(6371000 * m);
 
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
 
   const auto error = computed -expected;
 
-  double tolerance = 0.02; // percent
+  double tolerance = 0.1; // percent
   BOOST_CHECK_SMALL(computed - expected, tolerance);
   std::cout << error << std:endl;
 }

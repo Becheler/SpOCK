@@ -18,19 +18,27 @@ namespace spock::gravity::model
   ///
   /// @brief Gravity field computed under the assumtion of a single sphere planetoid.
   ///
+  template<class Planet>
   class perfect_sphere
   {
+    // We need a new kind to represent the more specific usage of a length quantity
+    struct vertical_kind : units::kind<vertical_kind, units::isq::si::dim_length> {};
+    // A quantity point is an absolute quantity with respect to an origin, with limited arithmetic
+    struct vertical_point_kind : units::point_kind<vertical_point_kind, vertical_kind> {};
+
   public:
     ///
     /// @brief quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)
     ///
-    using altitude = units::isq::si::metre;
+    using altitude = units::quantity_point_kind<vertical_point_kind, units::isq::si::metre>;
     ///
-    /// @brief Return the acceleration due to gravity
+    /// @brief Acceleration due to gravity at altitude h above the surface of a sphere.
     ///
-    static constexpr units::isq::Acceleration auto acceleration_at(const altitude& alt)
+    static constexpr units::isq::Acceleration auto acceleration_at(const altitude& h)
     {
-      return upc::g * (upc::earth_mass ) / (alt * alt) ;
+      using planet::g_O;
+      using planet::r;
+      return g_0 * (r/(r + h)) * (r/(r + h));
     }
 
   };
