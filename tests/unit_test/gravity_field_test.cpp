@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
   using namespace si::force_references; // enables the use of N
   using namespace si::length_references; // enables the use of m
 
-  using earth = spock::physic_constants::earth;
+  using spock::physic_constants::earth;
   using gravity_type = spock::gravity::model::perfect_sphere<earth>;
 
   const perfect_sphere::altitude sea_level(6371000 * m);
