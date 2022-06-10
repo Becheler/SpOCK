@@ -2,7 +2,9 @@
 #define PHYSIC_CONSTANTS_HPP
 
 #include <units/isq/si/constants.h> // standard_gravity
-#include <units/isq/si/mass.h>      // kg
+#include <units/isq/si/mass.h>      // enables the use of units::isq::si::kg
+#include <units/isq/si/length.h>    // enables the use of units::isq::si::metre
+#include <units/quantity_kind.h>    // to define new quantity kinds like radius
 
 #include <cmath> // std::pow
 ///
@@ -41,7 +43,7 @@ namespace spock
       ///          gravitational acceleration of an object in a vacuum near the
       ///          surface of the Earth. It is defined by standard as 9.80665 m/s2.
       ///
-      inline constexpr  Acceleration auto g_0 = units::isq::si::si2019::standard_gravity<>;
+      inline constexpr  physic_constants::Acceleration auto g_0 = units::isq::si::si2019::standard_gravity<>;
       ///
       /// @brief Earth Mass
       ///
