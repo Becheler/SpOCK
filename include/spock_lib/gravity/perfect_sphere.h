@@ -5,9 +5,7 @@
 #ifndef __PERFECT_SPHERE_GRAVITY_CLASS_H_INCLUDED__
 #define __PERFECT_SPHERE_GRAVITY_CLASS_H_INCLUDED__
 
-#include <units/isq/si/length.h>       // units::isq::si::metre
-#include <units/quantity_point_kind.h> // to define altitude
-
+#include <units/si.h>
 #include <ostream>
 
 namespace spock::gravity::model
@@ -35,10 +33,11 @@ namespace spock::gravity::model
     ///
     /// @brief Acceleration due to gravity at altitude h above the surface of a sphere.
     ///
-    static constexpr units::isq::Acceleration auto acceleration_at(const altitude& h)
+    static constexpr units::isq::Acceleration auto acceleration_at(const altitude& alt)
     {
+      constexpr units::si::length<units::si::metre, double> h = units::si::quantity_cast<units::si::metre>(alt);
+      constexpr units::si::length<units::si::metre, double> r = units::si::quantity_cast<units::si::metre>(&planet_type::r);
       constexpr auto g_0 = &planet_type::g_0;
-      constexpr auto r = &planet_type::r;
       return g_0 * (r/(r + h)) * (r/(r + h));
     }
   }; // end class perfect_sphere
