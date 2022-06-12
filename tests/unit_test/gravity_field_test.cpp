@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
   using spock::physic_constants::earth;
   using gravity_type = spock::gravity::model::perfect_sphere<earth>;
 
-  const perfect_sphere::altitude sea_level(6371000 * m);
+  const gravity_type::altitude sea_level(6371000 * m);
 
   constexpr auto computed = gravity_type::acceleration_at(sea_level);
 
