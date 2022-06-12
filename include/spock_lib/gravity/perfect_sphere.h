@@ -38,7 +38,7 @@ namespace spock::gravity::model
     static constexpr units::isq::Acceleration auto acceleration_at(const altitude& alt)
     {
       using units::isq::si::metre;
-      constexpr units::isq::si::length<metre, double> h = units::quantity_point_kind<metre>(alt);
+      constexpr units::isq::si::length<metre, double> h = units::quantity_point_kind_cast<metre>(alt);
       constexpr units::isq::si::length<metre, double> r = units::quantity_kind_cast<metre>(&planet_type::r);
       constexpr auto g_0 = &planet_type::g_0;
       return g_0 * (r/(r + h)) * (r/(r + h));
