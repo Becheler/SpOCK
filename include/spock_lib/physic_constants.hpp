@@ -22,8 +22,8 @@ namespace spock
     namespace
     {
       using units::isq::Acceleration;
-      using units::isq::si::mass_references::kg;
-      using units::isq::si::length_references::km;
+      using units::isq::si::mass_references::g;
+      using units::isq::si::length_references::m;
       ///
       /// @brief We need a kind to represent the more specific usage of a length quantity
       ///
@@ -47,7 +47,7 @@ namespace spock
       ///
       /// @brief Earth Mass
       ///
-      static inline constexpr auto mass = 5.9722 * std::pow(10,24) * kg;
+      static inline constexpr auto mass = 5972.2 * std::pow(10,24) * g;
       ///
       /// @brief Earth Radius
       ///
