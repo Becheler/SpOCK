@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
 
   constexpr Acceleration auto error = computed - expected;
 
-  constexpr auto tolerance = units::dimensionless<units::one>(0.1); // percent, dimensionless
+  constexpr auto tolerance = units::dimensionless<units::one>(1); // percent, dimensionless
 
   BOOST_CHECK_SMALL(error.number(), tolerance.number());
 
