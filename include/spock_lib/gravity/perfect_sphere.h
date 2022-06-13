@@ -12,6 +12,17 @@
 
 namespace spock::gravity::model
 {
+
+  ///
+  /// @brief Requirements for a planet struct to be modeled as a perfect_sphere
+  ///
+  // template <typename T>
+  // concept Planet = requires(T t)
+  // {
+  //   { t::gravity } -> std::same_as<units::acceleration<metre_per_second_sq>&>;
+  //   { t::radius } -> std::same_as<spock::physic_constants::radius&>;
+  // };
+
   ///
   /// @brief Gravity field computed under the assumtion of a single sphere planetoid.
   ///
@@ -39,8 +50,8 @@ namespace spock::gravity::model
     {
       using units::isq::si::metre;
       using units::isq::si::dim_length;
-      constexpr auto g_0 = planet_type::g_0;
-      constexpr auto r = planet_type::r.common();
+      constexpr auto g_0 = planet_type::gravity;
+      constexpr auto r = planet_type::radius.common();
       auto h = alt.relative().common();
       return g_0 * (r/(r + h)) * (r/(r + h));
     }
