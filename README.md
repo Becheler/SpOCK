@@ -36,7 +36,9 @@ Profile can be created with `new` option in `conan profile` (detecting local sys
 
 ```bash
 $ export myprofile=spock-profile
+# User specific settngs
 $ conan profile new ${myprofile} --detect
+# SpOCK specific settings:
 $ conan profile update settings.compiler=gcc ${myprofile}
 $ conan profile update settings.compiler.version=10 ${myprofile}
 $ conan profile update settings.compiler.cppstd=20 ${myprofile}

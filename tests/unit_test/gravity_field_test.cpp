@@ -9,7 +9,7 @@
 #include <units/isq/si/force.h>  // enables the use of units::isq::si::newton
 #include <units/isq/si/mass.h>   // enables the use of units::isq::si::kilogram
 #include <units/isq/si/length.h> // enables the use of units::isq::si::metre
-
+#include <units/quantity_io.h>   // enable the use of std::cout << ... <<
 #include <iostream>
 
 namespace utf = boost::unit_test;
@@ -22,24 +22,25 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
 {
   using namespace units::isq;
 
-  using namespace si::mass_references; // enables the use of kg
-  using namespace si::force_references; // enables the use of N
+  using namespace si::time_references; // enables the use of s
   using namespace si::length_references; // enables the use of m
 
   using spock::physic_constants::earth;
   using gravity_type = spock::gravity::model::perfect_sphere<earth>;
 
-  const gravity_type::altitude sea_level(6371000 * m);
+  constexpr gravity_type::altitude sea_level(6371000 * m);
 
-  constexpr auto computed = gravity_type::acceleration_at(sea_level);
+  constexpr Acceleration auto computed = gravity_type::acceleration_at(sea_level);
 
-  const auto expected = 9.81 * (N * m * m / (kg*kg));
+  constexpr Acceleration auto expected = 9.81 * (m / (s*s));
 
-  const auto error = computed -expected;
+  constexpr Acceleration auto error = computed - expected;
 
-  double tolerance = 0.1; // percent
-  BOOST_CHECK_SMALL(computed - expected, tolerance);
-  std::cout << error << std:endl;
+  constexpr auto tolerance = units::dimensionless<units::one>(0.1); // percent, dimensionless
+
+  BOOST_CHECK_SMALL(error.number(), tolerance.number());
+
+  std::cout << error << std::endl;
 }
 
 //
