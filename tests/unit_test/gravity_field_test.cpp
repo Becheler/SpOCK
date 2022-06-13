@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
 
   constexpr Acceleration auto error = computed - expected;
 
-  constexpr auto tolerance = quantity_cast<units::percent>( 0.01 * expected / expected);
+  constexpr auto tolerance = quantity_cast<units::percent>( 0.1 * expected / expected);
 
   BOOST_CHECK_SMALL(error.number(), tolerance.number());
 
