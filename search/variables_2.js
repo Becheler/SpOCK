@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mass_5fof_5fearth_23',['MASS_OF_EARTH',['../namespacespock_1_1physic__constant.html#a66de67950c483936dcff21e8cd9dd17a',1,'spock::physic_constant']]]
+  ['mass_31',['mass',['../structspock_1_1physic__constants_1_1earth.html#a643fead7c03251e3f9fe5f8d0bc47ff5',1,'spock::physic_constants::earth']]]
 ];

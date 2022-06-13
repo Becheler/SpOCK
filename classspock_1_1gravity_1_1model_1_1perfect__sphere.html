@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SpOCK: spock::gravity::model::perfect_sphere Class Reference</title>
+<title>SpOCK: spock::gravity::model::perfect_sphere&lt; P &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -76,10 +76,12 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classspock_1_1gravity_1_1model_1_1perfect__sphere-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">spock::gravity::model::perfect_sphere Class Reference</div>  </div>
+<div class="title">spock::gravity::model::perfect_sphere&lt; P &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -88,15 +90,35 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="perfect__sphere_8h_source.html">perfect_sphere.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">vertical_kind</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">vertical_point_kind</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a11876db21d778accf1b0db0f535edf00"><td class="memItemLeft" align="right" valign="top"><a id="a11876db21d778accf1b0db0f535edf00"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>planet_type</b> = P</td></tr>
+<tr class="separator:a11876db21d778accf1b0db0f535edf00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9e058c8d115f03feb5eadb415a045d2"><td class="memItemLeft" align="right" valign="top"><a id="ac9e058c8d115f03feb5eadb415a045d2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ac9e058c8d115f03feb5eadb415a045d2">altitude</a> = units::quantity_point_kind&lt; <a class="el" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">vertical_point_kind</a>, units::isq::si::metre &gt;</td></tr>
+<tr class="memdesc:ac9e058c8d115f03feb5eadb415a045d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height) <br /></td></tr>
+<tr class="separator:ac9e058c8d115f03feb5eadb415a045d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7c95915a0007f48c866e4ade228c4cf5"><td class="memItemLeft" align="right" valign="top"><a id="a7c95915a0007f48c866e4ade228c4cf5"></a>
-static auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a7c95915a0007f48c866e4ade228c4cf5">get_field</a> (double altitude)</td></tr>
-<tr class="memdesc:a7c95915a0007f48c866e4ade228c4cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the acceleration due to gravity. <br /></td></tr>
-<tr class="separator:a7c95915a0007f48c866e4ade228c4cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f215013e6b60317c55e2a3db4cb3c02"><td class="memItemLeft" align="right" valign="top"><a id="a3f215013e6b60317c55e2a3db4cb3c02"></a>
+static constexpr units::isq::Acceleration auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a3f215013e6b60317c55e2a3db4cb3c02">acceleration_at</a> (const <a class="el" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ac9e058c8d115f03feb5eadb415a045d2">altitude</a> &amp;alt)</td></tr>
+<tr class="memdesc:a3f215013e6b60317c55e2a3db4cb3c02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acceleration due to gravity at altitude h above the surface of a sphere. <br /></td></tr>
+<tr class="separator:a3f215013e6b60317c55e2a3db4cb3c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Gravity field computed under the assumtion of a single sphere planetoid. </p>
+<div class="textblock"><h3>template&lt;class P&gt;<br />
+class spock::gravity::model::perfect_sphere&lt; P &gt;</h3>
+
+<p>Gravity field computed under the assumtion of a single sphere planetoid. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/SpOCK/SpOCK/include/spock_lib/gravity/<a class="el" href="perfect__sphere_8h_source.html">perfect_sphere.h</a></li>
 </ul>

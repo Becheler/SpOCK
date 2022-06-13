@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['perfect_5fsphere_5',['perfect_sphere',['../classspock_1_1gravity_1_1model_1_1perfect__sphere.html',1,'spock::gravity::model']]],
-  ['propagator_6',['Propagator',['../structPropagator.html',1,'Propagator'],['../structPropagator.html#ad0f185e5b3b63a07c00ea0a22523beb7',1,'Propagator::Propagator()']]]
+  ['g_5f0_5',['g_0',['../structspock_1_1physic__constants_1_1earth.html#a69befe95c273e6d03a5db59b418fd05f',1,'spock::physic_constants::earth']]]
 ];

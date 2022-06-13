@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['force_5fcalculator_12',['force_calculator',['../classspock_1_1force__calculator.html',1,'spock']]]
+  ['earth_17',['earth',['../structspock_1_1physic__constants_1_1earth.html',1,'spock::physic_constants']]]
 ];

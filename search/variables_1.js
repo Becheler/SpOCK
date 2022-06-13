@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['g_22',['G',['../namespacespock_1_1physic__constant.html#a9d4c0dd3d0157e2f0b41d44420f38c02',1,'spock::physic_constant']]]
+  ['g_5f0_30',['g_0',['../structspock_1_1physic__constants_1_1earth.html#a69befe95c273e6d03a5db59b418fd05f',1,'spock::physic_constants::earth']]]
 ];

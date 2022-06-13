@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['gravity_7',['gravity',['../namespacespock_1_1gravity.html',1,'spock']]],
-  ['model_8',['model',['../namespacespock_1_1gravity_1_1model.html',1,'spock::gravity']]],
-  ['physic_5fconstant_9',['physic_constant',['../namespacespock_1_1physic__constant.html',1,'spock']]],
-  ['spock_10',['spock',['../namespacespock.html',1,'']]]
+  ['mass_6',['mass',['../structspock_1_1physic__constants_1_1earth.html#a643fead7c03251e3f9fe5f8d0bc47ff5',1,'spock::physic_constants::earth']]]
 ];
