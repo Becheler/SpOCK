@@ -5,6 +5,116 @@ Spacecraft Orbital Characterization Kit
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/SpOCK)
 
+## Installation
+
+### With Conan + CMake
+
+#### 1 - Get Conan and CMake
+[Conan](https://conan.io/) is one of the leading options for cross-platform package
+manager for C/C++ projects. We chose it because it interfaces with CMake in a nice
+way. Conan will handle the dependencies and version conflicts management, and pass
+the paths of the installed dependencies to CMake so it can build the project.
+
+[CMake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) is the C++ build systems first choice for cross-platform development. Technically, CMake is a build system generator but the
+level of abstraction it offers allows us to consider it as a cross-platform build system.
+Users can build, test, and install packages with `cmake` and `ctest` commands.
+
+> :bulb: For devs, if you want more background on how Conan and CMake interact, check:
+> - [the CMake official documentation](https://docs.conan.io/en/1.36/integrations/build_system/cmake.html)
+> - [this post](https://jfreeman.dev/blog/2019/05/22/trying-conan-with-modern-cmake:-dependencies/).
+
+#### 2 - Configure Conan on your system :wrench:
+
+> :bulb: These steps generally have to be done only once, when you first configure your system. If you change the `build_type` (eg. `Release` or `Debug`) then you will need to reinstall the dependencies, as their version may change according to the build type.
+
+
+##### Set up the Conan profile
+
+[Conan profiles](https://docs.conan.io/en/latest/reference/profiles.html) allow users to freeze a complete configuration set for settings, options, environment variables, and build requirements in a single file.
+
+Profile can be created with `new` option in `conan profile` (detecting local system settings like the OS) and edited later (to add the SpOCK-specific settings):
+
+```bash
+$ export myprofile=spock-profile
+$ conan profile new ${myprofile} --detect
+$ conan profile update settings.compiler=gcc ${myprofile}
+$ conan profile update settings.compiler.version=10 ${myprofile}
+$ conan profile update settings.compiler.cppstd=20 ${myprofile}
+$ conan profile update env.CC=[/usr/bin/gcc-10] ${myprofile}
+$ conan profile update env.CXX=[/usr/bin/g++-10] ${myprofile}
+$ conan profile update conf.tools.cmake.cmaketoolchain:generator=Ninja ${myprofile}
+$ conan profile show ${myprofile}
+```
+
+The last command should show something similar to (if you're on Linux):
+```ini
+Configuration for profile spock-profile:
+
+[settings]
+os=Linux
+os_build=Linux
+arch=x86_64
+arch_build=x86_64
+compiler=gcc
+compiler.version=10
+compiler.libcxx=libstdc++
+build_type=Release
+compiler.cppstd=20
+[options]
+[conf]
+tools.cmake.cmaketoolchain:generator=Ninja
+[build_requires]
+[env]
+CC=['/usr/bin/gcc-10']
+CXX=['/usr/bin/g++-10']
+
+```
+
+##### Add the Bincrafters remote package repository
+
+By default, Conan only searches for packages from the two central repositories hosted and moderated by **Conan.io** staff: `conan-center` and `conan-transit`. We will need packages that are not hosted by these official repositories.
+
+The [Bincrafters](https://bincrafters.github.io/2017/06/06/using-bincrafters-conan-repository/) community posts new packages/versions every week in a separate Conan repository. To start using any of the Bincrafters packages, run:
+
+```bash
+$ conan config set general.revisions_enabled=1
+$ conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
+```
+
+##### Install the dependencies
+
+First you need to chose a build type:
+
+```bash
+$ export build_type=Release
+# export build_type=Debug
+```
+Then you can install all the the dependencies listed in the `conanfile.txt`at the root of the project:
+
+```bash
+# Lets start in the project root folder containing the conanfile.txt
+$ mkdir build && cd build
+# Install both debug and release deps and create the toolchain
+$ conan install .. \
+--profile:build=${myprofile} \
+--settings build_type=${build_type} \
+--install-folder=build \
+--build=missing
+```
+
+#### 3 - Build, test, install :rocket:
+
+```bash
+# Works on Linux, OSX, and Windows.
+$ cmake .. \
+    -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
+    -DCMAKE_BUILD_TYPE=${build_type}
+$ ncpus=$(python -c 'import multiprocessing as mp; print(mp.cpu_count())')
+$ cmake --build . --parallel ${ncpus}
+$ ctest --parallel ${ncpus}
+$ cmake --build . --target install
+```
+
 ## Project documentation
 
 The project library documentation is built with [Doxygen and automatically published on Github Pages](https://becheler.github.io/SpOCK/).
