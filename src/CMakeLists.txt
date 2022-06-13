@@ -3,14 +3,15 @@ include_directories(spock/include)
 
 add_executable(spock main.cpp)
 
-target_link_libraries(spock PRIVATE boost::boost
-                                    mp-units::mp-units
-                                    stdc++fs
-                      )
+target_link_libraries(spock
+                      Boost::boost
+                      Boost::headers
+                      Boost::program_options
+                      mp-units::mp-units
+                    )
 
 # We need C++ 20 activated with the concepts library
 target_compile_features(spock PUBLIC cxx_std_20)
-target_compile_options(spock PRIVATE "-fconcepts")
 
 install(
   TARGETS

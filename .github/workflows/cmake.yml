@@ -23,6 +23,16 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Set environment variables
+      run: |
+           echo "CONAN_USER_HOME=/tmp/conan" >> $GITHUB_ENV
+
+    - uses: actions/cache@v3
+      id: cache
+      with:
+        path: ${{ github.workspace }}/${{ env.CONAN_USER_HOME }}/.conan
+        key: ${{ runner.os }}-conan-cache-${{ hashFiles('**/conanfile.txt') }}
+
     - name: Get GCC-10
       run:   |
              sudo apt update
@@ -58,6 +68,7 @@ jobs:
             conan profile show default
 
     - name: Conan install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       run:  |
             conan install . \
             -s build_type=${{env.BUILD_TYPE}} \
@@ -72,6 +83,10 @@ jobs:
             cmake -B ${{github.workspace}}/build \
             -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake \
             -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      shell: bash
+      env:
+       CC:   gcc-10
+       CXX:  g++-10
 
     - name: Cmake build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
