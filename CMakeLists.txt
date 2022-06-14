@@ -1,7 +1,11 @@
-# Note: CMake version has to be newer than the Boost version.
-# See https://stackoverflow.com/a/43885372/10360134
-# Boost 1.79.0 / 13 April 2022
-# CMake 3.23.2 / May 25, 2022
+# Note: CMake version has to be newer than the Boost version: see https://stackoverflow.com/a/43885372/10360134
+# Boost 1.79.0 (13 April 2022) is too recent and does not link
+# Boost 1.76.0 is too old and does not compile with GCC 10
+# Boost 1.77.0 (13th August 2021) works with:
+#     - CMake 3.23.2 (May 25, 2022)
+#     - GCC 10.3.0 (May 7, 2020)
+#     - mp-units 0.7.0
+# BE SUPER CAREFUL IF YOU CHANGE ANY VERSION ~ Captain SpOCK, 45th August 3045
 cmake_minimum_required(VERSION 3.23.2)
 
 # project name and language
@@ -27,7 +31,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Tell find_package() to first search using Config mode before falling back to Module mode (for conan)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 
-# add_subdirectory(.conan)
+set(Boost_DEBUG ON)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
@@ -44,7 +48,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_cmake_configure(
                       REQUIRES
                         mp-units/0.7.0
-                        boost/1.79.0
+                        boost/1.77.0
                       GENERATORS
                         cmake_find_package
                       )
@@ -61,16 +65,17 @@ conan_add_remote(NAME bincrafters
 # I think it also detects CMake settings like gcc, gcc-version; cppstd, build_type etc
 conan_cmake_autodetect(settings)
 
+# Since GCC >= 5, the compiler is likely to be using the new CXX11 ABI by default (libstdc++11)
+# See https://docs.conan.io/en/latest/howtos/manage_gcc_abi.html
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
                     REMOTE conancenter bincrafters
                     SETTINGS
                       ${settings}
-                      compiler.libcxx=libstdc++
+                      compiler.libcxx=libstdc++11
                     )
 
-find_package(Boost 1.79 REQUIRED COMPONENTS program_options unit_test_framework REQUIRED)
-include_directories( ${Boost_INCLUDE_DIR} )
+find_package(Boost 1.77 REQUIRED COMPONENTS program_options unit_test_framework REQUIRED)
 
 find_package(mp-units REQUIRED)
 
