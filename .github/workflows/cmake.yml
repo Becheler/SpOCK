@@ -62,8 +62,8 @@ jobs:
       run:  |
             cmake -B ${{github.workspace}}/build \
                   -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-                  -DCMAKE_C_COMPILER=${{env.CC}} \
-                  -DCMAKE_C_COMPILER=${{env.CXX}}
+                  -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
+                  -DCMAKE_C_COMPILER=usr/bin/g++-10
 
     - name: Cmake build
       run:  |
