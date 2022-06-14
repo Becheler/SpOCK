@@ -23,7 +23,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set environment variables
+    - name: Set Conan environment variables
       run: |
            echo "CONAN_USER_HOME=/tmp/conan" >> $GITHUB_ENV
 
@@ -37,6 +37,8 @@ jobs:
       run:   |
              sudo apt update
              sudo apt install gcc-10 g++-10
+             echo "CC=/usr/bin/gcc-10" >> $CC
+             echo "CXX=/usr/bin/g++-10" >> $CXX
 
     - name: Install Doxygen
       run: sudo apt-get update && sudo apt-get install -y --no-install-recommends doxygen graphviz
@@ -51,15 +53,17 @@ jobs:
     - name: CMake configuration
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      # DCMAKE_C_COMPILER=ggc avoids https://github.com/conan-io/conan/issues/4322
+      # DCMAKE_C_COMPILER avoids https://github.com/conan-io/conan/issues/4322
       run:  |
             cmake -B ${{github.workspace}}/build \
-                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-                  -DCMAKE_C_COMPILER=gcc
-
+                  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+                  -DCMAKE_C_COMPILER=${{env.CC}} \
+                  -DCMAKE_CXX_COMPILER=${{env.CXX}}
 
     - name: Cmake build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run:  |
+            cmake --build ${{github.workspace}}/build \
+                  --config ${{env.BUILD_TYPE}}
 
     - name: Cmake test
       working-directory: ${{github.workspace}}/build
