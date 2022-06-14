@@ -100,7 +100,6 @@ $ mkdir build && cd build
 $ conan install .. \
 --profile:build=${myprofile} \
 --settings build_type=${build_type} \
---install-folder=build \
 --build=missing
 ```
 

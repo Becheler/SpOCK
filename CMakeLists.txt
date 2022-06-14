@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.23)
 # project name and language
 project(SpOCK LANGUAGES CXX)
 
-include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
-
 # we default to Release build type
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
