@@ -64,7 +64,7 @@ conan_cmake_install(PATH_OR_REFERENCE .
                       ${settings}
                       compiler.libcxx=libstdc++
                     )
-                    
+
 find_package(Boost 1.79 REQUIRED COMPONENTS program_options unit_test_framework)
 
 find_package(mp-units REQUIRED)
