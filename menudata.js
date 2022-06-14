@@ -29,9 +29,19 @@ var menudata={children:[
 {text:"Class Index",url:"classes.html"},
 {text:"Class Hierarchy",url:"inherits.html"},
 {text:"Class Members",url:"functions.html",children:[
-{text:"All",url:"functions.html"},
+{text:"All",url:"functions.html",children:[
+{text:"_",url:"functions.html#index__5F"},
+{text:"a",url:"functions.html#index_a"},
+{text:"g",url:"functions.html#index_g"},
+{text:"m",url:"functions.html#index_m"},
+{text:"p",url:"functions.html#index_p"},
+{text:"r",url:"functions.html#index_r"}]},
 {text:"Functions",url:"functions_func.html"},
-{text:"Variables",url:"functions_vars.html"},
+{text:"Variables",url:"functions_vars.html",children:[
+{text:"_",url:"functions_vars.html#index__5F"},
+{text:"g",url:"functions_vars.html#index_g"},
+{text:"m",url:"functions_vars.html#index_m"},
+{text:"r",url:"functions_vars.html#index_r"}]},
 {text:"Typedefs",url:"functions_type.html"}]}]},
 {text:"Files",url:"files.html",children:[
 {text:"File List",url:"files.html"}]}]}

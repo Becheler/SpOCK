@@ -88,51 +88,69 @@ $(function() {
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;units/isq/si/length.h&gt;</span>       <span class="comment">// units::isq::si::metre</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;units/quantity_point_kind.h&gt;</span> <span class="comment">// to define altitude</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;units/isq/dimensions/acceleration.h&gt;</span> <span class="comment">// Acceleration concept</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;ostream&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespock_1_1gravity_1_1model.html">spock::gravity::model</a></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class</span> P&gt;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html">   19</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html">perfect_sphere</a></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">// We need a new kind of unit to represent the more specific usage of a length quantity</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">   22</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">vertical_kind</a> : units::kind&lt;vertical_kind, units::isq::si::dim_length&gt; {};</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment">// A quantity point is an absolute quantity with respect to an origin, with limited arithmetic</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">   24</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">vertical_point_kind</a> : units::point_kind&lt;vertical_point_kind, vertical_kind&gt; {};</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">using</span> planet_type = P;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ac9e058c8d115f03feb5eadb415a045d2">   34</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ac9e058c8d115f03feb5eadb415a045d2">altitude</a> = units::quantity_point_kind&lt;vertical_point_kind, units::isq::si::metre&gt;;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a3f215013e6b60317c55e2a3db4cb3c02">   38</a></span>&#160;    <span class="keyword">static</span> constexpr units::isq::Acceleration <span class="keyword">auto</span> <a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a3f215013e6b60317c55e2a3db4cb3c02">acceleration_at</a>(<span class="keyword">const</span> <a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ac9e058c8d115f03feb5eadb415a045d2">altitude</a>&amp; alt)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="keyword">using</span> units::isq::si::metre;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="keyword">using</span> units::isq::si::dim_length;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      constexpr <span class="keyword">auto</span> g_0 = planet_type::g_0;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;      constexpr <span class="keyword">auto</span> r = planet_type::r.common();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      <span class="keyword">auto</span> h = alt.relative().common();</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;      <span class="keywordflow">return</span> g_0 * (r/(r + h)) * (r/(r + h));</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }; <span class="comment">// end class perfect_sphere</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;} <span class="comment">// end namespace spock::gravity::model</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> CharT, <span class="keyword">class</span> Traits, <span class="keyword">class</span> Planet&gt;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;std::basic_ostream&lt;CharT, Traits&gt;&amp;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;operator&lt;&lt;(std::basic_ostream&lt;CharT, Traits&gt;&amp; os,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;           <span class="keyword">const</span> <span class="keyword">typename</span> <a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ac9e058c8d115f03feb5eadb415a045d2">spock::gravity::model::perfect_sphere&lt;Planet&gt;::altitude</a>&amp; a)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">return</span> os &lt;&lt; a.relative().common() &lt;&lt; <span class="stringliteral">&quot; AMSL&quot;</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;concepts&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;spock_lib/physic_constants.hpp&quot;</span>    <span class="comment">// access to radius_q quantity</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacespock_1_1gravity_1_1model.html">spock::gravity::model</a></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="comment">//</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <span class="comment">// ///</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="comment">// /// @brief Requirements for a planetoid struct to be modeled as a perfect_sphere</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="comment">// ///</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="comment">// /// @see e.g. &lt;https://www.sandordargo.com/blog/2021/02/17/cpp-concepts-4-ways-to-use-them&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="comment">// ///</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="comment">// template &lt;typename T&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="comment">// concept SphericBody = requires(T)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="comment">// {</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="comment">//   // struct T must have a Acceleration static member gravity</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="comment">//   { T::gravity } -&gt; units::isq::Acceleration;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="comment">//   // struct T must have a static member radius of type radius_q</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="comment">//   { T::radius }  -&gt; std::convertible_to&lt;spock::physic_constants::radius_q&amp;&gt;;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="comment">// };</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html">   38</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html">perfect_sphere</a></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// We need a new kind of unit to represent the more specific usage of a length quantity</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">   41</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">vertical_kind</a> : units::kind&lt;vertical_kind, units::isq::si::dim_length&gt; {};</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// A quantity point is an absolute quantity with respect to an origin, with limited arithmetic</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">   43</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">vertical_point_kind</a> : units::point_kind&lt;vertical_point_kind, vertical_kind&gt; {};</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">using</span> planet_type = T;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ad990234940ada25aaa555d51ec524590">   53</a></span>&#160;    <span class="keyword">using</span> <a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ad990234940ada25aaa555d51ec524590">altitude</a> = units::quantity_point_kind&lt;vertical_point_kind, units::isq::si::metre&gt;;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a732b1ab7e5a49e163d59e7d4f73e193b">   57</a></span>&#160;    <span class="keyword">static</span> constexpr units::isq::Acceleration <span class="keyword">auto</span> <a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a732b1ab7e5a49e163d59e7d4f73e193b">acceleration_at</a>(<span class="keyword">const</span> <a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ad990234940ada25aaa555d51ec524590">altitude</a>&amp; alt)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;      <span class="keyword">using</span> units::isq::si::metre;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keyword">using</span> units::isq::si::dim_length;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      constexpr <span class="keyword">auto</span> g_0 = planet_type::gravity;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      constexpr <span class="keyword">auto</span> r = planet_type::radius.common();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <span class="keyword">auto</span> h = alt.relative().common();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      <span class="keywordflow">return</span> g_0 * (r/(r + h)) * (r/(r + h));</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  }; <span class="comment">// end class perfect_sphere</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// end namespace spock::gravity::model</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">class</span> CharT, <span class="keyword">class</span> Traits, <span class="keyword">class</span> Planet&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;std::basic_ostream&lt;CharT, Traits&gt;&amp;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;operator&lt;&lt;(std::basic_ostream&lt;CharT, Traits&gt;&amp; os,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;           <span class="keyword">const</span> <span class="keyword">typename</span> <a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ad990234940ada25aaa555d51ec524590">spock::gravity::model::perfect_sphere&lt;Planet&gt;::altitude</a>&amp; a)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;{</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">return</span> os &lt;&lt; a.relative().common() &lt;&lt; <span class="stringliteral">&quot; AMSL&quot;</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassspock_1_1gravity_1_1model_1_1perfect__sphere_html_a3f215013e6b60317c55e2a3db4cb3c02"><div class="ttname"><a href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a3f215013e6b60317c55e2a3db4cb3c02">spock::gravity::model::perfect_sphere::acceleration_at</a></div><div class="ttdeci">static constexpr units::isq::Acceleration auto acceleration_at(const altitude &amp;alt)</div><div class="ttdoc">Acceleration due to gravity at altitude h above the surface of a sphere.</div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:38</div></div>
-<div class="ttc" id="astructspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind_html"><div class="ttname"><a href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">spock::gravity::model::perfect_sphere::vertical_kind</a></div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:22</div></div>
-<div class="ttc" id="astructspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind_html"><div class="ttname"><a href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">spock::gravity::model::perfect_sphere::vertical_point_kind</a></div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:24</div></div>
-<div class="ttc" id="aclassspock_1_1gravity_1_1model_1_1perfect__sphere_html_ac9e058c8d115f03feb5eadb415a045d2"><div class="ttname"><a href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ac9e058c8d115f03feb5eadb415a045d2">spock::gravity::model::perfect_sphere::altitude</a></div><div class="ttdeci">units::quantity_point_kind&lt; vertical_point_kind, units::isq::si::metre &gt; altitude</div><div class="ttdoc">quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)</div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:34</div></div>
+<div class="ttc" id="astructspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind_html"><div class="ttname"><a href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">spock::gravity::model::perfect_sphere::vertical_kind</a></div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:41</div></div>
+<div class="ttc" id="astructspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind_html"><div class="ttname"><a href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">spock::gravity::model::perfect_sphere::vertical_point_kind</a></div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:43</div></div>
 <div class="ttc" id="anamespacespock_1_1gravity_1_1model_html"><div class="ttname"><a href="namespacespock_1_1gravity_1_1model.html">spock::gravity::model</a></div><div class="ttdoc">How to simulate a gravity field (model assumptions). We want to calcuate the force applied to the sat...</div><div class="ttdef"><b>Definition:</b> gridded_gravity.h:8</div></div>
-<div class="ttc" id="aclassspock_1_1gravity_1_1model_1_1perfect__sphere_html"><div class="ttname"><a href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html">spock::gravity::model::perfect_sphere</a></div><div class="ttdoc">Gravity field computed under the assumtion of a single sphere planetoid.</div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:19</div></div>
+<div class="ttc" id="aclassspock_1_1gravity_1_1model_1_1perfect__sphere_html"><div class="ttname"><a href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html">spock::gravity::model::perfect_sphere</a></div><div class="ttdoc">Gravity field computed under the assumtion of a single sphere planetoid.</div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:38</div></div>
+<div class="ttc" id="aclassspock_1_1gravity_1_1model_1_1perfect__sphere_html_a732b1ab7e5a49e163d59e7d4f73e193b"><div class="ttname"><a href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a732b1ab7e5a49e163d59e7d4f73e193b">spock::gravity::model::perfect_sphere::acceleration_at</a></div><div class="ttdeci">static constexpr units::isq::Acceleration auto acceleration_at(const altitude &amp;alt)</div><div class="ttdoc">Acceleration due to gravity at altitude h above the surface of a sphere.</div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:57</div></div>
+<div class="ttc" id="aclassspock_1_1gravity_1_1model_1_1perfect__sphere_html_ad990234940ada25aaa555d51ec524590"><div class="ttname"><a href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ad990234940ada25aaa555d51ec524590">spock::gravity::model::perfect_sphere::altitude</a></div><div class="ttdeci">units::quantity_point_kind&lt; vertical_point_kind, units::isq::si::metre &gt; altitude</div><div class="ttdoc">quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)</div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:53</div></div>
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

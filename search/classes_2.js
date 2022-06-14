@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['perfect_5fsphere_19',['perfect_sphere',['../classspock_1_1gravity_1_1model_1_1perfect__sphere.html',1,'spock::gravity::model']]],
-  ['propagator_20',['Propagator',['../structPropagator.html',1,'']]]
+  ['jupiter_28',['jupiter',['../structspock_1_1physic__constants_1_1jupiter.html',1,'spock::physic_constants']]]
 ];
