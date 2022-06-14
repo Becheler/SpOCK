@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.23)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -37,6 +37,8 @@ foreach(testSrc ${TEST_SRCS})
         # Link to Boost libraries AND your targets and dependencies
         target_link_libraries(${testName}
                               ${Boost_LIBRARIES}
+                              Boost::boost
+                              boost::boost
                               Boost::headers
                               Boost::unit_test_framework
                               mp-units::mp-units

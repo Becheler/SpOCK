@@ -7,3 +7,4 @@ CMakeToolchain
 CMakeDeps
 cmake_find_package
 cmake_paths
+cmake
