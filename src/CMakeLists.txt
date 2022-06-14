@@ -5,8 +5,8 @@ add_executable(spock main.cpp)
 
 target_link_libraries(spock
                       ${Boost_LIBRARIES}
-                      boost::boost
-                      # Boost::boost
+                      # boost::boost
+                      Boost::boost
                       Boost::headers
                       Boost::program_options
                       mp-units::mp-units
