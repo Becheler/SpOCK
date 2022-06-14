@@ -4,11 +4,7 @@ include_directories(spock/include)
 add_executable(spock main.cpp)
 
 target_link_libraries(spock
-                      ${Boost_LIBRARIES}
                       Boost::boost
-                      # boost::boost
-                      Boost::headers
-                      Boost::program_options
                       mp-units::mp-units
                     )
 

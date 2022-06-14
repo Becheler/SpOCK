@@ -1,4 +1,8 @@
-cmake_minimum_required(VERSION 3.23)
+# Note: CMake version has to be newer than the Boost version.
+# See https://stackoverflow.com/a/43885372/10360134
+# Boost 1.79.0 / 13 April 2022
+# CMake 3.23.2 / May 25, 2022
+cmake_minimum_required(VERSION 3.23.2)
 
 # project name and language
 project(SpOCK LANGUAGES CXX)
@@ -65,7 +69,8 @@ conan_cmake_install(PATH_OR_REFERENCE .
                       compiler.libcxx=libstdc++
                     )
 
-find_package(Boost 1.79 REQUIRED COMPONENTS program_options unit_test_framework)
+find_package(Boost 1.79 REQUIRED COMPONENTS program_options unit_test_framework REQUIRED)
+include_directories( ${Boost_INCLUDE_DIR} )
 
 find_package(mp-units REQUIRED)
 
