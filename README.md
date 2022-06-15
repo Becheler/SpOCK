@@ -30,10 +30,10 @@ Lets start in the project root folder:
 
 ```bash
 $ mkdir build && cd build
-$ cmake -B build \
-        -D CMAKE_BUILD_TYPE=Release \
+$ cmake -D CMAKE_BUILD_TYPE=Release \
         -D CMAKE_C_COMPILER=/usr/bin/gcc-10 \
-        -D CMAKE_CXX_COMPILER=/usr/bin/g++-10
+        -D CMAKE_CXX_COMPILER=/usr/bin/g++-10 \
+        ..
 ```
 
 #### 3 - Build, test, install :rocket:

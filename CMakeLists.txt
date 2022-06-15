@@ -48,9 +48,9 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_cmake_configure(
                       REQUIRES
                         mp-units/0.7.0
-                        boost/1.77.0
+                        boost/1.79.0
                       GENERATORS
-                        cmake_find_package
+                        cmake
                       )
 
 # By default, Conan only searches for packages from the two central repositories
@@ -75,9 +75,12 @@ conan_cmake_install(PATH_OR_REFERENCE .
                       compiler.libcxx=libstdc++11
                     )
 
-find_package(Boost 1.77 REQUIRED COMPONENTS program_options unit_test_framework REQUIRED)
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
-find_package(mp-units REQUIRED)
+#find_package(Boost 1.79 REQUIRED COMPONENTS program_options unit_test_framework REQUIRED)
+
+#find_package(mp-units REQUIRED)
 
 add_subdirectory(src)
 
