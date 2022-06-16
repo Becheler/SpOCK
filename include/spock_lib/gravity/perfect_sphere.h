@@ -7,15 +7,34 @@
 
 #include <units/isq/si/length.h>       // units::isq::si::metre
 #include <units/quantity_point_kind.h> // to define altitude
-
+#include <units/isq/dimensions/acceleration.h> // Acceleration concept
 #include <ostream>
+#include <concepts>
+
+#include "spock_lib/physic_constants.hpp"    // access to radius_q quantity
 
 namespace spock::gravity::model
 {
+  //
+  // ///
+  // /// @brief Requirements for a planetoid struct to be modeled as a perfect_sphere
+  // ///
+  // /// @see e.g. <https://www.sandordargo.com/blog/2021/02/17/cpp-concepts-4-ways-to-use-them>
+  // ///
+  // template <typename T>
+  // concept SphericBody = requires(T)
+  // {
+  //   // struct T must have a Acceleration static member gravity
+  //   { T::gravity } -> units::isq::Acceleration;
+  //   // struct T must have a static member radius of type radius_q
+  //   { T::radius }  -> std::convertible_to<spock::physic_constants::radius_q&>;
+  // };
+
   ///
   /// @brief Gravity field computed under the assumtion of a single sphere planetoid.
   ///
-  template<class P>
+  /// @note The template class must fulfill the requirements of the SphericBody concept.
+  template<class T>
   class perfect_sphere
   {
     // We need a new kind of unit to represent the more specific usage of a length quantity
@@ -27,7 +46,7 @@ namespace spock::gravity::model
     ///
     /// \typedef Planet type being modeled, eg spock::physic_constants::earth
     ///
-    using planet_type = P;
+    using planet_type = T;
 
     /// @brief quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)
     ///
@@ -39,8 +58,8 @@ namespace spock::gravity::model
     {
       using units::isq::si::metre;
       using units::isq::si::dim_length;
-      constexpr auto g_0 = planet_type::g_0;
-      constexpr auto r = planet_type::r.common();
+      constexpr auto g_0 = planet_type::gravity;
+      constexpr auto r = planet_type::radius.common();
       auto h = alt.relative().common();
       return g_0 * (r/(r + h)) * (r/(r + h));
     }

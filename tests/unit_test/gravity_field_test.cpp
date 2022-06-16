@@ -41,15 +41,7 @@ BOOST_AUTO_TEST_CASE( perfect_sphere )
   BOOST_CHECK_SMALL(error.number(), tolerance.number());
 
   std::cout << error << std::endl;
-}
 
-//
-// BOOST_AUTO_TEST_CASE( j1_term_only )
-// {
-//   using gravity_type = spock::gravity::model::j1_term_only;
-//   auto computer = spock::force_calculator<gravity_type>();
-//   auto position = "here";
-//   auto gravity_vector = computer.compute_at(position);
-// }
+}
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,9 +1,0 @@
-[requires]
-mp-units/0.7.0
-boost/1.79.0
-
-[generators]
-CMakeToolchain
-CMakeDeps
-cmake_find_package
-cmake_paths
