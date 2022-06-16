@@ -5,6 +5,8 @@ Spacecraft Orbital Characterization Kit
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/SpOCK)
 
+This project aims at redesigning the codebase from https://github.com/charlesbv/spock.
+
 ## Installation
 
 ### With Conan + CMake
@@ -26,13 +28,15 @@ Users can build, test, and install packages with `cmake` and `ctest` commands.
 
 ##### Configuring the dependencies :wrench:
 
-Lets start in the project root folder:
+Lets start in the project root folder. Assumming you installed gcc-10:
 
 ```bash
+$ export CC=`which gcc-10`
+$ export CXX=`which g++-10`
 $ mkdir build && cd build
 $ cmake -D CMAKE_BUILD_TYPE=Release \
-        -D CMAKE_C_COMPILER=/usr/bin/gcc-10 \
-        -D CMAKE_CXX_COMPILER=/usr/bin/g++-10 \
+        -D CMAKE_C_COMPILER=${CC} \
+        -D CMAKE_CXX_COMPILER=${CXX} \
         ..
 ```
 
