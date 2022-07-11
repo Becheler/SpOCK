@@ -60,6 +60,7 @@ jobs:
     - name: Test Charles' Spock build
       run: |
            cd src/legacy/charlesbv/spock
+           chmod u+x makeall.sh
            ./makeall.sh
            source ~/.bash_profile
            cd Examples
