@@ -41,6 +41,9 @@ conan_cmake_configure(
                       REQUIRES
                         mp-units/0.7.0
                         boost/1.79.0
+                        openmpi/4.1.0
+                        gsl/2.7
+                        cspice/0067
                       GENERATORS
                         cmake
                       )

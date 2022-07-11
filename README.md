@@ -17,6 +17,7 @@ This project aims at redesigning the codebase from https://github.com/charlesbv/
 manager for C/C++ projects. We chose it because it interfaces with CMake in a nice
 way. Conan will handle the dependencies and version conflicts management, and pass
 the paths of the installed dependencies to CMake so it can build the project.
+It's as simple to install as `pip install conan`!
 
 [CMake](https://cmake.org/cmake/help/latest/manual/cmake.1.html) is the C++ build systems first choice for cross-platform development. Technically, CMake is a build system generator but the
 level of abstraction it offers allows us to consider it as a cross-platform build system.
