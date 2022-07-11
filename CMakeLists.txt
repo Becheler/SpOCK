@@ -39,6 +39,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(
                       REQUIRES
+                        zlib/1.2.12
                         mp-units/0.7.0
                         boost/1.79.0
                         openmpi/4.1.0
