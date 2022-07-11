@@ -17,3 +17,5 @@ install(
     DESTINATION ${CMAKE_INSTALL_PREFIX}
     COMPONENT bin
   )
+
+add_subdirectory(legacy/charlesbv)
