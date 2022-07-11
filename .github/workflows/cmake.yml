@@ -59,7 +59,6 @@ jobs:
 
     - name: Test Charles' Spock build
       run: |
-           git submodule update --init
            cd src/legacy/charlesbv/spock
            ./makeall.sh
            source ~/.bash_profile
