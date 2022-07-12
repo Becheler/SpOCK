@@ -23,8 +23,10 @@ drho_mod = 0.3 # step in rho_mod -> rho_mod varies from rho_mod_min to rho_mod_m
 #spock_FM5_20171216_eng_adcs_query-13528.txt
 # end of PARAMETERS TO SET UP BEFORE RUNNIG THIS SCRIPT
 
-import numpy as np
 import sys
+
+import numpy as np
+
 if isbig == 1:
     sys.path.append("/home/cbv/code/spock/srcPython")
     path_mpirun = '/usr/local/bin/mpirun'
@@ -36,15 +38,17 @@ else:
     spice_path = '/Users/cbv/cspice/data'
     nb_proc = 4
 import os
+
+import matplotlib.cm as cmx
+import matplotlib.colors as colors
+import matplotlib.gridspec as gridspec
+import matplotlib.ticker as mtick
+from matplotlib import pyplot as plt
+from orbit_average import *
 from read_input_file import *
 from read_output_file import *
 from spock_main_input import *
-from orbit_average import *
-from matplotlib import pyplot as plt
-import matplotlib.ticker as mtick
-import matplotlib.colors as colors
-import matplotlib.cm as cmx
-import matplotlib.gridspec as gridspec
+
 if isbig != 1:
     from convert_cygnss_obs_ecef_to_eci import *
 

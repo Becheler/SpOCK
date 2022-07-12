@@ -1,4 +1,5 @@
 # SpOCK
+
 Spacecraft Orbital Characterization Kit
 
 [![Website](https://img.shields.io/website?down_message=documentation%20offline&up_message=documentation%20online%21&url=https%3A%2F%2Fbecheler.github.io%2FSpOCK%2F)](https://becheler.github.io/SpOCK/)
@@ -24,6 +25,7 @@ level of abstraction it offers allows us to consider it as a cross-platform buil
 Users can build, test, and install packages with `cmake` and `ctest` commands.
 
 > :bulb: For devs, if you want more background on how Conan and CMake interact, check:
+>
 > - [the CMake official documentation](https://docs.conan.io/en/1.36/integrations/build_system/cmake.html)
 > - [this post](https://jfreeman.dev/blog/2019/05/22/trying-conan-with-modern-cmake:-dependencies/).
 
@@ -58,11 +60,34 @@ The project C++ library documentation is built with [Doxygen and automatically p
 ## Project organization
 
 - `src/` source for the main application (SpOCK program)
-- `include/spock_lib` interface for the **spock_lib** header-only library (*.h)
+- `include/spock_lib` interface for the **spock_lib** header-only library (\*.h)
 - `tests/` unit test framework
 - `doc/` doxygen documentation
 
 > :bulb: for structure explanation, see [this discussion on SO](https://stackoverflow.com/questions/2360734/whats-a-good-directory-structure-for-larger-c-projects-using-makefile)
+
+## Project refactoring
+
+The legacy code from Charles Bussy-Virat phD is locate in `src/legacy`, and the
+general objective is to extract components from this legacy code to the `sock_lib`
+library.
+
+This C code is highly undocumented, redundant and rigid. As of July 2022, I (Arnaud Becheler) began to extract methods
+and refactor a bit, but it is a huge task I will probably not finish: here are
+leads and tips for my successors:
+
+- `moat_prototype.h`: contains the declaration of module level functions.
+    - It is an entry point, if one is willing to refactor the numerous functions that
+      take too many parameters, this file may be a start.
+    - In that case, defining C++ classes to encapsulate similar parameters (x,y,z components of a same vector)
+      may be the way to go.
+    - This declaration file would be the place to add Doxygen documentation strings (currently in the implementation)
+- `ancas.cpp`: most of the code here has been heavily copy-pasted, and can be easily
+               factorized by defining functions that generalize the behavior and take as an
+               argument the variable point. The math expression in algorithms could be
+               written once and applied to different set of parameters. For example
+               `component_I.get(alpha0)` could return a lambda functions.
+
 
 ## Git branching model
 
@@ -70,7 +95,7 @@ We will use the following workflow:
 
 - `main` branch where the source code of HEAD always reflects a production-ready state.
 - `develop` branch where the source code of HEAD always reflects a state with the latest delivered development changes for the next release.
-- *supporting branches*: Next to the permanent branches main and develop, supporting branches have a limited time life. They aid parallel development between team members, ease tracking of features, prepare for production releases and assist in bug/fix tracking. The different types of branches we may use are:
+- _supporting branches_: Next to the permanent branches main and develop, supporting branches have a limited time life. They aid parallel development between team members, ease tracking of features, prepare for production releases and assist in bug/fix tracking. The different types of branches we may use are:
   - `feature` branches
   - `release` branches
   - `hotfix` branches
@@ -82,6 +107,7 @@ We will use the following workflow:
 ## Contributing
 
 If you want to contribute to this project, the simplest way is to:
+
 - Fork it.
 - Clone it to your local system with `git clone XXX.git`
 - Make a new branch with `git checkout -b feature`
@@ -94,22 +120,22 @@ If you want to contribute to this project, the simplest way is to:
 
 We use [Release Drafter](https://github.com/marketplace/actions/release-drafter) to automate the version labeling, feature tracking and project documentation. Please use informative labels during your PR drafting:
 
-- PRs with that belong to the *Features* category should be labeled with:
+- PRs with that belong to the _Features_ category should be labeled with:
   - **feature**
   - **enhancement**
-- PRs that belong the *Bug Fixes* category should be labeled with:
+- PRs that belong the _Bug Fixes_ category should be labeled with:
   - **fix**
   - **bugfix**
   - **bug**
-- PRs that belong to the *Maintenance* category should be labeled
+- PRs that belong to the _Maintenance_ category should be labeled
   - **chore**
 
 ### Conventional Commits Specification
 
 The [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) is a lightweight convention on top of commit messages. It provides an easy set of rules for creating an explicit commit history; which makes it easier to write automated tools on top of.
 
-The commit message should be structured as follows:
---------------------
+## The commit message should be structured as follows:
+
 ```
 <type>[optional scope]: <description>
 
@@ -117,8 +143,11 @@ The commit message should be structured as follows:
 
 [optional footer(s)]
 ```
-----------------------
+
+---
+
 Defining commit `<type>`
+
 - `fix:` for a commit that patches a bug (this correlates with **PATCH** in Semantic Versioning).
 - `feat:` for a commit that introduces a new feature (this correlates with **MINOR** in Semantic Versioning).
 - `chore:` for a maintenance commit
@@ -129,6 +158,7 @@ Defining commit `<type>`
 ## Automated testing
 
 We use a Github Action described in `.github/worflows/cmake.yml` to automatically:
+
 - Install SpOCK dependencies
 - Configure CMake
 - Build the SpOCK executables

@@ -17,10 +17,12 @@
 
 
 import glob
-import numpy as np
-from datetime import datetime, timedelta
-import time
 import os
+import time
+from datetime import datetime, timedelta
+
+import numpy as np
+
 
 def read_input_file(filename):
     filename_no_path = filename.split('/')[-1]
