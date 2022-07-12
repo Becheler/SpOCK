@@ -14,7 +14,7 @@ int ancas(double min_dist_close_approach, double et_start, double dt_interval, d
   double root1 = -1e6, root2 = -1e6, root3 = -1e6 ;
   double tca2_before = *tca2, dca2_before = *dca2;
   double tca3_before = *tca3, dca3_before = *dca3;
-  
+
   // Normalize the coefficients so that the coefficient of order 3 is 1
   gamma0_normalized = gamma0 / gamma3;
   gamma1_normalized = gamma1 / gamma3;
@@ -356,5 +356,137 @@ int ancas(double min_dist_close_approach, double et_start, double dt_interval, d
       *dca3 = dca3_before      ;
     }
   }
+  return 0;
+}
+
+///
+/// @brief Determines the existence of a minimum distance between two spacecrafts
+///
+/// @see Alfvano 1994
+///
+int ancas_existence_of_min_using_two_values_of_function_and_two_values_of_its_derivative(
+  double et_start,
+  double dt_interval,
+  double r1_start[3],
+  double v1_start[3],
+  double a1_start[3],
+  double r1_end[3],
+  double v1_end[3],
+  double a1_end[3],
+  double r2_start[3],
+  double v2_start[3],
+  double a2_start[3],
+  double r2_end[3],
+  double v2_end[3],
+  double a2_end[3],
+  int *min_exists,
+  double *gamma0,
+  double *gamma1,
+  double *gamma2,
+  double *gamma3){
+
+  double fd_start, fd_dot_start, fd_dot_dot_start;
+  double fd_dot_start_temp, fd_dot_dot_start_temp, fd_dot_dot_start_temp2;
+  double fd_dot_end_temp, fd_dot_dot_end_temp, fd_dot_dot_end_temp2;
+  double fd_end, fd_dot_end, fd_dot_dot_end;
+  double rd_start[3], rd_end[3];
+  double rd_dot_start[3], rd_dot_end[3];
+  double rd_dot_dot_start[3], rd_dot_dot_end[3];
+
+  char et_start_str[256];
+  et2utc_c(et_start, "ISOC", 3, 255, et_start_str);
+
+  char et_end_str[256];
+  et2utc_c(et_start + dt_interval, "ISOC", 3, 255, et_end_str);
+
+  // Set up variables
+
+  // rd
+  v_sub( rd_start, r2_start, r1_start);
+  v_sub( rd_end, r2_end, r1_end);
+
+  // rd_dot
+  v_sub( rd_dot_start, v2_start, v1_start);
+  v_sub( rd_dot_end, v2_end, v1_end);
+
+  // rd_dot_dot
+  v_sub( rd_dot_dot_start, a2_start, a1_start);
+  v_sub( rd_dot_dot_end, a2_end, a1_end);
+
+  // f
+  v_dot(&fd_start, rd_start, rd_start);
+  v_dot(&fd_end, rd_end, rd_end);
+
+  // fd_dot
+  v_dot(&fd_dot_start_temp, rd_dot_start, rd_start);
+  fd_dot_start = fd_dot_start_temp * 2;
+
+  v_dot(&fd_dot_end_temp, rd_dot_end, rd_end);
+  fd_dot_end = fd_dot_end_temp * 2;
+
+  // fd_dot_dot
+  v_dot( &fd_dot_dot_start_temp, rd_dot_dot_start, rd_start );
+  v_dot( &fd_dot_dot_start_temp2, rd_dot_start, rd_dot_start );
+
+  fd_dot_dot_start = 2 * ( fd_dot_dot_start_temp + fd_dot_dot_start_temp2 );
+
+  v_dot( &fd_dot_dot_end_temp, rd_dot_dot_end, rd_end );
+  v_dot( &fd_dot_dot_end_temp2, rd_dot_end, rd_dot_end );
+
+  fd_dot_dot_end = 2 * ( fd_dot_dot_end_temp + fd_dot_dot_end_temp2 );
+
+  // Calculate coefficients of order 3 polynomial
+  *gamma0 = fd_dot_start;
+  *gamma1 = fd_dot_dot_start * dt_interval;
+  *gamma2 = -3 * fd_dot_start - 2 * fd_dot_dot_start * dt_interval + 3 * fd_dot_end - fd_dot_dot_end * dt_interval;
+  *gamma3 = 2 * fd_dot_start + fd_dot_dot_start * dt_interval - 2 * fd_dot_end + fd_dot_dot_end * dt_interval;
+
+  // Check if there is a root, because if there's not then it means there is min distance between the 2 sc so no need to compute gsl_poly_solve_cubic in ancas function
+  int real_root_exists = 1;
+  double min1;
+  double max1;
+  if ( *gamma0 > 0 )
+  {
+    min1 = *gamma1;
+    if (*gamma1 + *gamma2 < min1)
+    {
+      min1 = *gamma1 + *gamma2 ;
+    }
+    if (*gamma1 + *gamma2 + *gamma3 < min1)
+    {
+      min1 = *gamma1 + *gamma2 + *gamma3 ;
+    }
+
+    if (min1 > -*gamma0)
+    {
+      real_root_exists = 0;
+    }
+  }
+  else
+  {
+    max1 = *gamma1;
+    if (*gamma1 + *gamma2 > max1)
+    {
+      max1 = *gamma1 + *gamma2 ;
+    }
+    if(*gamma1 + *gamma2 + *gamma3 > max1)
+    {
+      max1 = *gamma1 + *gamma2 + *gamma3;
+    }
+    if (max1 < -*gamma0)
+    {
+      real_root_exists = 0;
+    }
+  }
+
+  if ( real_root_exists == 1 )
+  {
+    *min_exists = 1;
+  }
+  else
+  {
+    *min_exists = 0;
+  }
+
   return 0;
 }
