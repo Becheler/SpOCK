@@ -5,19 +5,19 @@
 #include "generate_ephemerides.c"
 
 
-int nProcs;
-int iProc;
-
 int main(int argc, char * argv[])
 {
+  int nProcs;
+  int iProc;
 
   // Declarations
 
-  OPTIONS_T        OPTIONS;
-  PARAMS_T         PARAMS;
+  OPTIONS_T OPTIONS;
+  PARAMS_T PARAMS;
   GROUND_STATION_T GROUND_STATION;
+
   //    STORM_T         STORM;
-  char             filename_input[256];
+  char filename_input[256];
   char filename_input_raw[300];
   int ierr;
   CONSTELLATION_T *CONSTELLATION = malloc(sizeof(CONSTELLATION_T));
@@ -143,8 +143,10 @@ int main(int argc, char * argv[])
   }else{
 
     // Generate the Ephemerides
-    if (iDebugLevel >= 0){
-      if (iProc == 0){
+    if (iDebugLevel >= 0)
+    {
+      if (iProc == 0)
+      {
         printf("\n- Generating the ephemerides... (iProc: %d)\n", iProc);
       }
     }
@@ -152,7 +154,8 @@ int main(int argc, char * argv[])
     generate_ephemerides( CONSTELLATION, &OPTIONS, &PARAMS, &GROUND_STATION, iProc, nProcs, iDebugLevel);
 
     // Notify Exit
-    if (iProc == 0) {
+    if (iProc == 0)
+    {
       printf("Done propagating the spacecraft.\n");
     }
   }

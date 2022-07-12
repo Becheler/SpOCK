@@ -15,19 +15,16 @@ int generate_ephemerides
   int iDebugLevel
 ){
 
-  int eee_prim_that_collide = -1;
-  // if set to 0 then don't write in the given files. if set to 1 the write in given files
-
-  int write_density = 0;
-
-  // set output_only_at_tca to 1 to output only at tca  (if computing collisions)
-  int output_only_at_tca = 1;
   if ( ( iDebugLevel >= 1 ) )
   {
     printf("-- (generate_ephemerides) Just got in generate_ephemerides. (iProcc %d)\n", iProc);
   }
 
-  char temp_iproc_file[256], temp_nb_proc[256];
+  char temp_iproc_file[256];
+  char temp_nb_proc[256];
+
+  int eee_prim_that_collide;
+  // locality: line 1400, 1608
   double et_current_tca;
   int start_itca=0;
   char time_itca2[256];
@@ -96,11 +93,16 @@ int generate_ephemerides
   double min_end_time;
 
   // other variables
-  int ii, eee, fff;
-  double starttime, endtime;
+  int ii;
+  int eee;
+  int fff;
+  double starttime;
+  double endtime;
   double twrite = 0.0;
-  double time_between_last_gps_epoch_and_constellation_epoch_starttime, new_dt_for_gps;
-  int save_include_drag, save_include_solar_pressure, save_include_earth_pressure;
+  double new_dt_for_gps;
+  int save_include_drag;
+  int save_include_solar_pressure;
+  int save_include_earth_pressure;
   double save_solar_cell_efficiency;
   int choose_tle_to_initialise_orbit = 0;
   int ccc;
@@ -648,8 +650,9 @@ int generate_ephemerides
       {
         // if this iProc runs main sc ii
 
-        time_between_last_gps_epoch_and_constellation_epoch_starttime = -1.0;
+        double time_between_last_gps_epoch_and_constellation_epoch_starttime = -1.0;
         new_dt_for_gps = -1.0;
+
         while ( ( ( CONSTELLATION->spacecraft[ii][0].et - twrite ) < 0 ) && ( ( twrite - CONSTELLATION->spacecraft[ii][0].et ) > CONSTELLATION->spacecraft[ii][0].INTEGRATOR.dt_pos_neg ) )
         {
           propagate_spacecraft( &CONSTELLATION->spacecraft[ii][0], PARAMS, starttime, OPTIONS->et_oldest_tle_epoch, &density, GROUND_STATION, OPTIONS, CONSTELLATION, iProc , iDebugLevel, start_ensemble, array_sc); // don't care about starttime here because this is used for linear interpolation with the density drivers (F10.7, Ap, ...) and the attitude, which we do not care for the GPS satellites (for now!)
@@ -1404,7 +1407,7 @@ int generate_ephemerides
           done_with_tca[itca] = 0;
         }
       }
-    }
+    }  // end of  start collision assessment when the secondary sc time enters the span of time around TCA
 
     // go through all reference satellites (and their associated ensembles deeper in the loop)
     for (ii = 0; ii < OPTIONS->n_satellites; ii++)
@@ -1424,6 +1427,8 @@ int generate_ephemerides
             min_altitude_constellation = CONSTELLATION->spacecraft[ii][0].GEODETIC.altitude;
           }
         }
+      } // end of if this iProc runs main sc ii
+
 
         if (ii < OPTIONS->n_satellites - OPTIONS-> nb_gps)
         {
@@ -1521,6 +1526,8 @@ int generate_ephemerides
                       printf("----- (generate_ephemerides) Just got out of time spanning TCA %d and now computing collisions for this time span (iProc %d)\n", itca+1, iProc);
                     }
 
+                    eee_prim_that_collide = -1;
+
                     for (eee_prim = 1; eee_prim< 1 + nProcs * OPTIONS->nb_ensemble_min_per_proc ; eee_prim++)
                     {
                       compute_collision_between_one_secondary_and_all_primary(
@@ -1570,6 +1577,9 @@ int generate_ephemerides
 
           if ( ( already_propagated_ref_sc == 1 )   )
           {
+            // set output_only_at_tca to 1 to output only at tca  (if computing collisions)
+            int output_only_at_tca = 1;
+
             //2020-11-13 i don't want to worry about dt_pos_neg (backward propagation) for ensemble propagation
             if ( output_only_at_tca != 1 )
             {
@@ -1598,7 +1608,6 @@ int generate_ephemerides
               // to output only at tca of unperturbed orbit
               if (itca != -1)
               {
-                // if ( fabs(CONSTELLATION->spacecraft[ii][1 + iProc * OPTIONS->nb_ensemble_min_per_proc].et - et_current_tca) <= 0.01) {// && ( itca != -1 ) ) { // write output
                 if ( ( CONSTELLATION->spacecraft[ii][1 + iProc * OPTIONS->nb_ensemble_min_per_proc].et >= et_current_tca - OPTIONS->dt ) &&
                 ( CONSTELLATION->spacecraft[ii][1 + iProc * OPTIONS->nb_ensemble_min_per_proc].et <= et_current_tca + OPTIONS->dt  ) )
                 {
