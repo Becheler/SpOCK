@@ -5,9 +5,9 @@
 #include "utils.c"
 #include "write_output.c"
 
-#include<iostream>
+#include <iostream>
 #include <cassert>
-
+#include <vector>
 ///
 /// @brief Customed messages for reporting progress
 ///
@@ -72,8 +72,128 @@ bool should_compute_collisions_based_on(OPTIONS_T *options)
          ( options->nb_ensembles > 0 ) &&
          ( (strcmp(options->type_orbit_initialisation, "collision" ) == 0 ) ||
            (strcmp(options->type_orbit_initialisation, "collision_vcm" ) == 0 )
-         )
+         );
 }
+
+///
+/// @brief Set-up context for parallel execution
+///
+/// @note trying to encapsulate whatever logic is behind that
+class ParallelExecutionContext
+{
+
+  private:
+
+    auto initialize_save_vectors(int nb_satellites, int nb_process)
+    {
+      int nb_task_per_instance = nb_satellites / nb_process;
+
+      int nscLeft = nb_satellites - (nb_task_per_instance * nb_process);
+
+      for (int j = 0; j < nb_process; j++)
+      {
+        for (int i = 0; i < j; i++)
+        {
+          this->save_i_start[j] += nb_task_per_instance;
+          if (i < nscLeft && j > 0)
+          {
+            this->save_i_start[j] += 1;
+          }
+        }
+
+        this->save_i_end[j] = this->save_i_start[j] + nb_task_per_instance;
+
+        if (j < nscLeft)
+        {
+          this->save_i_end[j] += 1;
+        }
+
+        this->save_i_start[j] = this->save_i_start[j];
+        this->save_i_end[j] = this->save_i_end[j];
+
+        if ( this->save_i_start[j] >= this->save_i_end[j] )
+        {
+          // the process j does not run any main spacecraft
+          this->iProc_run_main_sc[j] = 0;
+        } else{
+          this->iProc_run_main_sc[j] = 1;
+        }
+      }
+    }
+
+    auto build_ensemble(int nb_satellites, int current_process)
+    {
+      // For each main sc, start_ensemble is 0 if the current process runs this main sc.
+      std::vector<int> ensemble(nb_satellites, 0);
+      // start_ensemble is 1 is the process does not run this main spacecraft.
+      for (int i = 0; i < nb_satellites; i++)
+      {
+        if ( (i >= this->save_i_start[current_process]) & ( i < this->save_i_end[current_process]) )
+          ensemble[i] = 0;
+        else
+          ensemble[i] = 1;
+      }
+      return ensemble;
+    }
+
+    auto build_spacecrafts(int nb_ensemble_min_per_proc, int nb_process, int current_process, int nb_ensembles_min)
+    {
+      // Which iProc runs which main sc / which sc is run by which iProc
+      this->nProcs_that_are_gonna_run_ensembles = (nb_process > nb_ensembles_min) ? nb_ensembles_min : nb_process;
+      /// collection of sc (main and ensemble sc)
+      ///
+      /// @note + 2 (and not + 1) because if there is no ensemble, spacecrafts[1] must be valid
+      std::vector<int> spacecrafts(nb_ensemble_min_per_proc + 2);
+      // set to -1 because if there is no ensemble, eee must never be equal to spacecrafts[1]
+      // @warning this is ovewritten in the next loop and is probably an old pattern
+      spacecrafts[1] = -1;
+
+      for ( int i = 1; i < nb_ensemble_min_per_proc + 1; i++ )
+      {
+        if (current_process < this->nProcs_that_are_gonna_run_ensembles)
+        {
+          this->spacecrafts[i] = current_process * nb_ensemble_min_per_proc + i;
+        }
+      }
+      return spacecrafts;
+    }
+
+auto build_which_is_running_main(int nb_satellites, int nb_process)
+{
+  std::vector<int> which_iproc_is_running_main_sc(nb_satellites, 0);
+
+  for (int i = 0; i < nb_satellites; i++)
+  {
+    for (int j = 0; j < nb_process; j++)
+    {
+      if ( ( i >= this->save_i_start[j] ) && ( i < this->save_i_end[j]))
+      {
+        which_iproc_is_running_main_sc[i] = j;
+      }
+    }
+  }
+  return which_iproc_is_running_main_sc;
+}
+
+public:
+
+  // exposed as pubic as I don't know yet what it's used for
+  std::vector<int> save_i_start;
+  std::vector<int> save_i_end;
+  std::vector<int> iProc_run_main_sc;
+  std::vector<int> start_ensemble;
+  std::vector<int> spacecrafts;
+  std::vector<int> which_iproc_is_running_main_sc;
+  int nProcs_that_are_gonna_run_ensembles;
+
+  ParallelExecutionContext(int nb_satellites, int nb_process, int current_process, int nb_ensemble_min_per_proc, int nb_ensembles_min)
+  {
+    initialize_save_vectors(nb_satellites, nb_process);
+    this->start_ensemble = build_ensemble(nb_satellites, current_process);
+    this->spacecrafts = build_spacecrafts(nb_ensemble_min_per_proc, nb_process, current_process, nb_ensembles_min);
+    this->which_iproc_is_running_main_sc = build_which_is_running_main(nb_satellites, nb_process);
+  }
+};
 
 int generate_ephemerides
 (
@@ -91,9 +211,27 @@ int generate_ephemerides
     std::cout << "-- (generate_ephemerides) Just got in generate_ephemerides. (iProcc " <<  iProc << ")" << std::endl;
   }
 
+  // Decide Collisions
+  bool compute_collisions =  should_compute_collisions_based_on(OPTIONS);
+
+  // Make options independent from other functions/classes
+  int nb_process = nProcs;
+  int current_process = iProc;
+  int nb_satellites = OPTIONS->n_satellites;
+  int nb_ensemble_min_per_proc = OPTIONS->nb_ensemble_min_per_proc;
+  int nb_ensembles_min = OPTIONS->nb_ensembles_min;
+
+  // Parallel Execution
+  auto context = ParallelExecutionContext(nb_satellites, nb_process, current_process, nb_ensemble_min_per_proc, nb_ensembles_min);
+  // Interface C legacy code with modern C++
+  auto const& start_ensemble = context.start_ensemble.data();
+  auto const& which_iproc_is_running_main_sc = context.which_iproc_is_running_main_sc.data();
+  auto const& nProcs_that_are_gonna_run_ensembles = context.nProcs_that_are_gonna_run_ensembles;
+  auto const& array_sc = context.spacecrafts.data();
+
+  // these variables declaration are very old C style and have to go
   char temp_iproc_file[256];
   char temp_nb_proc[256];
-
   int eee_prim_that_collide;
   // locality: line 1400, 1608
   double et_current_tca;
@@ -103,16 +241,13 @@ int generate_ephemerides
   double **save_last_distance_unpertubed_orbit = NULL;
   int nb_tca_without_collisions;
   int nb_tca_with_collisions;
-
   int compute_collisions_was_on_but_no_tca_found = 0;
   double *total_collision_each_dt;
   int already_propagated_ref_sc = 0;
   FILE *file_collision = NULL;
   double et_step_collision;
-
   //  int eee_sec;
   int eee_prim;
-
   int ispan_constellation;
   int eee_all_other_iproc;
   int total_ensemble_final = OPTIONS->nb_ensemble_min_per_proc*nProcs;
@@ -124,7 +259,6 @@ int generate_ephemerides
   int ***nb_coll_per_step_in_TCA = NULL;
   int iiitca;
   int ****nb_coll_per_step_per_iproc_in_tca = NULL;
-
   //  int istepspan;
   float min_altitude_constellation = 1.0e32;
   double **previous_eci_r = NULL;
@@ -137,16 +271,13 @@ int generate_ephemerides
   int *done_with_tca = NULL;
   int itca;
   int iground;
-
   FILE *tca_file;
   FILE *dca_file;
   FILE *sample_file;
-
   double density;
   char times_att[300];
   double previous_lat = 0;
   double tca1 = -1, dca1 = 1e6, tca2 = -1, dca2 = 1e6, tca3 = -1, dca3 = 1e6;
-
   int nb_tca = 0;
   /// @warning for now works only if two reference satellies only (add a dimension if more than 2 sc)
   double *save_tca = NULL;
@@ -160,9 +291,7 @@ int generate_ephemerides
   double ***save_vx_i2cg_INRTL = NULL, ***save_vy_i2cg_INRTL = NULL, ***save_vz_i2cg_INRTL = NULL;
   double ***save_ax_i2cg_INRTL = NULL, ***save_ay_i2cg_INRTL = NULL, ***save_az_i2cg_INRTL = NULL;
   int nb_time_steps_in_tca_time_span = (int) (nearbyint( CONSTELLATION->collision_time_span / OPTIONS->dt )) + 1 ; // the cast here is not necessary as we made sure in initialize_constellation that CONSTELLATION->collision_time_span is an even multiple of OPTIONS->dt
-
   double min_end_time;
-
   // other variables
   int ii;
   int eee;
@@ -177,133 +306,6 @@ int generate_ephemerides
   double save_solar_cell_efficiency;
   int choose_tle_to_initialise_orbit = 0;
   int ccc;
-  int compute_collisions = 0;
-
-  // Decide Collisions
-    compute_collisions =  should_compute_collisions_based_on(OPTIONS);
-
-  // SETTING THINGS UP FOR PARALLEL PROGRAMMING
-
-
-  // Which iProc runs which main sc / which sc is run by which iProc
-  int nProcs_that_are_gonna_run_ensembles;
-  nProcs_that_are_gonna_run_ensembles = nProcs;
-  if ( nProcs > OPTIONS->nb_ensembles_min )
-  {
-    nProcs_that_are_gonna_run_ensembles = OPTIONS->nb_ensembles_min;
-  }
-
-  // For each iProc, set up the first main sc (iStart_save[iProcf])
-  // and the last main sc (iEnd_save[iProcf]) that it's going to run.
-  // iStart_save and iEnd_save are two arrays that have the same values for all
-  // procs (so if you're iProc 0 or iProc 1, you have value recorded for iStart_save[0]
-  // and iEnd_save[0] and the same value recorded for iStart_save[1] and iEnd_save[1]) ->
-  // they are not "iProc-dependent"
-  int *iProc_run_main_sc;
-  iProc_run_main_sc = static_cast<int *>(malloc(nProcs * sizeof(int)));
-
-  int nscEachPe, nscLeft;
-  nscEachPe = (OPTIONS->n_satellites)/nProcs;
-  nscLeft = (OPTIONS->n_satellites) - (nscEachPe * nProcs);
-
-  int *iStart_save, *iEnd_save;
-  iStart_save = static_cast<int *>(malloc( nProcs * sizeof(int)));
-  iEnd_save = static_cast<int *>(malloc( nProcs  * sizeof(int)));
-
-  int iProcf;
-  int i;
-  for (iProcf = 0; iProcf < nProcs; iProcf++)
-  {
-    iStart_save[iProcf] = 0;
-    iEnd_save[iProcf] = 0;
-  }
-
-  for (iProcf = 0; iProcf < nProcs; iProcf++)
-  {
-    for (i=0; i<iProcf; i++)
-    {
-      iStart_save[iProcf] += nscEachPe;
-      if (i < nscLeft && iProcf > 0) iStart_save[iProcf]++;
-    }
-
-    iEnd_save[iProcf] = iStart_save[iProcf]+nscEachPe;
-    if (iProcf  < nscLeft) iEnd_save[iProcf]++;
-    iStart_save[iProcf] = iStart_save[iProcf];
-    iEnd_save[iProcf] = iEnd_save[iProcf];
-    if ( iStart_save[iProcf] >= iEnd_save[iProcf] )
-    {
-      // this happens if the iProc iProcf does not run any main sc
-      iProc_run_main_sc[iProcf] = 0;
-    }
-    else{
-      iProc_run_main_sc[iProcf] = 1;
-    }
-  }
-
-  // For each main sc, start_ensemble is 0 if the iProc runs this main sc.
-  // start_ensemble is 1 is the iProc does not run this main sc. (so each iProc has
-  // a different array start_ensemble -> start_ensemble is "iProc-dependent")
-  int *start_ensemble;
-  start_ensemble = static_cast<int *>(malloc(OPTIONS->n_satellites * sizeof(int)));
-
-  for (ii = 0; ii < OPTIONS->n_satellites; ii++)
-  {
-    if ( (ii >= iStart_save[iProc]) & ( ii < iEnd_save[iProc]) )
-    {
-      start_ensemble[ii] = 0;
-    }
-    else{
-      start_ensemble[ii] = 1;
-    }
-  }
-
-  // array_sc is the array of sc (main and ensemble sc) run by this iProc.
-  // So array_sc is "iProc-dependent": each iProc has a different array array_sc.
-  // What array_sc has: the first elt is 0, whatever iProc it is (because it represents main sc.
-  // However, it does not mean that all iProc will run a main sc, this is decided later in the code
-  // (using start_ensemble)). The next elts (1, 2, ..., OPTIONS->nb_ensemble_min_per_proc) represent
-  // the ensemble sc run by this iProc. So for example if there are 20 ensembles and 2 iProc,
-  // array_sc is:
-  // for iProc 0: [0, 1, 2, 3, ..., 9, 10]
-  // for iProc 1: [0, 11, 12, 13, ..., 19, 20]
-  int ielt;
-  int *array_sc;
-  // + 2 (and not + 1) because if there is no ensemble, we still want array_sc[1]
-  // to exist (because later in the code we call array_sc[start_ensemble[ii]],
-  // and start_ensemble[ii] = 1 if the iProc does not run main sc ii).
-  array_sc = static_cast<int *>(malloc((OPTIONS->nb_ensemble_min_per_proc + 2) * sizeof(int)));
-
-  // if there is no ensemble, we still want array_sc[1] to exist
-  // (because later in the code we call array_sc[start_ensemble[ii]],
-  // and start_ensemble[ii] = 1 if the iProc does not run main sc ii).
-  // We set to -1 because we want to make sure that if there is no ensemble,
-  // eee will never be equal to array_sc[1]. If there are ensembles, array_sc[1]
-  // is overwritten right below anyway
-  array_sc[0] = 0;
-  array_sc[1] = -1;
-  for ( ielt = 1; ielt < OPTIONS->nb_ensemble_min_per_proc + 1; ielt ++ )
-  {
-    if (iProc < nProcs_that_are_gonna_run_ensembles)
-    {
-      array_sc[ielt] = iProc * OPTIONS->nb_ensemble_min_per_proc + ielt;
-    }
-  }
-
-  // for each main, which_iproc_is_running_main_sc is the iProc that runs it. For example, which_iproc_is_running_main_sc[3] is equal to the iProc that runs the main sc 3. So which_iproc_is_running_main_sc is the same array for all iProc -> which_iproc_is_running_main_sc is not "iProc-dependent"
-  int *which_iproc_is_running_main_sc;
-  which_iproc_is_running_main_sc = static_cast<int *>(malloc( OPTIONS->n_satellites * sizeof(int)));
-  for (ii = 0; ii < OPTIONS->n_satellites; ii++)
-  {
-    for (ccc = 0; ccc < nProcs; ccc++)
-    {
-      if ( ( ii >= iStart_save[ccc] ) && ( ii < iEnd_save[ccc]))
-      {
-        which_iproc_is_running_main_sc[ii] = ccc;
-      }
-    }
-  }
-
-  // end of SET THINGS UP FOR PARALLEL PROGRAMMING
 
   // Compute the starttime and endtime
   str2et_c(OPTIONS->initial_epoch, &starttime);
