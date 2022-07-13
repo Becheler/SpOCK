@@ -63,6 +63,18 @@ int print_progress_collision(int eee_sec, int iProc, int nb_ensemble_min_per_pro
   std::cout << "Collision assessmnent by node " << iProc << " ... " << progress * 100.0 << std::endl;
 }
 
+///
+/// @brief Decides if collisions should be computed
+///
+bool should_compute_collisions_based_on(OPTIONS_T *options)
+{
+  return ( options->nb_satellites_not_including_gps > 1 ) &&
+         ( options->nb_ensembles > 0 ) &&
+         ( (strcmp(options->type_orbit_initialisation, "collision" ) == 0 ) ||
+           (strcmp(options->type_orbit_initialisation, "collision_vcm" ) == 0 )
+         )
+}
+
 int generate_ephemerides
 (
   CONSTELLATION_T  *CONSTELLATION,
@@ -76,7 +88,7 @@ int generate_ephemerides
 
   if ( ( iDebugLevel >= 1 ) )
   {
-    printf("-- (generate_ephemerides) Just got in generate_ephemerides. (iProcc %d)\n", iProc);
+    std::cout << "-- (generate_ephemerides) Just got in generate_ephemerides. (iProcc " <<  iProc << ")" << std::endl;
   }
 
   char temp_iproc_file[256];
@@ -167,12 +179,8 @@ int generate_ephemerides
   int ccc;
   int compute_collisions = 0;
 
-  // Collisions
-  if ( ( OPTIONS->nb_satellites_not_including_gps > 1 ) && ( OPTIONS->nb_ensembles > 0 ) && ( (strcmp(OPTIONS->type_orbit_initialisation, "collision" ) == 0 ) || (strcmp(OPTIONS->type_orbit_initialisation, "collision_vcm" ) == 0 )))
-  {
-    compute_collisions = 1;
-  }
-
+  // Decide Collisions
+    compute_collisions =  should_compute_collisions_based_on(OPTIONS);
 
   // SETTING THINGS UP FOR PARALLEL PROGRAMMING
 
@@ -730,7 +738,7 @@ int generate_ephemerides
     } // end of going through all GPS sc
   } // end of if (OPTIONS->nb_gps > 0)
 
-  if (compute_collisions == 1)
+  if (compute_collisions )
   {
     // if computing the probability of collision
     if (nProcs > OPTIONS->nb_ensembles_min)
@@ -771,7 +779,7 @@ int generate_ephemerides
 
   } // end of if computing the probability of collision
 
-  if (compute_collisions == 1)
+  if (compute_collisions)
   {
     // if computing the probability of collision 2020-11-13 i don't want to worry about dt_pos_neg (backward propagation) for collision avoidance
     if ( ( iDebugLevel >= 2 ) )
@@ -1162,7 +1170,7 @@ int generate_ephemerides
       // Update compute_collisions: if there is no close approach between the unpertubed orbits, then don't compute collisions
       if ( nb_tca  <= 0 )
       {
-        compute_collisions = 0;
+        compute_collisions = false ;
         compute_collisions_was_on_but_no_tca_found = 1;
       }
 
@@ -1189,7 +1197,7 @@ int generate_ephemerides
     }
   } // end of if compute_collision
 
-  if (compute_collisions == 1)
+  if (compute_collisions)
   {
 
     done_with_tca =  static_cast<int *>(malloc( nb_tca * sizeof(int) ));
@@ -1401,7 +1409,7 @@ int generate_ephemerides
     printf("--- (generate_ephemerides) Propagating all spacecraft (reference and ensembles spacecraft). (iProc %d)\n", iProc);
   }
 
-  if (compute_collisions == 1)
+  if (compute_collisions)
   {
     // some reinitialization of paramters
     if ((strcmp(OPTIONS->test_omniweb_or_external_file, "swpc_mod") == 0) && (OPTIONS->swpc_need_predictions))
@@ -1429,7 +1437,7 @@ int generate_ephemerides
     // Time to stop the propagation
     min_end_time = endtime;
 
-    if ( ( compute_collisions == 1 ) )
+    if ( compute_collisions )
     {
       //2020-11-13 i don't want to worry about dt_pos_neg (backward propagation) for collision avoidance
       if ( max_tca + ((int)(nb_time_steps_in_tca_time_span / 2) * OPTIONS->dt ) < endtime )
@@ -1441,7 +1449,7 @@ int generate_ephemerides
     if (iProc == 0) print_progress<progress_policy::standard_propagation>(min_end_time, CONSTELLATION->et , starttime);
 
     /// start collision assessment when the secondary sc time enters the span of time around TCA.
-    if ( ( compute_collisions == 1 )  )
+    if ( compute_collisions)
     {
       /// @warning CONSTELLATION->et  is temporary and assumes the reference sc have the same epoch start. If it's not the case then this needs to be changed (below and at other locations in the code) //2020-11-13 i don't want to worry about dt_pos_neg (backward propagation) for collision avoidance
       itca = -1; // if itca is different from -1 then it means that the time is in the time spanning TCA (unpertubed)
@@ -1497,7 +1505,7 @@ int generate_ephemerides
 
                 ispan_constellation = (int)( fabs( CONSTELLATION->et + OPTIONS->dt_pos_neg - et_start_of_span ) / OPTIONS->dt );
 
-                if ( ( compute_collisions == 1 )  && ( itca != -1 ) && ( ispan_constellation < nb_time_steps_in_tca_time_span ) )
+                if ( compute_collisions  && ( itca != -1 ) && ( ispan_constellation < nb_time_steps_in_tca_time_span ) )
                 {
 
                   // // Save positions of all ensembles
@@ -1570,7 +1578,7 @@ int generate_ephemerides
                 if (ii == 1)
                 {
                   // only get in this loop if secondary sc
-                  if ( ( compute_collisions == 1 )  && ( itca != -1 ) && ( ispan_constellation == nb_time_steps_in_tca_time_span - 1 ) )
+                  if ( compute_collisions  && ( itca != -1 ) && ( ispan_constellation == nb_time_steps_in_tca_time_span - 1 ) )
                   {
                     if ( ( iDebugLevel >= 5 ) )
                     {
@@ -1644,12 +1652,12 @@ int generate_ephemerides
                 }
               }
 
-              if ( ( ii == (OPTIONS->n_satellites - 1) ) && (compute_collisions == 0) )
+              if ( ( ii == (OPTIONS->n_satellites - 1) ) && !compute_collisions )
               {
                 twrite = CONSTELLATION->et + OPTIONS->dt;
               }
 
-              if ( ( ii == (OPTIONS->n_satellites - 1) ) && (compute_collisions == 1) )
+              if ( ( ii == (OPTIONS->n_satellites - 1) ) && compute_collisions )
               {
                 twrite = CONSTELLATION->et + OPTIONS->dt;
               }
@@ -1690,19 +1698,19 @@ int generate_ephemerides
               }
             }
 
-            if ( ( ii == (OPTIONS->n_satellites - 1) ) && (compute_collisions == 0) )
+            if ( ( ii == (OPTIONS->n_satellites - 1) ) && !compute_collisions )
             {
               twrite = CONSTELLATION->et + OPTIONS->dt_pos_neg;
             }
 
-            if ( ( ii == (OPTIONS->n_satellites - 1) ) && (compute_collisions == 1) )
+            if ( ( ii == (OPTIONS->n_satellites - 1) ) && compute_collisions )
             {
               twrite = CONSTELLATION->et + OPTIONS->dt_pos_neg;
             }
           }
         } // go through all reference satellites (and their associated ensembles deeper in the loop)  (END OF LOOP OVER ALL MAIN SATELLITES)
 
-        if ( ( compute_collisions == 1 ))
+        if ( compute_collisions)
         {
           if ( ( CONSTELLATION->et + OPTIONS->dt ) > max_tca + ((int)(nb_time_steps_in_tca_time_span / 2) * OPTIONS->dt ) )
           {
@@ -1727,7 +1735,7 @@ int generate_ephemerides
       }
 
       // COMPUTE COLLISION FOR EACH TCA
-      if ( ( compute_collisions == 1 ) )
+      if ( compute_collisions )
       {
 
         // if collision assessment is on
@@ -1868,7 +1876,7 @@ int generate_ephemerides
 
       if ( iProc == 0 )
       {
-        if ( (compute_collisions == 1) )
+        if ( compute_collisions )
         {
           // if collision assessment is on
           ii = 1; // !!!!!!!!! FOR NOW WORKS ONLY IF TWO REFERENCE SATELLIES ONLY
