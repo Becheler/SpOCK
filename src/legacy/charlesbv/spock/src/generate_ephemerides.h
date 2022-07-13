@@ -2,7 +2,66 @@
 #include "moat_prototype.h"
 #include "gsl/gsl_poly.h"
 
+#include "utils.c"
 #include "write_output.c"
+
+#include<iostream>
+#include <cassert>
+
+///
+/// @brief Customed messages for reporting progress
+///
+namespace progress_policy
+{
+  struct standard_propagation
+  {
+    static constexpr char message[] = "\033[A\33[2K\rSpOCK is propagating the spacecraft... ";
+  };
+
+  struct epoch_sc_to_epoch_constellation
+  {
+    static constexpr char message[] ="\033[A\33[2K\rPropagating the satellites until the epoch start time of the constellation... ";
+  };
+
+  struct kalman_filtering
+  {
+    static constexpr char message[] = "\033[A\33[2K\rRunning the Kalman filter... ";
+  };
+
+  struct unperturbed_orbits
+  {
+    static constexpr char message[] = "\033[A\33[2K\rPropagating the unpertubed orbits to compute times of close approach...";
+  };
+}
+
+///
+/// @brief Computes progress
+///
+template<typename T=double>
+auto compute_progress(T min_end_time, T et, T start_time)
+{
+  assert(min_end_time != start_time);
+  return static_cast<double>( et - start_time ) / static_cast<double>( fabs(min_end_time - start_time) ) * 100.0;
+}
+
+///
+/// @brief Computes and displays progress to standard output.
+///
+template<class Policy, typename T=double>
+auto print_progress(T min_end_time, T et, T start_time)
+{
+  std::cout << Policy::message << compute_progress(min_end_time, et, start_time) << std::endl;
+}
+
+///
+/// @brief Displays progress for collision assessment in a multi-process context
+///
+int print_progress_collision(int eee_sec, int iProc, int nb_ensemble_min_per_proc, int nb_tca)
+{
+  double progress;
+  progress = static_cast<double>(eee_sec - nb_ensemble_min_per_proc * iProc ) / static_cast<double>(nb_ensemble_min_per_proc) / static_cast<double>(nb_tca);
+  std::cout << "Collision assessmnent by node " << iProc << " ... " << progress * 100.0 << std::endl;
+}
 
 int generate_ephemerides
 (
@@ -837,11 +896,7 @@ int generate_ephemerides
       // propagate all unrpertubed orbits to determine times of close approach
       already_propagated_ref_sc = 1;
 
-      // PRINT PROGRESS TO SCREEN
-      if (iProc == 0)
-      {
-        printf("\033[A\33[2K\rPropagating the unpertubed orbits to compute times of close approach... %.0f%%\n", ( CONSTELLATION->et - starttime ) / fabs( endtime - starttime ) *100.0);
-      }
+      if (iProc == 0) print_progress<progress_policy::unperturbed_orbits>(endtime, CONSTELLATION->et, starttime);
 
       for (ii = 0; ii < OPTIONS->nb_satellites_not_including_gps; ii++)
       {
@@ -1383,11 +1438,7 @@ int generate_ephemerides
       }
     }
 
-    // Print progress to screen
-    if (iProc == 0)
-    {
-      print_progress( min_end_time, CONSTELLATION->et , starttime, iProc, OPTIONS->nb_gps )  ;
-    }
+    if (iProc == 0) print_progress<progress_policy::standard_propagation>(min_end_time, CONSTELLATION->et , starttime);
 
     /// start collision assessment when the secondary sc time enters the span of time around TCA.
     if ( ( compute_collisions == 1 )  )

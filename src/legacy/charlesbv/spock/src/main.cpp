@@ -2,7 +2,7 @@
 #include "propagator.h"
 #include "moat_prototype.h"
 #include "kalman_9state_new_with_tau.h"
-#include "generate_ephemerides.c"
+#include "generate_ephemerides.h"
 
 
 int main(int argc, char * argv[])
@@ -20,7 +20,7 @@ int main(int argc, char * argv[])
   char filename_input[256];
   char filename_input_raw[300];
   int ierr;
-  CONSTELLATION_T *CONSTELLATION = malloc(sizeof(CONSTELLATION_T));
+  CONSTELLATION_T *CONSTELLATION =  static_cast<CONSTELLATION_T *>(malloc(sizeof(CONSTELLATION_T)));
 
   ierr = MPI_Init(&argc, &argv);
 
@@ -122,7 +122,7 @@ int main(int argc, char * argv[])
       // Print progress to screen
       if (iProc == 0)
       {
-        print_progress_kalman( min_end_time, KF.sc.et , OPTIONS.et_initial_epoch, iProc, OPTIONS.nb_gps )  ;
+        print_progress<progress_policy::kalman_filtering>( min_end_time, KF.sc.et , OPTIONS.et_initial_epoch)  ;
       }
 
       kalman_filt( &MEAS, &KF, &PARAMS, &OPTIONS, &GROUND_STATION, CONSTELLATION, iProc, iDebugLevel, nProcs);

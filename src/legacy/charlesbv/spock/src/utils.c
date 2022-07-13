@@ -1,51 +1,5 @@
-#include "options.h"
-#include "moat_prototype.h"
-#include "gsl/gsl_poly.h"
-
-///
-/// @brief Displays progress if the number of processes is equal to 0
-///
-int print_progress(double min_end_time, double et , double starttime, int iProc, int nb_gps)
-{
-  if (iProc == 0)
-  {
-    // print progress
-    printf("\033[A\33[2K\rSpOCK is propagating the spacecraft... %.0f%%\n", ( et - starttime ) / ( min_end_time - starttime ) *100.0);
-  }
-  return 0;
-}
-
-///
-/// @brief Displays progress
-///
-int print_progress_epoch_sc_to_epoch_constellation(double min_end_time, double et , double starttime, int iProc, int nb_gps)
-{
-  printf("\033[A\33[2K\rPropagating the satellites until the epoch start time of the constellation... %.0f%%\n", ( et - starttime ) / ( min_end_time - starttime ) *100.0);
-  return 0;
-}
-
-///
-/// @brief Displays progress if the number of processes is equal to 0
-///
-int print_progress_kalman(double min_end_time, double et , double starttime, int iProc, int nb_gps)
-{
-  if (iProc == 0)
-  {
-    printf("\033[A\33[2K\rRunning the Kalman filter... %.0f%%\n", ( et - starttime ) / ( min_end_time - starttime ) *100.0);
-  }
-  return 0;
-}
-
-///
-/// @brief Displays progress
-///
-int print_progress_collision(int eee_sec, int iProc, int nb_ensemble_min_per_proc, int nb_tca)
-{
-  double progress;
-  progress = (double)(eee_sec - nb_ensemble_min_per_proc * iProc ) / nb_ensemble_min_per_proc / nb_tca;
-  printf("Collision assessment by node %d... %.0f%%\r", iProc, progress * 100.0);
-  return 0;
-}
+#ifndef __SPOCK_LEGACY_UTILS_H_INCLUDED__
+#define __SPOCK_OPTIONS_H_INCLUDED__
 
 ///
 /// @brief Position, velocity and acceleration of ensembles
@@ -140,7 +94,7 @@ int allocate_memory_r_a_v_in_span(
   }
 
   // allocate memory for (*save_x_i2cg_INRTL): x eci for all sc at each time step of the time spanning TCA
-  (*save_x_i2cg_INRTL) = malloc( nb_tca * sizeof( double ** ) );
+  (*save_x_i2cg_INRTL) = static_cast<double ***>(malloc( nb_tca * sizeof( double ** ) ));
 
   if ( (*save_x_i2cg_INRTL) == NULL )
   {
@@ -150,7 +104,7 @@ int allocate_memory_r_a_v_in_span(
   for (ii = 0; ii < nb_satellites_not_including_gps; ii++)
   {
     // all ref sc
-    (*save_x_i2cg_INRTL)[ii] = malloc( total_ensemble_final_with_ref * sizeof( double * ) );
+    (*save_x_i2cg_INRTL)[ii] = static_cast<double **>(malloc( total_ensemble_final_with_ref * sizeof( double * ) ));
 
     if ( (*save_x_i2cg_INRTL)[ii] == NULL )
     {
@@ -160,7 +114,7 @@ int allocate_memory_r_a_v_in_span(
     for (eee = 0; eee < total_ensemble_final_with_ref; eee++)
     {
       // all ensembles
-      (*save_x_i2cg_INRTL)[ii][eee] = malloc( nb_time_steps_in_tca_time_span * sizeof( double ) ) ;
+      (*save_x_i2cg_INRTL)[ii][eee] = static_cast<double *>(malloc( nb_time_steps_in_tca_time_span * sizeof( double ) )) ;
 
       if ( (*save_x_i2cg_INRTL)[ii][eee] == NULL )
       {
@@ -170,7 +124,7 @@ int allocate_memory_r_a_v_in_span(
   }
 
   // allocate memory for (*save_y_i2cg_INRTL): x eci for all sc at each time step of the time spanning TCA
-  (*save_y_i2cg_INRTL) = malloc( nb_tca * sizeof( double ** ) );
+  (*save_y_i2cg_INRTL) = static_cast<double ***>(malloc( nb_tca * sizeof( double ** ) ));
 
   if ( (*save_y_i2cg_INRTL) == NULL )
   {
@@ -180,7 +134,7 @@ int allocate_memory_r_a_v_in_span(
   for (ii = 0; ii < nb_satellites_not_including_gps; ii++)
   {
     // all ref sc
-    (*save_y_i2cg_INRTL)[ii] = malloc( total_ensemble_final_with_ref * sizeof( double * ) );
+    (*save_y_i2cg_INRTL)[ii] = static_cast<double **>(malloc( total_ensemble_final_with_ref * sizeof( double * ) ));
 
     if ( (*save_y_i2cg_INRTL)[ii] == NULL )
     {
@@ -190,7 +144,7 @@ int allocate_memory_r_a_v_in_span(
     for (eee = 0; eee < total_ensemble_final_with_ref; eee++)
     {
       // all ensembles
-      (*save_y_i2cg_INRTL)[ii][eee] = malloc( nb_time_steps_in_tca_time_span * sizeof( double ) ) ;
+      (*save_y_i2cg_INRTL)[ii][eee] = static_cast<double *>(malloc( nb_time_steps_in_tca_time_span * sizeof( double ) )) ;
       if ( (*save_y_i2cg_INRTL)[ii][eee] == NULL )
       {
         print_error_any_iproc(iProc, "Not enough memory for (*save_y_i2cg_INRTL)");
@@ -199,7 +153,7 @@ int allocate_memory_r_a_v_in_span(
   }
 
   // allocate memory for (*save_z_i2cg_INRTL): x eci for all sc at each time step of the time spanning TCA
-  (*save_z_i2cg_INRTL) = malloc( nb_tca * sizeof( double ** ) );
+  (*save_z_i2cg_INRTL) = static_cast<double ***>(malloc( nb_tca * sizeof( double ** ) ));
 
   if ( (*save_z_i2cg_INRTL) == NULL )
   {
@@ -209,7 +163,7 @@ int allocate_memory_r_a_v_in_span(
   for (ii = 0; ii < nb_satellites_not_including_gps; ii++)
   {
     // all ref sc
-    (*save_z_i2cg_INRTL)[ii] = malloc( total_ensemble_final_with_ref * sizeof( double * ) );
+    (*save_z_i2cg_INRTL)[ii] = static_cast<double **>(malloc( total_ensemble_final_with_ref * sizeof( double * ) ));
 
     if ( (*save_z_i2cg_INRTL)[ii] == NULL )
     {
@@ -219,7 +173,7 @@ int allocate_memory_r_a_v_in_span(
     for (eee = 0; eee < total_ensemble_final_with_ref; eee++)
     {
       // all ensembles
-      (*save_z_i2cg_INRTL)[ii][eee] = malloc( nb_time_steps_in_tca_time_span * sizeof( double ) ) ;
+      (*save_z_i2cg_INRTL)[ii][eee] = static_cast<double *>(malloc( nb_time_steps_in_tca_time_span * sizeof( double ) )) ;
 
       if ( (*save_z_i2cg_INRTL)[ii][eee] == NULL )
       {
@@ -230,7 +184,7 @@ int allocate_memory_r_a_v_in_span(
   }
 
   // allocate memory for (*save_vx_i2cg_INRTL): x eci for all sc at each time step of the time spanning TCA
-  (*save_vx_i2cg_INRTL) = malloc( nb_tca * sizeof( double ** ) );
+  (*save_vx_i2cg_INRTL) = static_cast<double ***>(malloc( nb_tca * sizeof( double ** ) ));
 
   if ( (*save_vx_i2cg_INRTL) == NULL )
   {
@@ -240,7 +194,7 @@ int allocate_memory_r_a_v_in_span(
   for (ii = 0; ii < nb_satellites_not_including_gps; ii++)
   {
     // all ref sc
-    (*save_vx_i2cg_INRTL)[ii] = malloc( total_ensemble_final_with_ref * sizeof( double * ) );
+    (*save_vx_i2cg_INRTL)[ii] = static_cast<double **>(malloc( total_ensemble_final_with_ref * sizeof( double * ) ));
 
     if ( (*save_vx_i2cg_INRTL)[ii] == NULL )
     {
@@ -250,7 +204,7 @@ int allocate_memory_r_a_v_in_span(
     for (eee = 0; eee < total_ensemble_final_with_ref; eee++)
     {
       // all ensembles
-      (*save_vx_i2cg_INRTL)[ii][eee] = malloc( nb_time_steps_in_tca_time_span * sizeof( double ) ) ;
+      (*save_vx_i2cg_INRTL)[ii][eee] = static_cast<double *>(malloc( nb_time_steps_in_tca_time_span * sizeof( double ) )) ;
 
       if ( (*save_vx_i2cg_INRTL)[ii][eee] == NULL )
       {
@@ -260,7 +214,7 @@ int allocate_memory_r_a_v_in_span(
   }
 
   // allocate memory for (*save_vy_i2cg_INRTL): x eci for all sc at each time step of the time spanning TCA
-  (*save_vy_i2cg_INRTL) = malloc( nb_tca * sizeof( double ** ) );
+  (*save_vy_i2cg_INRTL) = static_cast<double ***>(malloc( nb_tca * sizeof( double ** ) ));
 
   if ( (*save_vy_i2cg_INRTL) == NULL )
   {
@@ -270,7 +224,7 @@ int allocate_memory_r_a_v_in_span(
   for (ii = 0; ii < nb_satellites_not_including_gps; ii++)
   {
     // all ref sc
-    (*save_vy_i2cg_INRTL)[ii] = malloc( total_ensemble_final_with_ref * sizeof( double * ) );
+    (*save_vy_i2cg_INRTL)[ii] = static_cast<double **>(malloc( total_ensemble_final_with_ref * sizeof( double * ) ));
 
     if ( (*save_vy_i2cg_INRTL)[ii] == NULL )
     {
@@ -280,7 +234,7 @@ int allocate_memory_r_a_v_in_span(
     for (eee = 0; eee < total_ensemble_final_with_ref; eee++)
     {
       // all ensembles
-      (*save_vy_i2cg_INRTL)[ii][eee] = malloc( nb_time_steps_in_tca_time_span * sizeof( double ) ) ;
+      (*save_vy_i2cg_INRTL)[ii][eee] = static_cast<double *>(malloc( nb_time_steps_in_tca_time_span * sizeof( double ) )) ;
 
       if ( (*save_vy_i2cg_INRTL)[ii][eee] == NULL )
       {
@@ -290,7 +244,7 @@ int allocate_memory_r_a_v_in_span(
   }
 
   // allocate memory for (*save_vz_i2cg_INRTL): x eci for all sc at each time step of the time spanning TCA
-  (*save_vz_i2cg_INRTL) = malloc( nb_tca * sizeof( double ** ) );
+  (*save_vz_i2cg_INRTL) = static_cast<double ***>(malloc( nb_tca * sizeof( double ** ) ));
 
   if ( (*save_vz_i2cg_INRTL) == NULL )
   {
@@ -300,7 +254,7 @@ int allocate_memory_r_a_v_in_span(
   for (ii = 0; ii < nb_satellites_not_including_gps; ii++)
   {
     // all ref sc
-    (*save_vz_i2cg_INRTL)[ii] = malloc( total_ensemble_final_with_ref * sizeof( double * ) );
+    (*save_vz_i2cg_INRTL)[ii] = static_cast<double **>(malloc( total_ensemble_final_with_ref * sizeof( double * ) ));
 
     if ( (*save_vz_i2cg_INRTL)[ii] == NULL )
     {
@@ -310,7 +264,7 @@ int allocate_memory_r_a_v_in_span(
     for (eee = 0; eee < total_ensemble_final_with_ref; eee++)
     {
       // all ensembles
-      (*save_vz_i2cg_INRTL)[ii][eee] = malloc( nb_time_steps_in_tca_time_span * sizeof( double ) ) ;
+      (*save_vz_i2cg_INRTL)[ii][eee] = static_cast<double *>(malloc( nb_time_steps_in_tca_time_span * sizeof( double ) )) ;
 
       if ( (*save_vz_i2cg_INRTL)[ii][eee] == NULL )
       {
@@ -320,7 +274,7 @@ int allocate_memory_r_a_v_in_span(
   }
 
   // allocate memory for (*save_ax_i2cg_INRTL): x eci for all sc at each time step of the time spanning TCA
-  (*save_ax_i2cg_INRTL) = malloc( nb_tca * sizeof( double ** ) );
+  (*save_ax_i2cg_INRTL) = static_cast<double ***>(malloc( nb_tca * sizeof( double ** ) ));
 
   if ( (*save_ax_i2cg_INRTL) == NULL )
   {
@@ -330,7 +284,7 @@ int allocate_memory_r_a_v_in_span(
   for (ii = 0; ii < nb_satellites_not_including_gps; ii++)
   {
     // all ref sc
-    (*save_ax_i2cg_INRTL)[ii] = malloc( total_ensemble_final_with_ref * sizeof( double * ) );
+    (*save_ax_i2cg_INRTL)[ii] = static_cast<double **>(malloc( total_ensemble_final_with_ref * sizeof( double * )));
 
     if ( (*save_ax_i2cg_INRTL)[ii] == NULL )
     {
@@ -340,7 +294,7 @@ int allocate_memory_r_a_v_in_span(
     for (eee = 0; eee < total_ensemble_final_with_ref; eee++)
     {
       // all ensembles
-      (*save_ax_i2cg_INRTL)[ii][eee] = malloc( nb_time_steps_in_tca_time_span * sizeof( double ) ) ;
+      (*save_ax_i2cg_INRTL)[ii][eee] = static_cast<double *>(malloc( nb_time_steps_in_tca_time_span * sizeof( double ) )) ;
 
       if ( (*save_ax_i2cg_INRTL)[ii][eee] == NULL )
       {
@@ -353,7 +307,7 @@ int allocate_memory_r_a_v_in_span(
 
   // allocate memory for (*save_ay_i2cg_INRTL): x eci for all sc at each time step of the time spanning TCA
   // // (*save_ay_i2cg_INRTL)[OPTIONS->nb_satellites_not_including_gps][total_ensemble_final_with_ref][nb_time_steps_in_tca_time_span]
-  (*save_ay_i2cg_INRTL) = malloc( nb_tca * sizeof( double ** ) );
+  (*save_ay_i2cg_INRTL) = static_cast<double ***>(malloc( nb_tca * sizeof( double ** ) ));
 
   if ( (*save_ay_i2cg_INRTL) == NULL )
   {
@@ -363,7 +317,7 @@ int allocate_memory_r_a_v_in_span(
   for (ii = 0; ii < nb_satellites_not_including_gps; ii++)
   {
     // all ref sc
-    (*save_ay_i2cg_INRTL)[ii] = malloc( total_ensemble_final_with_ref * sizeof( double * ) );
+    (*save_ay_i2cg_INRTL)[ii] = static_cast<double **>(malloc( total_ensemble_final_with_ref * sizeof( double * ) ));
 
     if ( (*save_ay_i2cg_INRTL)[ii] == NULL )
     {
@@ -373,7 +327,7 @@ int allocate_memory_r_a_v_in_span(
     for (eee = 0; eee < total_ensemble_final_with_ref; eee++)
     {
       // all ensembles
-      (*save_ay_i2cg_INRTL)[ii][eee] = malloc( nb_time_steps_in_tca_time_span * sizeof( double ) ) ;
+      (*save_ay_i2cg_INRTL)[ii][eee] = static_cast<double *>(malloc( nb_time_steps_in_tca_time_span * sizeof( double )) ) ;
 
       if ( (*save_ay_i2cg_INRTL)[ii][eee] == NULL )
       {
@@ -384,7 +338,7 @@ int allocate_memory_r_a_v_in_span(
 
   // allocate memory for (*save_az_i2cg_INRTL): x eci for all sc at each time step of the time spanning TCA
   // // (*save_az_i2cg_INRTL)[OPTIONS->nb_satellites_not_including_gps][total_ensemble_final_with_ref][nb_time_steps_in_tca_time_span]
-  (*save_az_i2cg_INRTL) = malloc( nb_tca * sizeof( double ** ) );
+  (*save_az_i2cg_INRTL) = static_cast<double ***>(malloc( nb_tca * sizeof( double ** ) ));
 
   if ( (*save_az_i2cg_INRTL) == NULL )
   {
@@ -394,7 +348,7 @@ int allocate_memory_r_a_v_in_span(
   for (ii = 0; ii < nb_satellites_not_including_gps; ii++)
   {
     // all ref sc
-    (*save_az_i2cg_INRTL)[ii] = malloc( total_ensemble_final_with_ref * sizeof( double * ) );
+    (*save_az_i2cg_INRTL)[ii] = static_cast<double **>(malloc( total_ensemble_final_with_ref * sizeof( double * ) ));
 
     if ( (*save_az_i2cg_INRTL)[ii] == NULL )
     {
@@ -404,7 +358,7 @@ int allocate_memory_r_a_v_in_span(
     for (eee = 0; eee < total_ensemble_final_with_ref; eee++)
     {
       // all ensembles
-      (*save_az_i2cg_INRTL)[ii][eee] = malloc( nb_time_steps_in_tca_time_span * sizeof( double ) ) ;
+      (*save_az_i2cg_INRTL)[ii][eee] = static_cast<double *>(malloc( nb_time_steps_in_tca_time_span * sizeof( double ) )) ;
       if ( (*save_az_i2cg_INRTL)[ii][eee] == NULL )
       {
         print_error_any_iproc(iProc, "Not enough memory for (*save_az_i2cg_INRTL)");
@@ -691,3 +645,5 @@ int compute_heading(double *heading, double v_ecef[3], double lon, double lat, d
 
   return 0;
 }
+
+#endif
