@@ -195,6 +195,20 @@ public:
   }
 };
 
+///
+/// @brief Converts epoch to time using Spice
+///
+/// @details Spice converts a string representing an epoch to a double precision
+///          value representing the number of TDB seconds past the J2000
+///          epoch corresponding to the input epoch.
+///
+double compute_time_from(std::string const& epoch)
+{
+  double time;
+  str2et_c(epoch.c_str(), &time);
+  return time;
+}
+
 int generate_ephemerides
 (
   CONSTELLATION_T  *CONSTELLATION,
@@ -223,13 +237,68 @@ int generate_ephemerides
 
   // Parallel Execution
   auto context = ParallelExecutionContext(nb_satellites, nb_process, current_process, nb_ensemble_min_per_proc, nb_ensembles_min);
-  // Interface C legacy code with modern C++
-  auto const& start_ensemble = context.start_ensemble.data();
-  auto const& which_iproc_is_running_main_sc = context.which_iproc_is_running_main_sc.data();
-  auto const& nProcs_that_are_gonna_run_ensembles = context.nProcs_that_are_gonna_run_ensembles;
-  auto const& array_sc = context.spacecrafts.data();
+  // Interface C legacy code with modern C++ class members
+  int nProcs_that_are_gonna_run_ensembles = context.nProcs_that_are_gonna_run_ensembles;
+  int* array_sc = context.spacecrafts.data();
+  int* start_ensemble = context.start_ensemble.data();
+  int* which_iproc_is_running_main_sc = context.which_iproc_is_running_main_sc.data();
 
-  // these variables declaration are very old C style and have to go
+  // Compute start time and end time
+  auto initial_epoch = OPTIONS->initial_epoch;
+  auto final_epoch = OPTIONS->final_epoch;
+  double starttime = compute_time_from(initial_epoch);
+  double endtime = compute_time_from(final_epoch);
+
+  // Perform some security checks
+
+  double min_end_time = endtime;
+  double twrite = CONSTELLATION->et;
+  int choose_tle_to_initialise_orbit = 0;
+
+  // Check the TLE epochs of the satellites are older than the simulation epoch
+  // (if the user chose to initilaize the orbits with TLEs)
+  // If running TLE (GPS or other satellites), the epochs of the last TLEs
+  // have be older than the epoch of the start time of the constellation
+  // (the current version does not allow for propagating satellite going back in time)
+  if ( (strcmp( OPTIONS->type_orbit_initialisation, "tle" ) == 0 ) || (strcmp(OPTIONS->type_orbit_initialisation, "tle_sgp4" ) == 0 ) )
+  {
+    for (int ii = 0; ii < OPTIONS->n_satellites - OPTIONS->nb_gps; ii++)
+    {
+      // if main sc ii is run by this iProc
+      if ( start_ensemble[ii] == 0 )
+      {
+        if (CONSTELLATION->spacecraft[ii][0].et > CONSTELLATION->et)
+        {
+          printf("The epochs of the TLEs of the satellites have to be older than the epoch of the start time of the constellation. The program will stop. \n");
+          printf("\nYou can choose 'now n' as the first line of the #TIME section in the input file input.d to run the constellation as from the current time. This will guarantee that the TLEs of the satellites are older than the epoch of the start time of the constellation ('n' is the number of hours to propagate the constellation for (n can be a decimal value)). \n");
+          exit(0);
+        }
+      }
+    }
+    // this means that the user chose to initialize the orbits with TLEs
+    choose_tle_to_initialise_orbit = 1;
+  }
+
+  // Check the TLE epochs of the GPS are older than the simulation epoch
+  // (if the user chose to run GPS)
+  if (OPTIONS->nb_gps > 0)
+  {
+    for (int ii = OPTIONS->n_satellites - OPTIONS->nb_gps; ii < OPTIONS->n_satellites; ii++)
+    {
+      if ( start_ensemble[ii] == 0 )
+      {
+        // if main sc ii is run by this iProc
+        if (CONSTELLATION->spacecraft[ii][0].et > CONSTELLATION->et)
+        {
+          printf("The epochs of the last TLEs of the GPS satellites have to be older than the epoch of the start time of the constellation. The program will stop. \n");
+          printf("\nYou can choose 'now n' as the first line of the #TIME section in the input file input.d to run the constellation as from the current time. This will guarantee that the last TLEs of the GPS satellites are older than the epoch of the start time of the constellation ('n' is the number of hours to propagate the constellation for (n can be a decimal value)). \n");
+          exit(0);
+        }
+      }
+    }
+  }
+
+  // all these variables declaration are very old C style and have to go
   char temp_iproc_file[256];
   char temp_nb_proc[256];
   int eee_prim_that_collide;
@@ -291,69 +360,18 @@ int generate_ephemerides
   double ***save_vx_i2cg_INRTL = NULL, ***save_vy_i2cg_INRTL = NULL, ***save_vz_i2cg_INRTL = NULL;
   double ***save_ax_i2cg_INRTL = NULL, ***save_ay_i2cg_INRTL = NULL, ***save_az_i2cg_INRTL = NULL;
   int nb_time_steps_in_tca_time_span = (int) (nearbyint( CONSTELLATION->collision_time_span / OPTIONS->dt )) + 1 ; // the cast here is not necessary as we made sure in initialize_constellation that CONSTELLATION->collision_time_span is an even multiple of OPTIONS->dt
-  double min_end_time;
   // other variables
   int ii;
   int eee;
   int fff;
-  double starttime;
-  double endtime;
-  double twrite = 0.0;
   double new_dt_for_gps;
   int save_include_drag;
   int save_include_solar_pressure;
   int save_include_earth_pressure;
   double save_solar_cell_efficiency;
-  int choose_tle_to_initialise_orbit = 0;
   int ccc;
 
-  // Compute the starttime and endtime
-  str2et_c(OPTIONS->initial_epoch, &starttime);
-  str2et_c(OPTIONS->final_epoch, &endtime);
-  min_end_time = endtime;
-  twrite = CONSTELLATION->et;
 
-  // Check the TLE epochs of the satellites are older than the simulation epoch
-  // (if the user chose to initilaize the orbits with TLEs)
-  // // If running TLE (GPS or other satellites), the epochs of the last TLEs
-  // have be older than the epoch of the start time of the constellation (the current version does not allow for propagating satellite going back in time)
-  if ( (strcmp( OPTIONS->type_orbit_initialisation, "tle" ) == 0 ) || (strcmp(OPTIONS->type_orbit_initialisation, "tle_sgp4" ) == 0 ) )
-  {
-    for (ii = 0; ii < OPTIONS->n_satellites - OPTIONS->nb_gps; ii++)
-    {
-      // if main sc ii is run by this iProc
-      if ( start_ensemble[ii] == 0 )
-      {
-        if (CONSTELLATION->spacecraft[ii][0].et > CONSTELLATION->et)
-        {
-          printf("The epochs of the TLEs of the satellites have to be older than the epoch of the start time of the constellation. The program will stop. \n");
-          printf("\nYou can choose 'now n' as the first line of the #TIME section in the input file input.d to run the constellation as from the current time. This will guarantee that the TLEs of the satellites are older than the epoch of the start time of the constellation ('n' is the number of hours to propagate the constellation for (n can be a decimal value)). \n");
-          exit(0);
-        }
-      }
-    }
-    // this means that the user chose to initialize the orbits with TLEs
-    choose_tle_to_initialise_orbit = 1;
-  }
-
-  // Check the TLE epochs of the GPS are older than the simulation epoch
-  // (if the user chose to run GPS)
-  if (OPTIONS->nb_gps > 0)
-  {
-    for (ii = OPTIONS->n_satellites - OPTIONS->nb_gps; ii < OPTIONS->n_satellites; ii++)
-    {
-      if ( start_ensemble[ii] == 0 )
-      {
-        // if main sc ii is run by this iProc
-        if (CONSTELLATION->spacecraft[ii][0].et > CONSTELLATION->et)
-        {
-          printf("The epochs of the last TLEs of the GPS satellites have to be older than the epoch of the start time of the constellation. The program will stop. \n");
-          printf("\nYou can choose 'now n' as the first line of the #TIME section in the input file input.d to run the constellation as from the current time. This will guarantee that the last TLEs of the GPS satellites are older than the epoch of the start time of the constellation ('n' is the number of hours to propagate the constellation for (n can be a decimal value)). \n");
-          exit(0);
-        }
-      }
-    }
-  }
 
   if ( ( iDebugLevel >= 2 ) )
   {
