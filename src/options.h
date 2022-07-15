@@ -46,22 +46,22 @@ auto handle_options(int argc, char* argv[])
   ///
   /// @brief File paths options for file dependencies
   ///
-  /// \todo if we get user to provide all variables in one config file do we need these files? Obviously we keep SPICE and TLE but what about others?
-  ///
+  /// @todo if we get user to provide all variables in one config file do we need these files? Obviously we keep SPICE and TLE but what about others?
+  /// @note these options can be passed as a boost program option file - or a command line - or both ;)
   bpo::options_description dependencies_options("Dependencies Options");
   dependencies_options.add_options()
   	//
-  	("SPICE_file_path", bpo::value<std::string>(), "Path to user SPICE installation")
+  	("filepath.SPICE", bpo::value<std::string>(), "Path to user SPICE installation")
   	//
-  	("thrust_file_path", bpo::value<std::string>(), "path to user's thrust file")
+  	("filepath.thrust", bpo::value<std::string>(), "path to user's thrust file")
   	//
-  	("solar_power_file_name", bpo::value<std::string>(), "name of OpenGL solar power file")
+  	("filepath.solar_power", bpo::value<std::string>(), "name of OpenGL solar power file")
   	//
-  	("surface_geometry_file_name", bpo::value<std::string>(), "name of surface geometry file")
+  	("filepath.surface_geometry", bpo::value<std::string>(), "name of surface geometry file")
   	//
-  	("TLE_constellation_file_name", bpo::value<std::string>(), "name of TLE constellation GPS file")
+  	("filepath.TLE_constellation", bpo::value<std::string>(), "name of TLE constellation GPS file")
   	//
-  	("Kalman_file_name", bpo::value<std::string>(), "name of Kalman filtering file");
+  	("filepath.Kalman", bpo::value<std::string>(), "name of Kalman filtering file");
 
   ///
   /// @brief Density MOD options
@@ -69,11 +69,11 @@ auto handle_options(int argc, char* argv[])
   bpo::options_description density_options("Density MOD Options");
   density_options.add_options()
   	//
-  	("density_mod", bpo::value<double>(), "desired density mod")
+  	("density.mod", bpo::value<double>(), "desired density mod")
   	//
-  	("density_mod_amplitude", bpo::value<double>(), "density mod amplitude")
+  	("density.mod.amplitude", bpo::value<double>(), "density mod amplitude")
   	//
-  	("density_mod_phase", bpo::value<double>(), "density mod phase");
+  	("density.mod.phase", bpo::value<double>(), "density mod phase");
 
   ///
   /// @brief Time options
@@ -81,11 +81,11 @@ auto handle_options(int argc, char* argv[])
   bpo::options_description time_options("Time Options");
   time_options.add_options()
   	//
-  	("initial_epoch", bpo::value<std::string>(), "initial epoch in UTC format DD-MM-YYYY HH:MM:SS")
+  	("time.initial_epoch", bpo::value<std::string>(), "initial epoch in UTC format DD-MM-YYYY HH:MM:SS")
   	//
-  	("final_epoch", bpo::value<std::string>(), "final epoch in UTC format DD-MM-YYYY HH:MM:SS")
-  	// TODO what units is timestep in? does it need to be given in UTC?
-  	("timestep", bpo::value<float>(), "timestep");
+  	("time.final_epoch", bpo::value<std::string>(), "final epoch in UTC format DD-MM-YYYY HH:MM:SS")
+  	//
+  	("time.step", bpo::value<float>(), "time step in UTC format DD-MM-YYYY HH:MM:SS");
 
   ///
   /// @brief Spacecraft options
@@ -99,37 +99,37 @@ auto handle_options(int argc, char* argv[])
   bpo::options_description spacecraft_options("Spacecraft Options");
   spacecraft_options.add_options()
   	//
-  	("num_spacecraft", bpo::value<int>()->default_value(1), "number of spacecraft being modelled")
+  	("spacecraft.number", bpo::value<int>()->default_value(1), "number of spacecraft being modelled")
   	//
-  	("name", bpo::value<std::vector<std::string> >(), "names of each spacecraft in vector")
+  	("spacecraft.name", bpo::value<std::vector<std::string> >(), "names of each spacecraft in vector")
   	//
-  	("num_GPS spacecraft", bpo::value<int>()->default_value(0), "number of spacecraft using GPS")
+  	("spacecraft.GPS.number", bpo::value<int>()->default_value(0), "number of spacecraft using GPS")
   	//
-  	("num_surfaces", bpo::value<int>(), "number of surfaces on each spacecraft (must be same # for all SC)")
+  	("spacecraft.surfaces.number", bpo::value<int>(), "number of surfaces on each spacecraft (must be same # for all SC)")
   	//
-  	("solar_cell_efficiency", bpo::value<std::vector<double> >(), "efficiency of solar cells on spacecraft")
+  	("spacecraft.solar_cell.efficiency", bpo::value<std::vector<double> >(), "efficiency of solar cells on spacecraft")
   	//
-  	("inclination", bpo::value<std::vector<double> >(), "inclinations of spacecraft in vector of len=num spacecraft")
+  	("spacecraft.inclination", bpo::value<std::vector<double> >(), "inclinations of spacecraft in vector of len=num spacecraft")
   	//
-  	("eccentricity", bpo::value<std::vector<double> >(), "eccentricity of all spacecraft in vector of len=num spacecraft")
+  	("spacecraft.eccentricity", bpo::value<std::vector<double> >(), "eccentricity of all spacecraft in vector of len=num spacecraft")
   	//
-  	("apogee_altitude", bpo::value<std::vector<double> >(), "apogee altitude of all spacecraft in vector")
+  	("spacecraft.apogee_altitude", bpo::value<std::vector<double> >(), "apogee altitude of all spacecraft in vector")
   	//
-  	("true_anomaly", bpo::value<std::vector<double> >(), "true anomalies of all spacecraft in vector")
+  	("spacecraft.true_anomaly", bpo::value<std::vector<double> >(), "true anomalies of all spacecraft in vector")
   	//
-  	("arg_of_periapsis", bpo::value<std::vector<double> >(), "argument of periapsis of all spacecraft in vector")
+  	("spacecraft.arg_of_periapsis", bpo::value<std::vector<double> >(), "argument of periapsis of all spacecraft in vector")
   	//
-  	("x_pos", bpo::value<std::vector<double> >(), "x positon of all spacecraft in vector")
+  	("spacecraft.x_pos", bpo::value<std::vector<double> >(), "x positon of all spacecraft in vector")
   	//
-  	("y_pos", bpo::value<std::vector<double> >(), "y position of all spacecraft in vector")
+  	("spacecraft.y_pos", bpo::value<std::vector<double> >(), "y position of all spacecraft in vector")
   	//
-  	("z_pos", bpo::value<std::vector<double> >(), "z position of all spacecraft in vector")
+  	("spacecraft.z_pos", bpo::value<std::vector<double> >(), "z position of all spacecraft in vector")
   	//
-  	("x_veloc", bpo::value<std::vector<double> >(), "x direction velocities of all spacecraft in vector")
+  	("spacecraft.x_veloc", bpo::value<std::vector<double> >(), "x direction velocities of all spacecraft in vector")
   	//
-  	("y_veloc", bpo::value<std::vector<double> >(), "y direction velocities of all spacecraft in vector")
+  	("spacecraft.y_veloc", bpo::value<std::vector<double> >(), "y direction velocities of all spacecraft in vector")
   	//
-  	("z_veloc", bpo::value<std::vector<double> >(), "z direction velocities of all spacecraft in vector");
+  	("spacecraft.z_veloc", bpo::value<std::vector<double> >(), "z direction velocities of all spacecraft in vector");
 
   ///
   /// @brief Forces options

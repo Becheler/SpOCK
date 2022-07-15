@@ -8,6 +8,8 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include <stdexcept>
+
 ///
 /// @brief Customed messages for reporting progress
 ///
@@ -209,6 +211,14 @@ double compute_time_from(std::string const& epoch)
   return time;
 }
 
+///
+/// @brief Checks if the user initialized the orbits with TLEs.
+///
+bool were_orbits_initialized_with_TLEs(std::string orbit_initialization_type)
+{
+  return orbit_initialization_type == "tle" || orbit_initialization_type == "tle_sgp4";
+}
+
 int generate_ephemerides
 (
   CONSTELLATION_T  *CONSTELLATION,
@@ -251,10 +261,39 @@ int generate_ephemerides
 
   // Perform some security checks
 
-  double min_end_time = endtime;
-  double twrite = CONSTELLATION->et;
-  int choose_tle_to_initialise_orbit = 0;
+  auto type_orbit_initialisation = OPTIONS->type_orbit_initialisation;
+  auto nb_gps = OPTIONS->nb_gps;
 
+  if (were_orbits_initialized_with_TLEs(type_orbit_initialisation))
+  {
+    check_satellites_epochs_predate_simulation_epochs();
+  }
+
+  ///
+  /// @brief Check the TLE epochs of the satellites are older than the simulation epoch
+  ///
+  /// @details Assummes the user initilaized the orbits with TLEs.
+  ///          If running TLE (GPS or other satellites), the epochs of the last TLEs
+  ///          have be older than the epoch of the start time of the constellation
+  ///          (the current version does not allow for propagating satellite going back in time)
+  int check_satellites_epochs_predate_simulation_epochs(int nb_satellites, int nb_gps)
+  {
+      for (int i = 0; i < nb_satellites - nb_gps; i++)
+      {
+        // if main sc ii is run by this iProc
+        if ( start_ensemble[i] == 0 )
+        {
+          if ( spacecraft[i][0].et > CONSTELLATION->et)
+          {
+
+            throw std::invalid_argument("Satellites TLEs epochs must be older than constellation start time epoch");
+
+printf("\nYou can choose 'now n' as the first line of the #TIME section in the input file input.d to run the constellation as from the current time. This will guarantee that the TLEs of the satellites are older than the epoch of the start time of the constellation ('n' is the number of hours to propagate the constellation for (n can be a decimal value)). \n");
+            exit(0);
+          }
+        }
+      }
+  }
   // Check the TLE epochs of the satellites are older than the simulation epoch
   // (if the user chose to initilaize the orbits with TLEs)
   // If running TLE (GPS or other satellites), the epochs of the last TLEs
@@ -262,12 +301,12 @@ int generate_ephemerides
   // (the current version does not allow for propagating satellite going back in time)
   if ( (strcmp( OPTIONS->type_orbit_initialisation, "tle" ) == 0 ) || (strcmp(OPTIONS->type_orbit_initialisation, "tle_sgp4" ) == 0 ) )
   {
-    for (int ii = 0; ii < OPTIONS->n_satellites - OPTIONS->nb_gps; ii++)
+    for (int i = 0; i < OPTIONS->n_satellites - OPTIONS->nb_gps; i++)
     {
       // if main sc ii is run by this iProc
-      if ( start_ensemble[ii] == 0 )
+      if ( start_ensemble[i] == 0 )
       {
-        if (CONSTELLATION->spacecraft[ii][0].et > CONSTELLATION->et)
+        if (CONSTELLATION->spacecraft[i][0].et > CONSTELLATION->et)
         {
           printf("The epochs of the TLEs of the satellites have to be older than the epoch of the start time of the constellation. The program will stop. \n");
           printf("\nYou can choose 'now n' as the first line of the #TIME section in the input file input.d to run the constellation as from the current time. This will guarantee that the TLEs of the satellites are older than the epoch of the start time of the constellation ('n' is the number of hours to propagate the constellation for (n can be a decimal value)). \n");
@@ -278,6 +317,12 @@ int generate_ephemerides
     // this means that the user chose to initialize the orbits with TLEs
     choose_tle_to_initialise_orbit = 1;
   }
+
+  double min_end_time = endtime;
+  double twrite = CONSTELLATION->et;
+  int choose_tle_to_initialise_orbit = 0;
+
+
 
   // Check the TLE epochs of the GPS are older than the simulation epoch
   // (if the user chose to run GPS)
