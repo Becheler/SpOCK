@@ -41,6 +41,16 @@ namespace
 
 int main(int argc, char* argv[])
 {
+  // Initialize the MPI execution environment
+  MPI_Init(&argc, &argv);
+  // Determines the size of the group associated with a communicator
+  int nb_process;
+  MPI_Comm_size(MPI_COMM_WORLD, &nb_process);
+  // Determines the rank of the calling process in the communicator
+  int current_process;
+  MPI_Comm_rank(MPI_COMM_WORLD, &current_process);
+
+  // Load options
   bpo::variables_map vm;
   bool verbose = false;
   try{
@@ -76,6 +86,10 @@ int main(int argc, char* argv[])
   }
 
   if(verbose){ std::cout << "Initialization" << std::endl; }
+
+  spock::spice::set_up(vm.earth_orientation_parameters);
+  spock::spice::set_up(vm.planet_ephemerides_files);
+  spock::spice::set_up(vm.earth_binary_pck);
 
   Propagator propagator(vm, verbose);
 

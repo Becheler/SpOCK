@@ -68,7 +68,15 @@ jobs:
 
       - name: Doxygen documentation generation
         working-directory: ${{github.workspace}}/build
-        run: make doc
+        run: |
+          cd doc
+          doxygen -w html header.html delete_me.html delete_me.css
+          cd doxygen-awesome-css
+          git submodule init
+          git submodule update
+          git checkout v2.0.3
+          cd ..
+          make doc
 
       - name: Documentation moving generated files
         run: mv ${{github.workspace}}/build/doc/html ./doc/api
