@@ -57,15 +57,6 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: ctest -C ${{env.BUILD_TYPE}} --rerun-failed --output-on-failure
 
-      - name: Test Charles' Spock build
-        run: |
-          cd src/legacy/charlesbv/spock
-          chmod u+x makeall.sh
-          ./makeall.sh
-          source ~/.bash_profile
-          cd Examples
-          mpirun -np 2 spock try_spock.txt
-
       - name: Doxygen documentation generation
         working-directory: ${{github.workspace}}/build
         run: |
