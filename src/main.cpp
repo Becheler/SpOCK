@@ -1,12 +1,17 @@
 //
 //  Copyright © 2022 Aaron Ridley, Arnaud Becheler, Aidan Kingwell. All rights reserved.
 //
+#ifdef BUILD_PARALLEL
+#  include "parallel_execution.h"
+#else
+#  include "sequential_execution.h"
+#endif
+
 # include <spock_lib/spock.h>
 
 # include <boost/program_options.hpp>
 # include "options.h"
 # include "utils.h"
-# include <mpi.h>
 
 namespace bpo = boost::program_options;
 
@@ -43,14 +48,9 @@ namespace
 
 int main(int argc, char* argv[])
 {
-  // Initialize the MPI execution environment
-  MPI_Init(&argc, &argv);
-  // Determines the size of the group associated with a communicator
-  int nb_process;
-  MPI_Comm_size(MPI_COMM_WORLD, &nb_process);
-  // Determines the rank of the calling process in the communicator
-  int current_process;
-  MPI_Comm_rank(MPI_COMM_WORLD, &current_process);
+
+  /// @note it's either a parallel policy or a sequential policy
+  auto execution_policy = app::execution(&argc, &argc);
 
   // Load options variable map
   bpo::variables_map vm;
@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
   // the following can run without fear because everything is required to be present
 
   // --verbose option
-  if (vm.count("verbose") && current_process == 0)
+  if (vm.count("verbose") && execution_policy.can_print())
   {
     verbose = true;
     app::utils::print_options(vm);

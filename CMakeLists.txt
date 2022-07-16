@@ -2,6 +2,13 @@
 # BE SUPER CAREFUL IF YOU CHANGE ANY VERSION ~ Captain SpOCK, 45th August 3045
 cmake_minimum_required(VERSION 3.23.2)
 
+# CMake ctest does not allow parallel execution, so it has to become an option
+OPTION(BUILD_PARALLEL "Enables parallel execution with MPI" OFF) # Disabled by default
+IF(BUILD_PARALLEL)
+    ADD_DEFINITIONS(-BUILD_PARALLEL)
+ENDIF(BUILD_PARALLEL)
+message(STATUS "Parallel build is: ${PARALLEL}. Enable/Disable MPI with -D BUILD_PARALLEL=ON/OFF")
+
 # Project name and language
 project(SpOCK LANGUAGES CXX)
 

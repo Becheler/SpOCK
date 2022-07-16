@@ -34,14 +34,18 @@ Users can build, test, and install packages with `cmake` and `ctest` commands.
 Lets start in the project root folder. Assumming you installed gcc-10:
 
 ```bash
-$ export CC=`which gcc-10`
 $ export CXX=`which g++-10`
 $ mkdir build && cd build
 $ cmake -D CMAKE_BUILD_TYPE=Release \
-        -D CMAKE_C_COMPILER=${CC} \
         -D CMAKE_CXX_COMPILER=${CXX} \
         ..
 ```
+
+Importantly, the default behavior is to deactivate MPI for development purpose
+and local tests, as CMake `ctest` invokation does not allow parallel execution with MPI.
+
+To activate MPI when configuring CMake for a parallel run, you want to add the `-D BUILD_PARALLEL=ON`
+to the list of options.
 
 #### 3 - Build, test, install :rocket:
 
