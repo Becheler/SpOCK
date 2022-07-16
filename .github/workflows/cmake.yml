@@ -19,8 +19,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v2
         with:
+          submodules: recursive
           fetch-depth: 0
 
       - name: Get GCC-10
@@ -62,11 +64,6 @@ jobs:
         run: |
           cd doc
           doxygen -w html header.html delete_me.html delete_me.css
-          cd doxygen-awesome-css
-          git submodule init
-          git submodule update
-          git checkout v2.0.3
-          cd ..
           make doc
 
       - name: Documentation moving generated files
