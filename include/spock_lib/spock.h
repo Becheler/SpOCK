@@ -12,6 +12,7 @@
 
 #include "version.h"
 
+#include "spice.h"
 ///
 /// @brief Generic components for orbit propagation
 ///

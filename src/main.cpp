@@ -1,10 +1,12 @@
 //
 //  Copyright © 2022 Aaron Ridley, Arnaud Becheler, Aidan Kingwell. All rights reserved.
 //
+# include <spock_lib/spock.h>
 
-#include <boost/program_options.hpp>
-#include "options.h"
-#include "utils.h"
+# include <boost/program_options.hpp>
+# include "options.h"
+# include "utils.h"
+# include <mpi.h>
 
 namespace bpo = boost::program_options;
 
@@ -50,7 +52,7 @@ int main(int argc, char* argv[])
   int current_process;
   MPI_Comm_rank(MPI_COMM_WORLD, &current_process);
 
-  // Load options
+  // Load options variable map
   bpo::variables_map vm;
   bool verbose = false;
   try{
@@ -79,17 +81,15 @@ int main(int argc, char* argv[])
   // the following can run without fear because everything is required to be present
 
   // --verbose option
-  if (vm.count("verbose"))
+  if (vm.count("verbose") && current_process == 0)
   {
     verbose = true;
-    spock::utils::PrintVariableMap(vm);
+    app::utils::print_options(vm);
   }
 
-  if(verbose){ std::cout << "Initialization" << std::endl; }
-
-  spock::spice::set_up(vm.earth_orientation_parameters);
-  spock::spice::set_up(vm.planet_ephemerides_files);
-  spock::spice::set_up(vm.earth_binary_pck);
+  spock::spice::load_kernel(vm.earth_orientation_parameters, verbose);
+  spock::spice::load_kernel(vm.planet_ephemerides_files, verbose);
+  spock::spice::load_kernel(vm.earth_physical_constants_kernel_binary, verbose);
 
   Propagator propagator(vm, verbose);
 
