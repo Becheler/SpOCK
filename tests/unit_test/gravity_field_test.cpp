@@ -14,7 +14,7 @@
 
 namespace utf = boost::unit_test;
 
-#include <spock_lib/spock.h>
+#include <spock_lib/gravity.h>
 
 BOOST_AUTO_TEST_SUITE( gravity_field )
 

@@ -4,20 +4,19 @@ add_executable(spock main.cpp)
 
 find_package(cspice REQUIRED)
 find_package(openmpi REQUIRED)
-find_package(ZLIB REQUIRED)
 
 target_include_directories(
   spock PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                 $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
                openmpi_INCLUDE_DIRS
-               cspice_INCLUDE_DIRS)
+               cspice_INCLUDE_DIRS
+             )
 
 target_link_libraries(spock
                       CONAN_PKG::boost
                       CONAN_PKG::mp-units
-                      CONAN_PKG::openmpi
+                      openmpi::openmpi
                       cspice::cspice
-                      ZLIB::ZLIB
                     )
 
 # We need C++ 20 activated with the concepts library
