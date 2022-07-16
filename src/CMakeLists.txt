@@ -2,7 +2,7 @@ include_directories(spock/include)
 
 add_executable(spock main.cpp)
 
-find_package(cspice)
+find_package(cspice REQUIRED)
 
 target_include_directories(
   spock PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

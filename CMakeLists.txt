@@ -47,6 +47,9 @@ conan_cmake_configure(
                         cspice/0067
                       GENERATORS
                         cmake
+                        # For cspice
+                        CMakeDeps
+                        CMakeToolchain
                       )
 
 #  Detect settings like OS and architecture
