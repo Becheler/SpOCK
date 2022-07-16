@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['propagator_46',['Propagator',['../structPropagator.html#ad0f185e5b3b63a07c00ea0a22523beb7',1,'Propagator']]]
+  ['can_5fprint_86',['can_print',['../classapp_1_1execution.html#a763ea207d22bdfbbfce20d3be9cfe8c7',1,'app::execution::can_print()'],['../classapp_1_1execution.html#a763ea207d22bdfbbfce20d3be9cfe8c7',1,'app::execution::can_print()']]]
 ];

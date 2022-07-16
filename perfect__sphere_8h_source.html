@@ -1,4 +1,4 @@
-<!-- HTML header for doxygen 1.8.17-->
+<!-- HTML header for doxygen 1.9.1-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -10,6 +10,10 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -21,7 +25,8 @@
 </script>
 <script type="text/javascript" async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -55,6 +60,23 @@ $(function() {
 });
 /* @license-end */</script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('perfect__sphere_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -69,11 +91,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_44005672dc7c3e9f088d14edf6481614.html">spock_lib</a></li><li class="navelem"><a class="el" href="dir_46de7983135917337cb1a027e259efe3.html">gravity</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">perfect_sphere.h</div>  </div>
@@ -115,9 +132,9 @@ $(function() {
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html">   38</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html">perfect_sphere</a></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// We need a new kind of unit to represent the more specific usage of a length quantity</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">   41</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">vertical_kind</a> : units::kind&lt;vertical_kind, units::isq::si::dim_length&gt; {};</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">struct </span>vertical_kind : units::kind&lt;vertical_kind, units::isq::si::dim_length&gt; {};</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// A quantity point is an absolute quantity with respect to an origin, with limited arithmetic</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">   43</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">vertical_point_kind</a> : units::point_kind&lt;vertical_point_kind, vertical_kind&gt; {};</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">struct </span>vertical_point_kind : units::point_kind&lt;vertical_point_kind, vertical_kind&gt; {};</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">using</span> planet_type = T;</div>
@@ -145,26 +162,19 @@ $(function() {
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind_html"><div class="ttname"><a href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__kind.html">spock::gravity::model::perfect_sphere::vertical_kind</a></div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:41</div></div>
-<div class="ttc" id="astructspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind_html"><div class="ttname"><a href="structspock_1_1gravity_1_1model_1_1perfect__sphere_1_1vertical__point__kind.html">spock::gravity::model::perfect_sphere::vertical_point_kind</a></div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:43</div></div>
+</div><!-- doc-content -->
 <div class="ttc" id="anamespacespock_1_1gravity_1_1model_html"><div class="ttname"><a href="namespacespock_1_1gravity_1_1model.html">spock::gravity::model</a></div><div class="ttdoc">How to simulate a gravity field (model assumptions). We want to calcuate the force applied to the sat...</div><div class="ttdef"><b>Definition:</b> gridded_gravity.h:8</div></div>
 <div class="ttc" id="aclassspock_1_1gravity_1_1model_1_1perfect__sphere_html"><div class="ttname"><a href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html">spock::gravity::model::perfect_sphere</a></div><div class="ttdoc">Gravity field computed under the assumtion of a single sphere planetoid.</div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:38</div></div>
 <div class="ttc" id="aclassspock_1_1gravity_1_1model_1_1perfect__sphere_html_a732b1ab7e5a49e163d59e7d4f73e193b"><div class="ttname"><a href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#a732b1ab7e5a49e163d59e7d4f73e193b">spock::gravity::model::perfect_sphere::acceleration_at</a></div><div class="ttdeci">static constexpr units::isq::Acceleration auto acceleration_at(const altitude &amp;alt)</div><div class="ttdoc">Acceleration due to gravity at altitude h above the surface of a sphere.</div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:57</div></div>
 <div class="ttc" id="aclassspock_1_1gravity_1_1model_1_1perfect__sphere_html_ad990234940ada25aaa555d51ec524590"><div class="ttname"><a href="classspock_1_1gravity_1_1model_1_1perfect__sphere.html#ad990234940ada25aaa555d51ec524590">spock::gravity::model::perfect_sphere::altitude</a></div><div class="ttdeci">units::quantity_point_kind&lt; vertical_point_kind, units::isq::si::metre &gt; altitude</div><div class="ttdoc">quantity_point_kind to mark “absolute” kinds of quantities like altitude (as opposed to height)</div><div class="ttdef"><b>Definition:</b> perfect_sphere.h:53</div></div>
-<!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.17
-</small></address>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-106771332-1', 'auto');
-  ga('send', 'pageview');
-</script>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_44005672dc7c3e9f088d14edf6481614.html">spock_lib</a></li><li class="navelem"><a class="el" href="dir_46de7983135917337cb1a027e259efe3.html">gravity</a></li><li class="navelem"><b>perfect_sphere.h</b></li>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
+  </ul>
+</div>
 </body>
 </html>

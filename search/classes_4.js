@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['neptune_32',['neptune',['../structspock_1_1physic__constants_1_1neptune.html',1,'spock::physic_constants']]]
+  ['kalman_5ffiltering_56',['kalman_filtering',['../structprogress__policy_1_1kalman__filtering.html',1,'progress_policy']]],
+  ['kalman_5ft_57',['KALMAN_T',['../structKALMAN__T.html',1,'']]]
 ];

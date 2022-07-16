@@ -1,0 +1,28 @@
+var structAntennaInfoStructure =
+[
+    [ "a0", "structAntennaInfoStructure.html#a3ce6d7bd2963ade65c912426967b15ba", null ],
+    [ "AntennaFileName", "structAntennaInfoStructure.html#ab04e17ff1b669798165382e6ad48e04b", null ],
+    [ "AntennaFileNamePort", "structAntennaInfoStructure.html#a78a244af4d741c34fa540a3fc850712b", null ],
+    [ "AntennaFileNameStarboard", "structAntennaInfoStructure.html#ad771adfa2f53e234fba4e49d5f51ebcd", null ],
+    [ "AntennaInfoFileName", "structAntennaInfoStructure.html#a1e312ecd8265dd436e09230e12f707dd", null ],
+    [ "dIncidence", "structAntennaInfoStructure.html#a31e19209f6d46a77011fd7f2ae7fe22c", null ],
+    [ "dPhi", "structAntennaInfoStructure.html#a7373a7bc1e2ba3d44008890ac787e89b", null ],
+    [ "dTheta", "structAntennaInfoStructure.html#a03005c9a1bbc48b5d6272404a0cbd697", null ],
+    [ "factor", "structAntennaInfoStructure.html#a60a9b7354ab6a5b84e3b1e6f7815a1eb", null ],
+    [ "gain", "structAntennaInfoStructure.html#a1dc7d8760476eab3e63b0ac6842ab15b", null ],
+    [ "gain", "structAntennaInfoStructure.html#a345a664aabc30b1fea710972316aab94", null ],
+    [ "gtx", "structAntennaInfoStructure.html#a6a0d51c35c3ab948e201441cdaf1a7d8", null ],
+    [ "lambda", "structAntennaInfoStructure.html#ac4fd30c55525316e710a6d953dbbdf51", null ],
+    [ "nAnt", "structAntennaInfoStructure.html#a3f40cf6331953854a8bdfe13f1cfe4ac", null ],
+    [ "noisefloor", "structAntennaInfoStructure.html#aa2b2da869b05e587c1e3731041a4b6ae", null ],
+    [ "numAzFine", "structAntennaInfoStructure.html#a50be8734d2f33879b9b42ebfebf4e131", null ],
+    [ "numElFine", "structAntennaInfoStructure.html#a055cbf0df7cfe718a61de7888635f6c3", null ],
+    [ "phi", "structAntennaInfoStructure.html#a693b60d4cd9a4fac0a69d85c1fc6d384", null ],
+    [ "pitches", "structAntennaInfoStructure.html#a53be584cf4bd68459aa908cf620f9d09", null ],
+    [ "ptx", "structAntennaInfoStructure.html#a0ad735e409df10a24c5166a1495ca2b6", null ],
+    [ "rolls", "structAntennaInfoStructure.html#a6d3b67f420c49e1f7f15a830b8dd3d95", null ],
+    [ "Sigma0", "structAntennaInfoStructure.html#a2a35f6f1f8592a808b3ffdb16b3c1d62", null ],
+    [ "Sigma0FileName", "structAntennaInfoStructure.html#aa242a1ee9594ccaf0264901d77d97175", null ],
+    [ "theta", "structAntennaInfoStructure.html#a7863a101a29609997371b3c531e79d90", null ],
+    [ "yaws", "structAntennaInfoStructure.html#ab92c782da41e7ecb0591d88180cf4966", null ]
+];
