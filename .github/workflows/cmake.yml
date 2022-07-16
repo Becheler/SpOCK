@@ -55,7 +55,7 @@ jobs:
 
       - name: CMake test
         working-directory: ${{github.workspace}}/build
-        run: ctest -C ${{env.BUILD_TYPE}}
+        run: ctest -C ${{env.BUILD_TYPE}} --rerun-failed --output-on-failure
 
       - name: Test Charles' Spock build
         run: |
