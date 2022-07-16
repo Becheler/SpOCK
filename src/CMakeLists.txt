@@ -9,14 +9,14 @@ find_package(ZLIB REQUIRED)
 target_include_directories(
   spock PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                 $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
-               MPI_CXX_INCLUDE_DIRS
-               cspice_DIR)
+               openmpi_INCLUDE_DIRS
+               cspice_INCLUDE_DIRS)
 
 target_link_libraries(spock
                       CONAN_PKG::boost
                       CONAN_PKG::mp-units
                       CONAN_PKG::openmpi
-                      CONAN_PKG::cspice
+                      cspice::cspice
                       ZLIB::ZLIB
                     )
 
