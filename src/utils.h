@@ -101,4 +101,5 @@ namespace app
       }
     } // end PrintVariableMap
   } // namespace spock::utils
+} // namespace app
   #endif

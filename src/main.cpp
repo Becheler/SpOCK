@@ -87,9 +87,14 @@ int main(int argc, char* argv[])
     app::utils::print_options(vm);
   }
 
-  spock::spice::load_kernel(vm.earth_orientation_parameters, verbose);
-  spock::spice::load_kernel(vm.planet_ephemerides_files, verbose);
-  spock::spice::load_kernel(vm.earth_physical_constants_kernel_binary, verbose);
+  // I don't know where these informations should come from
+  std::string earth_orientation_parameters = "pck00010.tpc";
+  std::string planet_ephemerides = "de432s.bsp";
+  std::string earth_physical_constants = "earth_000101_210404_210111.bpc";
+
+  spock::spice::load_kernel(earth_orientation_parameters, verbose);
+  spock::spice::load_kernel(planet_ephemerides, verbose);
+  spock::spice::load_kernel(earth_physical_constants, verbose);
 
   Propagator propagator(vm, verbose);
 
