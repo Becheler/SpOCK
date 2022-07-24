@@ -1,8 +1,6 @@
 var annotated_dup =
 [
-    [ "app", null, [
-      [ "execution", "classapp_1_1execution.html", "classapp_1_1execution" ]
-    ] ],
+    [ "app", "namespaceapp.html", "namespaceapp" ],
     [ "progress_policy", "namespaceprogress__policy.html", "namespaceprogress__policy" ],
     [ "spock", "namespacespock.html", "namespacespock" ],
     [ "AntennaDataPixelStructure", "structAntennaDataPixelStructure.html", "structAntennaDataPixelStructure" ],

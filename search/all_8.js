@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['load_5fkernel_17',['load_kernel',['../namespacespock_1_1spice.html#ad9d4e67241ca4562335e194fff1764a9',1,'spock::spice']]]
+  ['kalman_5ffiltering_17',['kalman_filtering',['../structprogress__policy_1_1kalman__filtering.html',1,'progress_policy']]],
+  ['kalman_5ft_18',['KALMAN_T',['../structKALMAN__T.html',1,'']]]
 ];

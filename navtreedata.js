@@ -23,6 +23,8 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "SpOCK", "index.html", [
+    [ "Welcome to SpOCK's website", "index.html", null ],
+    [ "Todo List", "todo.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -48,9 +50,9 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-".html",
-"structOPTIONS__T.html#a68be88084bfe859854960357d22947c4",
-"structspecular__point__info.html#acf0f430428a6605940482ba8eaad741f"
+"annotated.html",
+"structOPTIONS__T.html#a65d525c09e416e700416643571b5b0e3",
+"structspecular__point__info.html#aca13674ee619d49d4f79581b24163344"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

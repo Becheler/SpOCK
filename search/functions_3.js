@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['load_5fkernel_88',['load_kernel',['../namespacespock_1_1spice.html#ad9d4e67241ca4562335e194fff1764a9',1,'spock::spice']]]
+  ['handle_5foptions_93',['handle_options',['../namespaceapp.html#ae1351485501dac42fa3bced506cfde79',1,'app']]]
 ];
