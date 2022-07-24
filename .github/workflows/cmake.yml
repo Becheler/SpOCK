@@ -48,7 +48,8 @@ jobs:
           cmake -B ${{github.workspace}}/build \
                 -D CMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
                 -D CMAKE_C_COMPILER=/usr/bin/gcc-10 \
-                -D CMAKE_CXX_COMPILER=/usr/bin/g++-10
+                -D CMAKE_CXX_COMPILER=/usr/bin/g++-10 \
+                -D BUILD_PARALLEL=OFF
 
       - name: CMake build
         run: |
