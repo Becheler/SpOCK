@@ -41,11 +41,12 @@ $ cmake -D CMAKE_BUILD_TYPE=Release \
         ..
 ```
 
-Importantly, the default behavior is to deactivate MPI for development purpose
-and local tests, as CMake `ctest` invokation does not allow parallel execution with MPI.
+Importantly, the default behavior is to activate MPI for a parallel run.
 
-To activate MPI when configuring CMake for a parallel run, you want to add the `-D BUILD_PARALLEL=ON`
-to the list of options.
+For development purposes and local tests, this options has to be deactivated,
+as CMake `ctest` invokation does not allow parallel execution with MPI.
+To this end, you want to add the `-D BUILD_PARALLEL=OFF` to the list of options
+in the previous CMake command.
 
 #### 3 - Build, test, install :rocket:
 

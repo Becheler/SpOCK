@@ -3,7 +3,7 @@
 cmake_minimum_required(VERSION 3.23.2)
 
 # CMake ctest does not allow parallel execution, so it has to become an option
-OPTION(BUILD_PARALLEL "Enables parallel execution with MPI" OFF) # Disabled by default
+OPTION(BUILD_PARALLEL "Enables parallel execution with MPI" ON) # Disabled by default
 IF(BUILD_PARALLEL)
     ADD_DEFINITIONS(-BUILD_PARALLEL)
 ENDIF(BUILD_PARALLEL)

@@ -20,9 +20,6 @@
 
 namespace app
 {
-  ///
-  /// @brief Utilitary functions for main application
-  ///
   namespace utils
   {
     namespace po = boost::program_options;

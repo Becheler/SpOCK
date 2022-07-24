@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
   bpo::variables_map vm;
   bool verbose = false;
   try{
-    vm = handle_options(argc, argv);
+    vm = app::handle_options(argc, argv);
     // --help option
     if (vm.count("help") || vm.count("version") )
     {
