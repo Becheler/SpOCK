@@ -39,7 +39,8 @@ var NAVTREE =
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ],
-        [ "Typedefs", "functions_type.html", null ]
+        [ "Typedefs", "functions_type.html", null ],
+        [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -51,8 +52,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"structOPTIONS__T.html#a65d525c09e416e700416643571b5b0e3",
-"structspecular__point__info.html#aca13674ee619d49d4f79581b24163344"
+"structOPTIONS__T.html#a64373813cea532587d51e5b0e2b79d7b",
+"structspecular__point__info.html#ac5f059dc08cbdbd3e68f981c829f0a74"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

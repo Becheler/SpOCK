@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"structspecular__point__info.html#ac5f059dc08cbdbd3e68f981c829f0a74":[3,0,16,14],
+"structspecular__point__info.html#ac6bf272e517e35c4aeb5fd685cc2266a":[3,0,16,30],
+"structspecular__point__info.html#ac6cde6c2f39ecd9ce2bfedf16d5cc8e2":[3,0,16,31],
 "structspecular__point__info.html#aca13674ee619d49d4f79581b24163344":[3,0,16,50],
 "structspecular__point__info.html#acd8301b3131be15cb2b44e1bb86f1ce7":[3,0,16,17],
 "structspecular__point__info.html#acf0f430428a6605940482ba8eaad741f":[3,0,16,15],

@@ -6,7 +6,8 @@ var indexSectionsWithContent =
   3: "acehlp",
   4: "_gmr",
   5: "a",
-  6: "tw"
+  6: "h",
+  7: "tw"
 };
 
 var indexSectionNames =
@@ -17,7 +18,8 @@ var indexSectionNames =
   3: "functions",
   4: "variables",
   5: "typedefs",
-  6: "pages"
+  6: "related",
+  7: "pages"
 };
 
 var indexSectionLabels =
@@ -28,6 +30,7 @@ var indexSectionLabels =
   3: "Functions",
   4: "Variables",
   5: "Typedefs",
-  6: "Pages"
+  6: "Friends",
+  7: "Pages"
 };
 

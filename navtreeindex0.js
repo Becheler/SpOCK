@@ -16,6 +16,8 @@ var NAVTREEINDEX0 =
 "classapp_1_1execution.html#a5c57b563149142ea99cb8f77ca75e672":[3,0,0,0,1],
 "classapp_1_1execution.html#a763ea207d22bdfbbfce20d3be9cfe8c7":[3,0,0,0,2],
 "classapp_1_1execution.html#a763ea207d22bdfbbfce20d3be9cfe8c7":[3,0,0,0,3],
+"classapp_1_1propagation__forces.html":[3,0,0,1],
+"classapp_1_1propagation__forces.html#adc3dd3fbb736efb7d6191ca7fa3e57e7":[3,0,0,1,0],
 "classes.html":[3,1],
 "classspock_1_1force__calculator.html":[3,0,2,2],
 "classspock_1_1force__calculator.html#adabdee1c5923992f98efc0531fd74d29":[3,0,2,2,0],
@@ -39,6 +41,7 @@ var NAVTREEINDEX0 =
 "force__calculator_8h_source.html":[4,0,0,0,0,0],
 "functions.html":[3,2,0],
 "functions_func.html":[3,2,1],
+"functions_rela.html":[3,2,4],
 "functions_type.html":[3,2,3],
 "functions_vars.html":[3,2,2],
 "generate__ephemerides_8h_source.html":[4,0,1,0,0,0,0,2],
@@ -69,8 +72,8 @@ var NAVTREEINDEX0 =
 "namespacespock.html":[3,0,2],
 "namespacespock_1_1gravity.html":[2,0,2,0],
 "namespacespock_1_1gravity.html":[3,0,2,0],
-"namespacespock_1_1gravity_1_1model.html":[2,0,2,0,0],
 "namespacespock_1_1gravity_1_1model.html":[3,0,2,0,0],
+"namespacespock_1_1gravity_1_1model.html":[2,0,2,0,0],
 "namespacespock_1_1physic__constants.html":[3,0,2,1],
 "namespacespock_1_1physic__constants.html":[2,0,2,1],
 "namespacespock_1_1spice.html":[2,0,2,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX0 =
 "structOPTIONS__T.html#a5cdd810ccad208ab6fd18c25ebf86630":[3,0,12,197],
 "structOPTIONS__T.html#a5e32c0cdeda7d4ae69cd8f9ff4a3b950":[3,0,12,216],
 "structOPTIONS__T.html#a6016c5f0326ac0a60c9c97e75a593d68":[3,0,12,222],
-"structOPTIONS__T.html#a60b8f52f432899e4d39b2680dddbaf6d":[3,0,12,135],
-"structOPTIONS__T.html#a64373813cea532587d51e5b0e2b79d7b":[3,0,12,51],
-"structOPTIONS__T.html#a6439b4e242fc08fd203a09f741d149ca":[3,0,12,54],
-"structOPTIONS__T.html#a6449f4fdda25a151ec56f179630b6012":[3,0,12,213]
+"structOPTIONS__T.html#a60b8f52f432899e4d39b2680dddbaf6d":[3,0,12,135]
 };

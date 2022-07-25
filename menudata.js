@@ -38,6 +38,7 @@ var menudata={children:[
 {text:"c",url:"functions.html#index_c"},
 {text:"e",url:"functions.html#index_e"},
 {text:"g",url:"functions.html#index_g"},
+{text:"h",url:"functions.html#index_h"},
 {text:"m",url:"functions.html#index_m"},
 {text:"p",url:"functions.html#index_p"},
 {text:"r",url:"functions.html#index_r"}]},
@@ -47,6 +48,7 @@ var menudata={children:[
 {text:"g",url:"functions_vars.html#index_g"},
 {text:"m",url:"functions_vars.html#index_m"},
 {text:"r",url:"functions_vars.html#index_r"}]},
-{text:"Typedefs",url:"functions_type.html"}]}]},
+{text:"Typedefs",url:"functions_type.html"},
+{text:"Related Functions",url:"functions_rela.html"}]}]},
 {text:"Files",url:"files.html",children:[
 {text:"File List",url:"files.html"}]}]}
