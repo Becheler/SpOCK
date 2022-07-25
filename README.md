@@ -31,6 +31,8 @@ Users can build, test, and install packages with `cmake` and `ctest` commands.
 
 ##### Configuring the dependencies :wrench:
 
+###### For parallel execution
+
 Lets start in the project root folder. Assumming you installed gcc-10:
 
 ```bash
@@ -41,12 +43,22 @@ $ cmake -D CMAKE_BUILD_TYPE=Release \
         ..
 ```
 
+###### For local tests, developments and github worflows
+
 Importantly, the default behavior is to activate MPI for a parallel run.
 
 For development purposes and local tests, this options has to be deactivated,
 as CMake `ctest` invokation does not allow parallel execution with MPI.
-To this end, you want to add the `-D BUILD_PARALLEL=OFF` to the list of options
-in the previous CMake command.
+To this end, you want to add the `-D BUILD_PARALLEL=OFF` to the list of options in the previous CMake command:
+
+```bash
+$ export CXX=`which g++-10`
+$ mkdir build && cd build
+$ cmake -D CMAKE_BUILD_TYPE=Release \
+        -D CMAKE_CXX_COMPILER=${CXX} \
+        -D BUILD_PARALLEL=OFF \
+        ..
+```
 
 #### 3 - Build, test, install :rocket:
 

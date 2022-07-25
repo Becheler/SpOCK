@@ -52,11 +52,13 @@ int main(int argc, char* argv[])
   /// @note it's either a parallel policy or a sequential policy
   auto execution_policy = app::execution(&argc, &argc);
 
+  app::propagation_forces forces;
+
   // Load options variable map
   bpo::variables_map vm;
   bool verbose = false;
   try{
-    vm = app::handle_options(argc, argv);
+    vm = app::handle_options(argc, argv, forces);
     // --help option
     if (vm.count("help") || vm.count("version") )
     {

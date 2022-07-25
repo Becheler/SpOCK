@@ -23,10 +23,35 @@ namespace bpo = boost::program_options;
 
 namespace app
 {
+  // Forward declaration
+  class propagation_forces;
+
+  ///
+  /// @brief Gathers decisions concerning which forces should be included in the propagation model.
+  ///
+  class propagation_forces
+  {
+    using self_type = propagation_forces;
+
+    ///
+    /// @brief Only handle_options can modify private member data.
+    ///
+    /// @note it is a justified use of friend, as it ensures the member are read-only
+    ///       in all other parts of the program, while simplifying the interface a lot.
+    ///
+    friend bpo::variables_map handle_options(int argc, char* argv[], propagation_forces& model);
+
+    bool include_earth_pressure = false;
+    bool include_solar_pressure = false;
+    bool include_drag = false;
+    bool include_sun_gravity = false;
+    bool include_moon_gravity = false;
+  };
+
   ///
   /// @brief Returns a map with the program options
   ///
-  auto handle_options(int argc, char* argv[])
+  bpo::variables_map handle_options(int argc, char* argv[], propagation_forces& model)
   {
     ///
     /// @brief Declare a group of options that will be allowed only on command line
@@ -53,17 +78,15 @@ namespace app
     bpo::options_description dependencies_options("Dependencies Options");
     dependencies_options.add_options()
     	//
-    	("filepath.SPICE", bpo::value<std::string>(), "Path to user SPICE installation")
+    	("filepath.thrust", bpo::value<std::string>(), "Full path to user's thrust file")
     	//
-    	("filepath.thrust", bpo::value<std::string>(), "path to user's thrust file")
+    	("filepath.solar_power", bpo::value<std::string>(), "Full path to OpenGL solar power file")
     	//
-    	("filepath.solar_power", bpo::value<std::string>(), "name of OpenGL solar power file")
+    	("filepath.surface_geometry", bpo::value<std::string>(), "Full path to surface geometry file")
     	//
-    	("filepath.surface_geometry", bpo::value<std::string>(), "name of surface geometry file")
+    	("filepath.TLE_constellation", bpo::value<std::string>(), "Full path to TLE constellation GPS file")
     	//
-    	("filepath.TLE_constellation", bpo::value<std::string>(), "name of TLE constellation GPS file")
-    	//
-    	("filepath.Kalman", bpo::value<std::string>(), "name of Kalman filtering file");
+    	("filepath.Kalman", bpo::value<std::string>(), "Full path to Kalman filtering file");
 
     ///
     /// @brief Density MOD options
@@ -71,11 +94,11 @@ namespace app
     bpo::options_description density_options("Density MOD Options");
     density_options.add_options()
     	//
-    	("density.mod", bpo::value<double>(), "desired density mod")
+    	("density.mod", bpo::value<double>(), "Desired density mod")
     	//
-    	("density.mod.amplitude", bpo::value<double>(), "density mod amplitude")
+    	("density.mod.amplitude", bpo::value<double>(), "Density mod amplitude")
     	//
-    	("density.mod.phase", bpo::value<double>(), "density mod phase");
+    	("density.mod.phase", bpo::value<double>(), "Density mod phase");
 
     ///
     /// @brief Time options
@@ -83,16 +106,14 @@ namespace app
     bpo::options_description time_options("Time Options");
     time_options.add_options()
     	//
-    	("time.initial_epoch", bpo::value<std::string>(), "initial epoch in UTC format DD-MM-YYYY HH:MM:SS")
+    	("time.initial_epoch", bpo::value<std::string>(), "Initial epoch in UTC format DD-MM-YYYY HH:MM:SS")
     	//
-    	("time.final_epoch", bpo::value<std::string>(), "final epoch in UTC format DD-MM-YYYY HH:MM:SS")
+    	("time.final_epoch", bpo::value<std::string>(), "Final epoch in UTC format DD-MM-YYYY HH:MM:SS")
     	//
-    	("time.step", bpo::value<float>(), "time step in UTC format DD-MM-YYYY HH:MM:SS");
+    	("time.step", bpo::value<float>(), "Time step in UTC format DD-MM-YYYY HH:MM:SS");
 
     ///
     /// @brief Spacecraft options
-    ///
-    /// \todo unfinished
     ///
     /// \todo why isn't right ascention included in original code as an option?
     ///
@@ -101,25 +122,25 @@ namespace app
     bpo::options_description spacecraft_options("Spacecraft Options");
     spacecraft_options.add_options()
     	//
-    	("spacecraft.number", bpo::value<int>()->default_value(1), "number of spacecraft being modelled")
+    	("spacecraft.number", bpo::value<int>()->default_value(1), "Number of spacecraft being modelled")
     	//
-    	("spacecraft.name", bpo::value<std::vector<std::string> >(), "names of each spacecraft in vector")
+    	("spacecraft.name", bpo::value<std::vector<std::string> >(), "Names of each spacecraft in vector")
     	//
-    	("spacecraft.GPS.number", bpo::value<int>()->default_value(0), "number of spacecraft using GPS")
+    	("spacecraft.GPS.number", bpo::value<int>()->default_value(0), "Number of spacecraft using GPS")
     	//
-    	("spacecraft.surfaces.number", bpo::value<int>(), "number of surfaces on each spacecraft (must be same # for all SC)")
+    	("spacecraft.surfaces.number", bpo::value<int>(), "Number of surfaces on each spacecraft (must be same # for all spacecrafts)")
     	//
-    	("spacecraft.solar_cell.efficiency", bpo::value<std::vector<double> >(), "efficiency of solar cells on spacecraft")
+    	("spacecraft.solar_cell.efficiency", bpo::value<std::vector<double> >(), "Efficiency of solar cells on spacecraft")
     	//
-    	("spacecraft.inclination", bpo::value<std::vector<double> >(), "inclinations of spacecraft in vector of len=num spacecraft")
+    	("spacecraft.inclination", bpo::value<std::vector<double> >(), "Inclinations of spacecraft in a commma-separated vector of length equal to the number of spacecrafts")
     	//
-    	("spacecraft.eccentricity", bpo::value<std::vector<double> >(), "eccentricity of all spacecraft in vector of len=num spacecraft")
+    	("spacecraft.eccentricity", bpo::value<std::vector<double> >(), "Eccentricity of spacecraft in a commma-separated vector of length equal to the number of spacecrafts")
     	//
-    	("spacecraft.apogee_altitude", bpo::value<std::vector<double> >(), "apogee altitude of all spacecraft in vector")
+    	("spacecraft.apogee_altitude", bpo::value<std::vector<double> >(), "Apogee altitude of spacecraft in a commma-separated vector of length equal to the number of spacecrafts")
     	//
-    	("spacecraft.true_anomaly", bpo::value<std::vector<double> >(), "true anomalies of all spacecraft in vector")
+    	("spacecraft.true_anomaly", bpo::value<std::vector<double> >(), "True anomalies of spacecraft in a commma-separated vector of length equal to the number of spacecrafts")
     	//
-    	("spacecraft.arg_of_periapsis", bpo::value<std::vector<double> >(), "argument of periapsis of all spacecraft in vector")
+    	("spacecraft.arg_of_periapsis", bpo::value<std::vector<double> >(), "Argument of periapsis of spacecraft in a commma-separated vector of length equal to the number of spacecrafts")
     	//
     	("spacecraft.x_pos", bpo::value<std::vector<double> >(), "x positon of all spacecraft in vector")
     	//
@@ -134,20 +155,20 @@ namespace app
     	("spacecraft.z_veloc", bpo::value<std::vector<double> >(), "z direction velocities of all spacecraft in vector");
 
     ///
-    /// @brief Forces options
+    /// @brief Forces flags options
     ///
-    bpo::options_description forces_options("Forces Options");
+    bpo::options_description forces_options("Forces components Options");
     forces_options.add_options()
     	//
-    	("include_Earth_pressure", bpo::value<std::string>()->default_value("no"), "yes or no")
+    	("include_earth_pressure", bpo::bool_switch(&model.include_earth_pressure), "Add Earth pressure to the model")
     	//
-    	("include_solar_pressure", bpo::value<std::string>()->default_value("no"), "yes or no")
+    	("include_solar_pressure", bpo::bool_switch(&model.include_solar_pressure), "Add Solar pressure to the model")
     	//
-    	("include_drag", bpo::value<std::string>()->default_value("no"), "yes or no")
+    	("include_drag", bpo::bool_switch(&model.include_drag), "Add drag to the model")
     	//
-    	("include_Sun_gravity", bpo::value<std::string>()->default_value("no"), "yes or no")
+    	("include_sun_gravity", bpo::bool_switch(&model.include_sun_gravity), "Add Sun gravity to the model")
     	//
-    	("include_Moon_gravity", bpo::value<std::string>()->default_value("no"), "yes or no");
+    	("include_moon_gravity", bpo::bool_switch(&model.include_moon_gravity), "Add Moon gravity to the model");
 
     ///
     /// @brief Attitude options
@@ -260,6 +281,6 @@ namespace app
     notify(vm);
     return vm;
   } // end of handle_options
-}
+} // namespace app
 
 #endif
