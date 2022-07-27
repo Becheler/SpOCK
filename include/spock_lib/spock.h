@@ -6,6 +6,8 @@
 
 #include "gravity.h"
 
+#include "orbit.h"
+
 #include "physic_constants.hpp"
 
 #include "force_calculator/force_calculator.h"

@@ -10,9 +10,9 @@ add_test(
   NAME test_version
 COMMAND ${PROJECT_BINARY_DIR}/bin/spock --version)
 
-# add_test(
-#   NAME test_application
-# COMMAND ${PROJECT_BINARY_DIR}/src/spock ${CMAKE_CURRENT_SOURCE_DIR}/data/spock.config ${CMAKE_CURRENT_SOURCE_DIR}/data/other_input_file.toto)
+add_test(
+  NAME test_application
+COMMAND ${PROJECT_BINARY_DIR}/bin/spock ${CMAKE_CURRENT_SOURCE_DIR}/data/spock.config)
 
 ###############################################################################
 ### UNIT TEST

@@ -126,7 +126,7 @@ namespace app
     	//
     	("spacecraft.name", bpo::value<std::vector<std::string> >(), "Names of each spacecraft in vector")
     	//
-    	("spacecraft.GPS.number", bpo::value<int>()->default_value(0), "Number of spacecraft using GPS")
+    	("spacecraft.gps.number", bpo::value<int>()->default_value(0), "Number of spacecraft using GPS")
     	//
     	("spacecraft.surfaces.number", bpo::value<int>(), "Number of surfaces on each spacecraft (must be same # for all spacecrafts)")
     	//
@@ -142,17 +142,17 @@ namespace app
     	//
     	("spacecraft.arg_of_periapsis", bpo::value<std::vector<double> >(), "Argument of periapsis of spacecraft in a commma-separated vector of length equal to the number of spacecrafts")
     	//
-    	("spacecraft.x_pos", bpo::value<std::vector<double> >(), "x positon of all spacecraft in vector")
+    	("spacecraft.position.x", bpo::value<std::vector<double> >(), "x positon of all spacecraft in vector")
     	//
-    	("spacecraft.y_pos", bpo::value<std::vector<double> >(), "y position of all spacecraft in vector")
+    	("spacecraft.position.y", bpo::value<std::vector<double> >(), "y position of all spacecraft in vector")
     	//
-    	("spacecraft.z_pos", bpo::value<std::vector<double> >(), "z position of all spacecraft in vector")
+    	("spacecraft.position.z", bpo::value<std::vector<double> >(), "z position of all spacecraft in vector")
     	//
-    	("spacecraft.x_veloc", bpo::value<std::vector<double> >(), "x direction velocities of all spacecraft in vector")
+    	("spacecraft.velocity.x", bpo::value<std::vector<double> >(), "x direction velocities of all spacecraft in vector")
     	//
-    	("spacecraft.y_veloc", bpo::value<std::vector<double> >(), "y direction velocities of all spacecraft in vector")
+    	("spacecraft.velocity.y", bpo::value<std::vector<double> >(), "y direction velocities of all spacecraft in vector")
     	//
-    	("spacecraft.z_veloc", bpo::value<std::vector<double> >(), "z direction velocities of all spacecraft in vector");
+    	("spacecraft.velocity.z", bpo::value<std::vector<double> >(), "z direction velocities of all spacecraft in vector");
 
     ///
     /// @brief Forces flags options
